@@ -1,5 +1,5 @@
 h1. "DGraph":http://neamar.fr/Res/Dgraphe
 
-Jeu flash sans prétention réalisé par :
-* Neamar http://neamar.fr
-* Licoti http://licoti.fr
+Jeu flash sans prÃ©tention rÃ©alisÃ© par :
+* "Neamar":http://neamar.fr Codeur
+* "Licoti":http://licoti.fr Graphiste
