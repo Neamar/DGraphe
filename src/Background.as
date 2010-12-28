@@ -4,8 +4,7 @@ package
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import Levels.KillAllLevel;
-	import Levels.Level;
+	import Levels.*;
 	
 	/**
 	 * La frise qui défile en fond
@@ -62,7 +61,7 @@ package
 			LevelsList.push(
 			function():Level
 			{
-				return new Level(1,'360,220|460,220|380,280|440,280|460,340|360,340|280,280|540,280:0,6|6,5|5,0|0,1|1,4|5,4|4,7|7,1|1,3|3,4|3,2|2,5|2,0',8);	
+				return new KillButOneLevel(1, '280,300|380,260|420,260|520,300|420,340|380,340:0,1|1,2|2,3|3,4|4,5|5,0|1,4|0,3', 8, 1);
 			},
 			function():Level
 			{

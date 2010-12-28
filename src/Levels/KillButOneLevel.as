@@ -1,6 +1,8 @@
 package Levels 
 {
 	import flash.events.Event;
+	import flash.filters.BlurFilter;
+	import flash.filters.GlowFilter;
 	import Nodes.Node;
 	/**
 	 * Un niveau de type "tuez-les tous sauf lui"
@@ -28,7 +30,7 @@ package Levels
 			
 			Noeuds[TheOne].removeEventListener(Node.DEAD, decompte);
 			Noeuds[TheOne].addEventListener(Node.DEAD, failed);
-			
+			Noeuds[TheOne].filters = [new BlurFilter(8, 8)];
 		}
 		
 		protected function decompte(e:Event):void
