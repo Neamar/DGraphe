@@ -150,7 +150,7 @@ package Levels
 			y = -Rect.y * scaleY;*/
 		}
 		
-		private final function lancerCoupure(e:MouseEvent):void
+		protected final function lancerCoupure(e:MouseEvent):void
 		{
 			CutterStart.x = e.localX;
 			CutterStart.y = e.localY;
@@ -159,7 +159,7 @@ package Levels
 			addEventListener(MouseEvent.MOUSE_UP, terminerCoupure);
 		}
 		
-		private final function continuerCoupure(e:MouseEvent):void
+		protected final function continuerCoupure(e:MouseEvent):void
 		{
 			Cutter.graphics.clear();
 			Cutter.graphics.lineStyle(1, 0xFF);
@@ -179,7 +179,7 @@ package Levels
 			}
 		}
 		
-		public final function terminerCoupure(e:MouseEvent):void
+		protected function terminerCoupure(e:MouseEvent):void
 		{
 			CutterEnd.x = e.localX;
 			CutterEnd.y = e.localY;
