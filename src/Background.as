@@ -97,13 +97,14 @@ package
 		
 		public function Background()
 		{		
-			Pos = 3;
+			Pos = 1;
 		}
 		
 		public function raz():void
 		{
 			trace("raz");
-			Pos = 1;
+			if(currentPos == 1)
+			Pos = 0;
 		}
 		
 		public function set Pos(v:int):void
@@ -138,7 +139,10 @@ package
 				if (Lvl2 == null)
 					Lvl1 = LevelsList[Offset]();
 				else
+				{
 					Lvl1 = Lvl2;
+					Lvl2 = null;
+				}
 				addChild(Img1);
 				addChild(Lvl1);
 				
@@ -149,6 +153,11 @@ package
 					Lvl2 = LevelsList[Offset + 1]();
 					addChild(Img2);
 					addChild(Lvl2);
+				}
+				else
+				{
+					if(Lvl2 != null)
+						Lvl2.destroy();
 				}
 			}
 			
