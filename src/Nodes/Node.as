@@ -17,6 +17,8 @@
 	{
 		public static const NODE_RADIUS:int = 10;
 		public static const TRACEUR:Boolean = false;
+		public static const DEAD:String = "Dead";
+		
 		private static const FROTTEMENTS:Number = .7;
 		
 		
@@ -51,6 +53,17 @@
 			for each(var Item:Node in Parent.Noeuds)
 				new Repulsion(Item, this, Parent);
 				;
+		}
+		
+		public function destroy():void
+		{
+			this.graphics.clear();
+			this.Parent = null;
+			Forces = null;
+			Vitesse = null;
+			Resultante = null;
+			
+			delete this;
 		}
 		
 		public function connectTo(Noeud:Node):void
@@ -92,6 +105,7 @@
 			{
 				if (!isFalling)
 				{
+					dispatchEvent(new Event(Node.DEAD));
 					TweenLite.to(this, 1, { scaleX:0, scaleY:0 } )
 					isFalling = true;
 					Vitesse.scalarMul(3);

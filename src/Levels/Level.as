@@ -46,10 +46,8 @@ package Levels
 
 		public function Level(Numero:int, Datas:String, NbChaines:int):void 
 		{
-		
 			ChainesACouper = NbChaines;
-			this.graphics.beginFill(0xFFFFFF);
-			this.graphics.drawRect(-Main.LARGEUR2, -Main.HAUTEUR2, Main.LARGEUR, Main.HAUTEUR);
+
 			addChild(Cutter);
 			
 			if (Node.TRACEUR)
@@ -106,7 +104,24 @@ package Levels
 			removeEventListener(MouseEvent.MOUSE_UP, terminerCoupure);
 			while (Interactions.length>0)
 				Interactions.shift().destroy();
+				
+			for each(var Item:Node in Noeuds)
+				Item.destroy();
+			Noeuds = null;
+			
+			for each(var Obj:Interaction in Interactions)
+				Obj.destroy();
+			Interactions = null;
+			
+			Fond.bitmapData.dispose();
+			Fond = null;
+			
 			delete this;
+		}
+		
+		public function completed():void
+		{
+			dispatchEvent(new Event(Level.WIN));
 		}
 	  
 		/**
@@ -174,17 +189,17 @@ package Levels
 			{
 				S.destroy();
 				ChainesACouper--;
+				if (ChainesACouper == 0)
+				{
+					break;
+				}
 			}
 			
 			Cutter.graphics.clear();
 			removeEventListener(MouseEvent.MOUSE_MOVE, continuerCoupure);
 			removeEventListener(MouseEvent.MOUSE_UP, terminerCoupure);
-			
-			if (ChainesACouper <= 0)
-			{
-				(function():void { trace('ok'); dispatchEvent(new Event(Level.WIN)); } )();
-			}
-			else
+			completed();
+			if (ChainesACouper > 0)
 				addEventListener(MouseEvent.MOUSE_DOWN, lancerCoupure);
 		}
 

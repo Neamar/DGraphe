@@ -36,6 +36,9 @@
 			Parent.Interactions.splice(Parent.Interactions.indexOf(this), 1);
 			Bout = AutreBout = null;
 			Parent = null;
+			AttractionAutreBout = null;
+			AttractionBout = null;
+			
 			delete this;
 		}
 		

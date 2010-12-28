@@ -57,6 +57,7 @@
 		{
 			Parent.Springs.splice(Parent.Springs.indexOf(this), 1);
 			Eclair.kill();
+			Eclair.graphics.clear();
 			super.destroy();
 		}
 			
