@@ -29,6 +29,7 @@ package Levels
 		private static var Niveau1:Class;
 		
 		public static const WIN:String = 'win';
+		public static const LOST:String = 'lost';
 		
 		public var Noeuds:Vector.<Node> = new Vector.<Node>();
 		public var Interactions:Vector.<Interaction> = new Vector.<Interaction>();
@@ -122,6 +123,11 @@ package Levels
 		public function completed():void
 		{
 			dispatchEvent(new Event(Level.WIN));
+		}
+		
+		public function failed():void
+		{
+			dispatchEvent(new Event(Level.LOST));
 		}
 	  
 		/**

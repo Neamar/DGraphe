@@ -17,7 +17,7 @@
 	{
 		public static const NODE_RADIUS:int = 10;
 		public static const TRACEUR:Boolean = false;
-		public static const DEAD:String = "Dead";
+		public static const DEAD:String = "dead";
 		
 		private static const FROTTEMENTS:Number = .7;
 		
