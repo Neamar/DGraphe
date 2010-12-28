@@ -1,0 +1,7 @@
+h1. Mise à jour de la frise
+
+Pour modifier les images, placer l'image frise.jpg globale dans le dossier, puis appliquer le script :
+
+<pre>
+convert -crop 800x600 frise.jpg +repage +adjoin frise_%d.jpg
+</pre>
