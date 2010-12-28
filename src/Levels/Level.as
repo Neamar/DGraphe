@@ -120,12 +120,12 @@ package Levels
 			delete this;
 		}
 		
-		public function completed():void
+		public function completed(e:Event = null):void
 		{
 			dispatchEvent(new Event(Level.WIN));
 		}
 		
-		public function failed():void
+		public function failed(e:Event = null):void
 		{
 			dispatchEvent(new Event(Level.LOST));
 		}
