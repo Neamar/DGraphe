@@ -61,12 +61,12 @@ package
 			LevelsList.push(
 			function():Level
 			{
-				return new KillOneLevel(1, '280,300|380,260|420,260|520,300|420,340|380,340:0,1|1,2|2,3|3,4|4,5|5,0|1,4|0,3', 8, 1);
+				//NIVEAU FONCTIONNEL
+				return new KillAllLevel(1, '280,300|380,260|420,260|520,300|420,340|380,340:0,1|1,2|2,3|3,4|4,5|5,0|1,4|0,3', 8);
 			},
 			function():Level
 			{
-				//NIVEAU FONCTIONNEL
-				return new KillAllLevel(1, '280,300|380,260|420,260|520,300|420,340|380,340:0,1|1,2|2,3|3,4|4,5|5,0|1,4|0,3', 8);
+				return new KillOneLevel(1, '280,300|380,260|420,260|520,300|420,340|380,340:0,1|1,2|2,3|3,4|4,5|5,0|1,4|0,3', 8, 1);
 			},
 			function():Level
 			{
