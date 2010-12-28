@@ -3,6 +3,7 @@ package
 	import com.greensock.TweenLite;
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import Levels.KillAllLevel;
 	import Levels.Level;
 	
@@ -97,20 +98,18 @@ package
 		
 		public function Background()
 		{		
-			Pos = 1;
-		}
-		
-		public function raz():void
-		{
-			trace("raz");
-			if(currentPos == 1)
 			Pos = 0;
 		}
 		
 		public function set Pos(v:int):void
 		{
-			TweenLite.to(this, Background.SCROLL_DURATION / 1000 * Math.abs(currentPos - v), { Scroll:v * Main.LARGEUR, onComplete:this.raz } );
+			TweenLite.to(this, Background.SCROLL_DURATION / 1000 * Math.abs(currentPos - v), { Scroll:v * Main.LARGEUR} );
 			currentPos = v;
+		}
+		
+		public function get Pos():int
+		{
+			return currentPos;
 		}
 		
 		public function set Scroll(v:int):void
@@ -124,6 +123,7 @@ package
 					removeChild(Img1);
 					removeChild(Lvl1);
 					Img1.bitmapData.dispose();
+					Lvl1.removeEventListener(Level.WIN, niveauSuivant);
 					Lvl1.destroy();
 					Img1 = null;
 					Lvl1 = null;
@@ -143,28 +143,23 @@ package
 					Lvl1 = Lvl2;
 					Lvl2 = null;
 				}
+				Lvl1.addEventListener(Level.WIN, niveauSuivant);
 				addChild(Img1);
 				addChild(Lvl1);
-				
-				
-				if (v % Main.LARGEUR > 0)
-				{
-					Img2 = new Frise[Offset + 1]();
-					Lvl2 = LevelsList[Offset + 1]();
-					addChild(Img2);
-					addChild(Lvl2);
-				}
-				else
-				{
-					if(Lvl2 != null)
-						Lvl2.destroy();
-				}
 			}
 			
 			Img1.x = - (v % Main.LARGEUR);
 			Lvl1.x = Img1.x + Main.LARGEUR2;
 			
-			if (Img2 != null)
+			if (Img2 == null && v % Main.LARGEUR > 0)
+			{
+				Img2 = new Frise[Math.floor(v / Main.LARGEUR) + 1]();
+				Lvl2 = LevelsList[Math.floor(v / Main.LARGEUR) + 1]();
+				addChild(Img2);
+				addChild(Lvl2);
+			}
+			
+			if (v % Main.LARGEUR > 0)
 			{
 				Img2.x = - (v % Main.LARGEUR) + Main.LARGEUR;
 				Lvl2.x = Img2.x + Main.LARGEUR2;
@@ -179,7 +174,10 @@ package
 			return currentScroll;
 		}
 		
-		
+		public function niveauSuivant(e:Event):void
+		{
+			Pos++;
+		}
 	}
 	
 }

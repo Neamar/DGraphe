@@ -198,7 +198,7 @@ package Levels
 			Cutter.graphics.clear();
 			removeEventListener(MouseEvent.MOUSE_MOVE, continuerCoupure);
 			removeEventListener(MouseEvent.MOUSE_UP, terminerCoupure);
-			completed();
+
 			if (ChainesACouper > 0)
 				addEventListener(MouseEvent.MOUSE_DOWN, lancerCoupure);
 		}

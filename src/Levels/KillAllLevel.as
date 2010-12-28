@@ -23,6 +23,7 @@ package Levels
 		
 		protected function decompte(e:Event):void
 		{
+			trace('DEcompte');
 			NbDead++;
 			if (NbDead == Noeuds.length)
 			{
