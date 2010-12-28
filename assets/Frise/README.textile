@@ -5,3 +5,4 @@ Pour modifier les images, placer l'image frise.jpg globale dans le dossier, puis
 <pre>
 convert -crop 800x600 frise.jpg +repage +adjoin frise_%d.jpg
 </pre>
+Frise made by Licoti
