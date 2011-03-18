@@ -1,6 +1,5 @@
 ﻿package Models.Nodes
 {
-	import com.greensock.TweenLite;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -8,17 +7,23 @@
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import Models.Levels.Level;
+	import Models.Model;
 	
 	/**
 	 * Permet de représenter un noeud (une boule) et de lui appliquer une liste de contraintes avec applyForce().
 	 * @author Neamar
 	 */
-	public class Node extends Shape
+	public class Node extends Model
 	{
-		public static const NODE_RADIUS:int = 10;
-		public static const TRACEUR:Boolean = false;
+		/**
+		 * Nom de l'évènement envoyé après décès
+		 */
 		public static const DEAD:String = "dead";
 		
+		/**
+		 * Constante de frottement à appliquer.
+		 * @see Spring.FROTTEMENTS
+		 */
 		private static const FROTTEMENTS:Number = .7;
 		
 		
@@ -26,12 +31,26 @@
 		 * Liste des contraintes qui s'appliquent sur le noeud à un moment donné.
 		 */
 		private var Forces:Vector.<Vecteur> = new Vector.<Vecteur>();
+		
+		/**
+		 * Vecteur résultant de ces contraintes
+		 */
 		private var Resultante:Vecteur = new Vecteur();
+		
+		/**
+		 * Vitesse instantanée du noeud
+		 */
 		private var Vitesse:Vecteur = new Vecteur();
+		
+		/**
+		 * Niveau parent
+		 */
 		public var Parent:Level;
+		
+		/**
+		 * Le noeud est-il en chute ? (mort)
+		 */
 		public var isFalling:Boolean = false;
-
-		private const Masse:int = 1;
 		
 		/**
 		 *  Ce noeud est caractérisé par sa position intiale et son nom, ainsi qu'un noeud auquel le nouveau va être rattaché.
@@ -39,25 +58,21 @@
 		 * @param	y Position y initiale
 		 * @param	Parent le niveau conteneur
 		 */
-		public function Node(x:int, y:int,Parent:Level)
+		public function Node(x:int, y:int, Parent:Level)
 		{
 			this.x = x;
 			this.y = y;
 			this.Parent = Parent;
-			
-			this.graphics.lineStyle(1);
-			this.graphics.beginFill(0xFFFFFF);
-			this.graphics.drawCircle(0, 0, NODE_RADIUS);
 
 			//Déteste tout le monde (force de répulsion)
 			for each(var Item:Node in Parent.Noeuds)
+			{
 				new Repulsion(Item, this, Parent);
-				;
+			}
 		}
 		
 		public function destroy():void
 		{
-			this.graphics.clear();
 			this.Parent = null;
 			Forces = null;
 			Vitesse = null;
@@ -79,14 +94,16 @@
 		public final function apply():void
 		{			
 			//Calcul de la somme des forces. On en profite pour vider le tableau.
-			while (Forces.length>0)
+			while (Forces.length > 0)
+			{
 				Resultante.ajouter(Forces.pop());
+			}
 
 			//application du PFD : Somme des forces = masse * Acceleration
 			//Resultante.scalarMul(1/this.Masse);//Inutile, masse à 1
 			
 			//Puis mise à jour de la vitesse. À ce point là, le vecteur Resultante correspond au vecteur accéleration.
-			//Il faut noter qu'on fait les calculs à chauqe itération : l'intégration du vecteur accéleration pour obtenir le vecteur vitesse se transforme alors en une simple addition.
+			//Il faut noter qu'on fait les calculs à chaque itération : l'intégration du vecteur accéleration pour obtenir le vecteur vitesse se transforme alors en une simple addition.
 			Vitesse.ajouter(Resultante);		
 			//Ajouter des frottements pour éviter d'avoir les ressorts qui oscillent à l'infini
 			Vitesse.scalarMul(FROTTEMENTS);
@@ -99,16 +116,18 @@
 			//Vidage de la liste des forces pour le prochain calcul
 			Resultante.x = Resultante.y = 0;
 			
-			if (Node.TRACEUR)
-				Parent.Traceur.draw(this, new Matrix(1, 0, 0, 1, this.x+Main.LARGEUR2, this.y+Main.HAUTEUR2));
-			else if (Parent.isEmpty(x+Main.LARGEUR2, y+Main.HAUTEUR2)==0)
+			//Le noeud est-il en équilibire au bord du gouffre ?
+			if (Parent.isEmpty(x + Main.LARGEUR2, y + Main.HAUTEUR2) == 0)
 			{
+				
+				//Est-ce la première fois que l'on détecte la chute ?
 				if (!isFalling)
 				{
-					dispatchEvent(new Event(Node.DEAD));
-					TweenLite.to(this, 1, { scaleX:0, scaleY:0 } )
 					isFalling = true;
+					dispatchEvent(new Event(Node.DEAD));
 					Vitesse.scalarMul(3);
+					
+					//Le détacher de ses amis en leur appliquant une pression d'adieu
 					for (var i:int = 0; i < Parent.Springs.length;i++ )
 					{
 						if (Parent.Springs[i].Bout == this || Parent.Springs[i].AutreBout == this)

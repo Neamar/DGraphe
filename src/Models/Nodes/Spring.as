@@ -1,10 +1,5 @@
 ﻿package Models.Nodes
 {
-	import com.oaxoa.fx.Lightning;
-	import flash.display.BlendMode;
-	import flash.display.Shape;
-	import flash.filters.DropShadowFilter;
-	import flash.filters.GlowFilter;
 	import Models.Levels.Level;
 	/**
 	 * Un ressort au sens mécanique du terme.
@@ -13,13 +8,21 @@
 	 */
 	public class Spring extends Interaction
 	{
-		private static const NODE_RADIUS:int = 10;
+		/**
+		 * Les frottements à appliquer à chaque itération
+		 */
 		private static const FROTTEMENTS:Number = .5;
-		private static const GLOW:Array = new Array(new GlowFilter(0xFF0000, .8, 10, 10, 1, 1), new DropShadowFilter());
 
+		/**
+		 * Constante de raideur du ressort
+		 */
 		private var k:Number;
+		
+		/**
+		 * Longueur à vide du ressort
+		 */
 		private var Longueur:int;
-		private var Eclair:Lightning;
+		
 		/**
 		 * Crée un ressort, dont les extrémités sont A et B. Les paramètres du ressort doivent aussi être spécifiés.
 		 * @param	A Première extrémité du ressort
@@ -33,45 +36,19 @@
 			k = ConstanteRessort;
 			Longueur = LongueurAVide;
 			Parent.Springs.push(this);
-			
-			Eclair = new Lightning(0xFF0000, 2);
-			//Eclair.blendMode=BlendMode.ADD;
-			Eclair.childrenDetachedEnd=false;
-			Eclair.childrenLifeSpanMin=.1;
-			Eclair.childrenLifeSpanMax=2;
-			Eclair.childrenMaxCount=2;
-			Eclair.childrenMaxCountDecay = .5;
-			Eclair.amplitude = .3;
-			Eclair.steps = 50;
-			Eclair.speed = .09;
-			Eclair.childrenProbability=.3;
-			Eclair.smoothPercentage = 50;
-			Eclair.filters = GLOW;
-
-			Parent.addChild(Eclair);
-			Parent.setChildIndex(Eclair, 1);
-			
 		}
 		
 		public override final function destroy():void
 		{
 			Parent.Springs.splice(Parent.Springs.indexOf(this), 1);
-			Eclair.kill();
-			Eclair.graphics.clear();
 			super.destroy();
 		}
-			
+
 		/**
 		 * Calculer la force et l'appliquer à chaque extrémité.
 		 */
 		public override final function apply():void
-		{
-			Eclair.startX = Bout.x;
-			Eclair.startY = Bout.y;
-			Eclair.endX = AutreBout.x;
-			Eclair.endY = AutreBout.y;
-			Eclair.update();
-			
+		{			
 			//Mettre à jour la force.
 			var Distance:int = Math.max(1,Math.sqrt(Math.pow(Bout.x - AutreBout.x, 2) + Math.pow(Bout.y - AutreBout.y, 2)));//penser à éviter la division par zéro
 			

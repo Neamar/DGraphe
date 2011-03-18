@@ -31,7 +31,6 @@ package Models.Levels
 		public var Noeuds:Vector.<Node> = new Vector.<Node>();
 		public var Interactions:Vector.<Interaction> = new Vector.<Interaction>();
 		public var Springs:Vector.<Spring> = new Vector.<Spring>();
-		public var Traceur:BitmapData = new BitmapData(Main.LARGEUR,Main.HAUTEUR);
 		public var ChainesACouper:int;
 		
 		private var Cutter:Shape = new Shape();
@@ -48,17 +47,8 @@ package Models.Levels
 
 			addChild(Cutter);
 			
-			if (Node.TRACEUR)
-			{
-				Fond = new Bitmap(Traceur);
-				Fond.alpha = .3;
-			}
-			else
-			{
-				this.Fond = Fond;
-				this.Fond.filters = [new GlowFilter(0,1,100,100)];
-			}
-			
+			this.Fond = Fond;
+			this.Fond.filters = [new GlowFilter(0, 1, 100, 100)];			
 			addChild(Fond);
 			setChildIndex(Fond, 0);
 			Fond.x = -Main.LARGEUR2;
@@ -77,7 +67,6 @@ package Models.Levels
 			{
 				Composants = Noeud.split(",");
 				var NouveauNoeud:Node = new Node(Composants[0]-Main.LARGEUR2, Composants[1]-Main.HAUTEUR2,this);
-				addChild(NouveauNoeud);
 				Noeuds.push(NouveauNoeud);
 			}
 			for each(var Arete:String in strArc_Array)
@@ -85,8 +74,6 @@ package Models.Levels
 				Composants=Arete.split(",");
 				Noeuds[Composants[0]].connectTo(Noeuds[Composants[1]]);
 			}
-			
-			addEventListener(Event.ENTER_FRAME, iterateur);
 			
 			graphics.lineStyle(1);
 			
@@ -96,7 +83,6 @@ package Models.Levels
 		
 		public function destroy():void
 		{
-			removeEventListener(Event.ENTER_FRAME, iterateur);
 			removeEventListener(MouseEvent.MOUSE_DOWN, lancerCoupure);
 			removeEventListener(MouseEvent.MOUSE_MOVE, continuerCoupure);
 			removeEventListener(MouseEvent.MOUSE_UP, terminerCoupure);
@@ -132,7 +118,7 @@ package Models.Levels
 		* On choisit cet ordre pour avoir des ressorts dessinés correctement, sans avoir à refaire une boucle supplémentaire.
 		* @param	e non utilisé.
 		*/
-		private final function iterateur(e:Event=null):void
+		public final function update():void
 		{		
 			for each(var Item:Node in Noeuds)
 				Item.apply();

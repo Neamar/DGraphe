@@ -29,7 +29,7 @@ package Models.Levels
 			
 			Noeuds[TheOne].removeEventListener(Node.DEAD, failed);
 			Noeuds[TheOne].addEventListener(Node.DEAD, completed);
-			Noeuds[TheOne].filters = [new BlurFilter(8, 8)];
+			//Noeuds[TheOne].filters = [new BlurFilter(8, 8)];
 		}
 	}
 

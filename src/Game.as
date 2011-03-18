@@ -3,6 +3,10 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import Models.Levels.*;
+	import Models.Nodes.Spring;
+	import Views.View;
+	import Views.VLevel;
+	import Views.VSpring;
 	
 	/**
 	 * OBjet représentant le jeu dans son intégralité;
@@ -48,12 +52,28 @@ package
 			);
 		}
 		
-		public var LevelNumber:int = -1;
+		/**
+		 * Le numéro du niveau actuel
+		 */
+		public var LevelNumber:int = 0;
+		
+		/**
+		 * L'objet niveau chargé
+		 */
 		public var LevelObject:Level = null;
 		
+		/**
+		 * La vue associée au niveau
+		 */
+		public var VLevelObject:VLevel;
+		
+		/**
+		 * Lancement du jeu !
+		 */
 		public function Game()
 		{
 			nextLevel();
+			addEventListener(Event.ENTER_FRAME, update);
 		}
 		
 		/**
@@ -72,7 +92,21 @@ package
 			//Afficher le nouveau niveau
 			LevelNumber++;
 			LevelObject = new Game.LevelsList[LevelNumber];
+			VLevelObject = new VLevel(LevelObject);
+			
+			/**
+			 * Et enfin, afficher le niveau !
+			 */
 			addChild(LevelObject);	
+		}
+		
+		protected final function update(e:Event = null):void
+		{
+			//Mettre à jour le niveau
+			LevelObject.update();
+			
+			//Mettre à jour les vues
+			VLevelObject.update();
 		}
 	}
 }
