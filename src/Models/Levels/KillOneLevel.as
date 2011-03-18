@@ -5,6 +5,7 @@ package Models.Levels
 	import flash.filters.BlurFilter;
 	import flash.filters.GlowFilter;
 	import Models.Nodes.Node;
+	import Models.Nodes.Spring;
 	/**
 	 * Un niveau de type "ne tuez que lui"
 	 * @author Neamar
@@ -18,9 +19,9 @@ package Models.Levels
 		 * @param	NbChaines
 		 * @param	TheOne Le noeud à tuer
 		 */
-		public function KillOneLevel(Numero:int, Datas:String, NbChaines:int, Fond:BitmapData, TheOne:int) 
+		public function KillOneLevel(Numero:int, Noeuds:Vector.<Node>, Ressorts:Vector.<Spring>, NbChaines:int, Fond:BitmapData, TheOne:int) 
 		{
-			super(Numero, Datas, NbChaines, Fond);
+			super(Numero, Noeuds, Ressorts, NbChaines, Fond);
 			
 			for each(var Noeud:Node in Noeuds)
 			{

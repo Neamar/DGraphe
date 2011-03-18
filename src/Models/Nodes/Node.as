@@ -43,14 +43,19 @@
 		private var Vitesse:Vecteur = new Vecteur();
 		
 		/**
-		 * Niveau parent
-		 */
-		public var Parent:Level;
-		
-		/**
 		 * Le noeud est-il en chute ? (mort)
 		 */
-		public var isFalling:Boolean = false;
+		private var isFalling:Boolean = false;
+		
+		/**
+		 * Le parent de ce noeud
+		 */
+		private var Parent:Level;
+		
+		/**
+		 * La fonction à utiliser pour déterminer si un pixel est dans le vide ou non
+		 */
+		private var isEmpty:Function;
 		
 		/**
 		 *  Ce noeud est caractérisé par sa position intiale et son nom, ainsi qu'un noeud auquel le nouveau va être rattaché.
@@ -58,22 +63,14 @@
 		 * @param	y Position y initiale
 		 * @param	Parent le niveau conteneur
 		 */
-		public function Node(x:int, y:int, Parent:Level)
+		public function Node(x:int, y:int)
 		{
 			this.x = x;
 			this.y = y;
-			this.Parent = Parent;
-
-			//Déteste tout le monde (force de répulsion)
-			for each(var Item:Node in Parent.Noeuds)
-			{
-				new Repulsion(Item, this, Parent);
-			}
 		}
 		
 		public function destroy():void
 		{
-			this.Parent = null;
 			Forces = null;
 			Vitesse = null;
 			Resultante = null;
@@ -81,11 +78,34 @@
 			delete this;
 		}
 		
-		public function connectTo(Noeud:Node):void
+		/**
+		 * Connecte le noeud à un autre noeud par un ressort
+		 * @param	Noeud le noeud à connecter
+		 * @return le ressort créé pour l'occasion
+		 */
+		public function connectTo(Noeud:Node):Spring
 		{
-			new Spring(this, Noeud,Parent);
+			return new Spring(this, Noeud);
 		}
-			
+		
+		/**
+		 * Détermine la fonction à utiliser pour savoir ce qui est vide et ce qui ne l'est pas
+		 * @param	isEmpty
+		 */
+		public function setIsEmpty(isEmpty:Function):void
+		{
+			this.isEmpty = isEmpty;
+		}
+		
+		/**
+		 * Définit le parent de ce noeud
+		 * @param	L l'objet Level à utiliser comme parent
+		 */
+		public function setParent(L:Level):void
+		{
+			this.Parent = L;
+		}
+		
 		
 		/**
 		 * Met à jour la position de la particule en lui appliquant le PFD
@@ -117,7 +137,7 @@
 			Resultante.x = Resultante.y = 0;
 			
 			//Le noeud est-il en équilibire au bord du gouffre ?
-			if (Parent.isEmpty(x + Main.LARGEUR2, y + Main.HAUTEUR2) == 0)
+			if (isEmpty(x + Main.LARGEUR2, y + Main.HAUTEUR2) == 0)
 			{
 				
 				//Est-ce la première fois que l'on détecte la chute ?

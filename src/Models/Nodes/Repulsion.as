@@ -9,8 +9,14 @@
 	 */
 	public class Repulsion extends Interaction
 	{
-
+		/**
+		 * Force de répulsion (équivalent constante gravitationnelle)
+		 */
 		private var G:int;
+		
+		/**
+		 * Distance minimale à respecter pour éviter des forces trop fortes
+		 */
 		private var minDistance:int;
 
 		/**
@@ -21,9 +27,9 @@
 		 * @param	ForceRepulsion L'intensité de la force à appliquer
 		 * @param	minDistance La distance minimale.
 		 */
-		public function Repulsion(A:Node, B:Node, Parent:Level, ForceRepulsion:int=10000, minDistance:int=20)
+		public function Repulsion(A:Node, B:Node, ForceRepulsion:int=10000, minDistance:int=20)
 		{
-			super(A, B, Parent);
+			super(A, B);
 			
 			G = ForceRepulsion;
 			this.minDistance = minDistance;

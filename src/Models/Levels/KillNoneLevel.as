@@ -3,6 +3,7 @@ package Models.Levels
 	import flash.display.BitmapData;
 	import flash.events.MouseEvent;
 	import Models.Nodes.Node;
+	import Models.Nodes.Spring;
 	/**
 	 * Un niveau où il faut couper tous les liens sans tuer personne.
 	 * @author Neamar
@@ -10,9 +11,9 @@ package Models.Levels
 	public class KillNoneLevel extends Level
 	{
 		
-		public function KillNoneLevel(Numero:int, Datas:String, NbChaines:int, Fond:BitmapData)
+		public function KillNoneLevel(Numero:int, Noeuds:Vector.<Node>, Ressorts:Vector.<Spring>, NbChaines:int, Fond:BitmapData)
 		{
-			super(Numero, Datas, NbChaines, Fond);
+			super(Numero, Noeuds, Ressorts, NbChaines, Fond);
 			
 			for each(var Noeud:Node in Noeuds)
 			{

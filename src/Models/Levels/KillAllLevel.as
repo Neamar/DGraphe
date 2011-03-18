@@ -3,6 +3,7 @@ package Models.Levels
 	import flash.display.BitmapData;
 	import flash.events.Event;
 	import Models.Nodes.Node;
+	import Models.Nodes.Spring;
 	/**
 	 * Un niveau de type "tuez-les tous"
 	 * @author Neamar
@@ -11,9 +12,9 @@ package Models.Levels
 	{
 		public var NbDead:int = 0;
 		
-		public function KillAllLevel(Numero:int, Datas:String, NbChaines:int, Fond:BitmapData) 
+		public function KillAllLevel(Numero:int, Noeuds:Vector.<Node>, Ressorts:Vector.<Spring>, NbChaines:int, Fond:BitmapData) 
 		{
-			super(Numero, Datas, NbChaines, Fond);
+			super(Numero, Noeuds, Ressorts, NbChaines, Fond);
 			
 			for each(var Noeud:Node in Noeuds)
 			{

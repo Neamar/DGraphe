@@ -30,12 +30,11 @@
 		 * @param	ConstanteRessort La constante k du ressort.
 		 * @param	LongueurAVide La longueur à vide du ressort (pour lequel il n'y a aucune force)
 		 */
-		public function Spring(A:Node, B:Node, Parent:Level, ConstanteRessort:Number=.15, LongueurAVide:int=100)
+		public function Spring(A:Node, B:Node, ConstanteRessort:Number=.15, LongueurAVide:int=100)
 		{
-			super(A, B, Parent);
+			super(A, B);
 			k = ConstanteRessort;
 			Longueur = LongueurAVide;
-			Parent.Springs.push(this);
 		}
 		
 		public override final function destroy():void

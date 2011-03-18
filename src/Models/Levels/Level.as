@@ -9,6 +9,7 @@ package Models.Levels
 	import Models.Model;
 	import Models.Nodes.Interaction;
 	import Models.Nodes.Node;
+	import Models.Nodes.Repulsion;
 	import Models.Nodes.Spring;
 
 	/**
@@ -20,48 +21,48 @@ package Models.Levels
 		public static const WIN:String = 'win';
 		public static const LOST:String = 'lost';
 		
-		public var Noeuds:Vector.<Node> = new Vector.<Node>();
-		public var Interactions:Vector.<Interaction> = new Vector.<Interaction>();
-		public var Springs:Vector.<Spring> = new Vector.<Spring>();
-		public var ChainesACouper:int;
+		public var Noeuds:Vector.<Node>;
+		public var Interactions:Vector.<Interaction>;
+		public var Springs:Vector.<Spring>;
+		protected var ChainesACouper:int;
 		
 		private var Cutter:Shape = new Shape();
 		private var CutterStart:Point = new Point();
 		private var CutterEnd:Point = new Point();
 		
-		public var Fond:BitmapData;
-		public var isEmpty:Function;
+		protected var Fond:BitmapData;
 
-
-		public function Level(Numero:int, Datas:String, NbChaines:int, Fond:BitmapData):void 
+		public function Level(Numero:int, Noeuds:Vector.<Node>, Ressorts:Vector.<Spring>, NbChaines:int, Fond:BitmapData):void 
 		{
 			ChainesACouper = NbChaines;
 			
 			this.Fond = Fond;
 
-
-			isEmpty = Fond.getPixel;
+			this.Noeuds = Noeuds;
+			this.Springs = Ressorts;
+			this.Interactions = new Vector.<Interaction>();
 			
-			var Niv_String:String=Datas;
-			var Composants:Array;
-			var Part:Array=Niv_String.split(":");
-			var strNoeuds_Array:Array=Part[0].split("|");
-			var strArc_Array:Array = Part[1].split("|");
-			
-			for each(var Noeud:String in strNoeuds_Array)
+			//Recopier tous les ressorts dans les interactions, indiquer son parent
+			for each(var S:Spring in Springs)
 			{
-				Composants = Noeud.split(",");
-				var NouveauNoeud:Node = new Node(Composants[0]-Main.LARGEUR2, Composants[1]-Main.HAUTEUR2,this);
-				Noeuds.push(NouveauNoeud);
+				S.setParent(this);
+				Interactions.push(S);
 			}
-			for each(var Arete:String in strArc_Array)
+			
+			//Indiquer aux noeuds la fonction à utiliser pour déterminer le vide, leur indiquer leur parent et leur mettre des forces de répulsion entre eux
+			var isEmpty:Function = Fond.getPixel;
+			for (var i:int = 0; i < Noeuds.length; i++ )
 			{
-				Composants=Arete.split(",");
-				Noeuds[Composants[0]].connectTo(Noeuds[Composants[1]]);
+				var N:Node = Noeuds[i];
+				N.setParent(this);
+				N.setIsEmpty(isEmpty);
+				for (var j:int = i + 1; j < Noeuds.length; j++)
+				{
+					Interactions.push(new Repulsion(N, Noeuds[j]));
+				}
 			}
 			
 			addEventListener(MouseEvent.MOUSE_DOWN, lancerCoupure);
-			
 		}
 		
 		public function destroy():void
@@ -95,12 +96,25 @@ package Models.Levels
 			delete this;
 		}
 		
-		public function completed(e:Event = null):void
+		public function getFond():BitmapData
+		{
+			return this.Fond;
+		}
+		
+		/**
+		 * Helper pour envoyer l'évènement gagné.
+		 * @param	e
+		 */
+		protected function completed(e:Event = null):void
 		{
 			dispatchEvent(new Event(Level.WIN));
 		}
 		
-		public function failed(e:Event = null):void
+		/**
+		 * Helper pour envoyer l'évènement perdu.
+		 * @param	e
+		 */
+		protected function failed(e:Event = null):void
 		{
 			dispatchEvent(new Event(Level.LOST));
 		}
@@ -108,7 +122,6 @@ package Models.Levels
 		/**
 		* Met à jour la simulation d'une unité de temps : applique le PFD aux noeuds puis calcule les interactions pour la prochaine étape via les méthodes statiques fournies par les classes.
 		* On choisit cet ordre pour avoir des ressorts dessinés correctement, sans avoir à refaire une boucle supplémentaire.
-		* @param	e non utilisé.
 		*/
 		public final function update():void
 		{		
@@ -189,7 +202,7 @@ package Models.Levels
 		 * @return
 		 */
 		private function intersectionCoupure(Lien:Spring):Boolean
-		{//Renvoie true si une intersection existe entre les deux segments.
+		{
 			var A:Node = Lien.Bout;
 			var B:Node = Lien.AutreBout;
 			var C:Point = CutterStart;
@@ -210,6 +223,5 @@ package Models.Levels
 			//Si on est encore là, il y a intersection...
 			return true;
 		}
-
 	}
 }

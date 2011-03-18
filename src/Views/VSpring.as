@@ -25,15 +25,9 @@ package Views
 		 */
 		protected var S:Spring;
 		
-		/**
-		 * Le niveau associé
-		 */
-		protected var VL:VLevel;
-		
 		public function VSpring(S:Spring, VL:VLevel) 
 		{
 			this.S = S;
-			this.VL = VL;
 			
 			Eclair = new Lightning(0xFF0000, 2);
 			Eclair.childrenDetachedEnd=false;

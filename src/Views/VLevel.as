@@ -14,24 +14,24 @@ package Views
 		/**
 		 * Le niveau représenté par cet objet
 		 */
-		public var L:Level;
+		private var L:Level;
 		
 		/**
 		 * L'image de fond du niveau (à ne pas confondre avec le background)
 		 */
-		public var Fond:Bitmap;
+		private var Fond:Bitmap;
 		
 		/**
 		 * La liste des vues utiles à l'affichage du niveau
 		 */
-		public var Vs:Vector.<View> = new Vector.<View>();
+		private var Vs:Vector.<View> = new Vector.<View>();
 		
 		public function VLevel(L:Level) 
 		{
 			this.L = L;
 			
 			//Récupérer le fond
-			this.Fond = new Bitmap(L.Fond);
+			this.Fond = new Bitmap(L.getFond());
 			this.Fond.filters = [new GlowFilter(0, 1, 100, 100)];
 			addChild(this.Fond);
 			setChildIndex(this.Fond, 0);

@@ -12,25 +12,32 @@
 		
 		public var Bout:Node;
 		public var AutreBout:Node;
-		protected var Parent:Level;
 		
 		protected var AttractionBout:Vecteur = new Vecteur(0, 0);
-		protected var AttractionAutreBout:Vecteur = new Vecteur(0,0);
+		protected var AttractionAutreBout:Vecteur = new Vecteur(0, 0);
+		
+		protected var Parent:Level;
 		
 		/**
 		 * Une force abstraite d'interaction.
 		 * @param	A Première extrémité du ressort
 		 * @param	B Seconde extrémité du ressort
 		 */
-		public function Interaction(A:Node, B:Node,Parent:Level)
+		public function Interaction(A:Node, B:Node)
 		{
 			Bout = A;
 			AutreBout = B;
-			this.Parent = Parent;
-			
-			Parent.Interactions.push(this);
 		}
-				
+		
+		/**
+		 * Définit le parent de cette interaction.
+		 * @param	L l'objet Level à utiliser comme parent
+		 */
+		public function setParent(L:Level):void
+		{
+			this.Parent = L;
+		}
+		
 		public function destroy():void
 		{
 			Parent.Interactions.splice(Parent.Interactions.indexOf(this), 1);
@@ -43,7 +50,9 @@
 		}
 		
 		public function apply():void
-		{/*Fonction abstraite*/}
+		{
+			throw new Error('Appel méthode abstraite');
+		}
 	}
 	
 }

@@ -12,12 +12,12 @@ package Views
 		/**
 		 * Rayon d'un noeud
 		 */
-		public static const NODE_RADIUS:int = 10;
+		private static const NODE_RADIUS:int = 10;
 		
 		/**
-		 * L4objet représenté par cette vue
+		 * L'objet représenté par cette vue
 		 */
-		protected var N:Node;
+		private var N:Node;
 		
 		public function VNode(N:Node, VL:VLevel) 
 		{
@@ -51,7 +51,7 @@ package Views
 		 * Code appelé à la mort du noeud
 		 * @param	e non utilisé
 		 */
-		public final function onDeath(e:Event):void
+		private final function onDeath(e:Event):void
 		{
 			TweenLite.to(N, 1, { scaleX:0, scaleY:0 } )
 		}
