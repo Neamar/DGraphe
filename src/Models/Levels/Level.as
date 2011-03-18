@@ -24,10 +24,7 @@ package Models.Levels
 	* @author Neamar
 	*/
 	public class Level extends Sprite 
-	{
-		[Embed(source = "../../../assets/Niveaux/1.png")]
-		private static var Niveau1:Class;
-		
+	{		
 		public static const WIN:String = 'win';
 		public static const LOST:String = 'lost';
 		
@@ -45,7 +42,7 @@ package Models.Levels
 		public var isEmpty:Function;
 
 
-		public function Level(Numero:int, Datas:String, NbChaines:int):void 
+		public function Level(Numero:int, Datas:String, NbChaines:int, Fond:Bitmap):void 
 		{
 			ChainesACouper = NbChaines;
 
@@ -58,8 +55,8 @@ package Models.Levels
 			}
 			else
 			{
-				Fond = new Niveau1();
-				Fond.filters = [new GlowFilter(0,1,100,100)];
+				this.Fond = Fond;
+				this.Fond.filters = [new GlowFilter(0,1,100,100)];
 			}
 			
 			addChild(Fond);

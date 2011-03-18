@@ -1,5 +1,6 @@
 package Models.Levels 
 {
+	import flash.display.Bitmap;
 	import flash.events.Event;
 	import flash.filters.BlurFilter;
 	import flash.filters.GlowFilter;
@@ -17,9 +18,9 @@ package Models.Levels
 		 * @param	NbChaines
 		 * @param	TheOne Le noeud à tuer
 		 */
-		public function KillOneLevel(Numero:int, Datas:String, NbChaines:int, TheOne:int) 
+		public function KillOneLevel(Numero:int, Datas:String, NbChaines:int, Fond:Bitmap, TheOne:int) 
 		{
-			super(Numero, Datas, NbChaines);
+			super(Numero, Datas, NbChaines, Fond);
 			
 			for each(var Noeud:Node in Noeuds)
 			{

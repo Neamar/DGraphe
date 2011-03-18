@@ -15,7 +15,6 @@ package
 		/**
 		 * Images de fond
 		 */
-		
 		[Embed(source = "../assets/Frise/frise_0.jpg")]
 		private static var F1:Class;
 		[Embed(source = "../assets/Frise/frise_1.jpg")]
@@ -53,42 +52,13 @@ package
 			Frise.push(F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12, F13, F14, F15);
 		}
 		
-		/**
-		 * Niveaux
-		 */
-		private static var LevelsList:Vector.<Function> = new Vector.<Function>();
-		{
-			LevelsList.push(
-				function():Level
-				{
-					return new KillNoneLevel(1,'320,120|360,160|400,200|440,240|480,280|520,320|280,160|240,200|200,240|160,280|120,320|320,400:11,10|9,11|11,8|11,7|11,6|11,0|1,11|11,2|11,3|11,4|11,5', 3);
-				},
-				function():Level
-				{
-					//NIVEAU FONCTIONNEL
-					return new KillAllLevel(1, '280,300|380,260|420,260|520,300|420,340|380,340:0,1|1,2|2,3|3,4|4,5|5,0|1,4|0,3', 8);
-				},
-				function():Level
-				{
-					return new KillOneLevel(1, '280,300|380,260|420,260|520,300|420,340|380,340:0,1|1,2|2,3|3,4|4,5|5,0|1,4|0,3', 8, 1);
-				},
-				function():Level
-				{
-					return new Level(1,'320,120|360,160|400,200|440,240|480,280|520,320|280,160|240,200|200,240|160,280|120,320|320,400:11,10|9,11|11,8|11,7|11,6|11,0|1,11|11,2|11,3|11,4|11,5',10);
-				},
-				function():Level
-				{
-					return new Level(1, '360,200|360,240|360,280|360,320|360,360|360,400|240,400|480,400|360,160|240,40|480,40:0,6|6,1|2,6|6,3|6,4|6,5|5,7|7,4|3,7|2,7|1,7|0,7|6,8|8,7|10,7|9,6|9,8|8,10', 10);
-				}
-			);
-		}
-		
 		private static const SCROLL_DURATION:int = 3000;
 		
+		/**
+		 * Chaque image fait 800px de largeur. Pour avoir des défilements corrects, il suffit donc d'en avoir deux pendant les transitions.
+		 */
 		private var Img1:Bitmap = null;
-		private var Lvl1:Level = null;
 		private var Img2:Bitmap = null;
-		private var Lvl2:Level = null;
 		
 		/**
 		 * Le défilement (continu) du scroll
@@ -101,7 +71,7 @@ package
 		private var currentPos:int = 0;
 		
 		public function Background()
-		{		
+		{
 			Pos = 0;
 		}
 		
@@ -125,12 +95,8 @@ package
 				if (Img1 != null)
 				{
 					removeChild(Img1);
-					removeChild(Lvl1);
 					Img1.bitmapData.dispose();
-					Lvl1.removeEventListener(Level.WIN, niveauSuivant);
-					Lvl1.destroy();
 					Img1 = null;
-					Lvl1 = null;
 				}
 				if (Img2 != null)
 				{
@@ -140,34 +106,20 @@ package
 				}
 				
 				Img1 = new Frise[Offset]();
-				if (Lvl2 == null)
-					Lvl1 = LevelsList[Offset]();
-				else
-				{
-					Lvl1 = Lvl2;
-					Lvl2 = null;
-				}
-				Lvl1.addEventListener(Level.WIN, niveauSuivant);
-				Lvl1.addEventListener(Level.WIN, niveauSuivant);
 				addChild(Img1);
-				addChild(Lvl1);
 			}
 			
 			Img1.x = - (v % Main.LARGEUR);
-			Lvl1.x = Img1.x + Main.LARGEUR2;
 			
 			if (Img2 == null && v % Main.LARGEUR > 0)
 			{
 				Img2 = new Frise[Math.floor(v / Main.LARGEUR) + 1]();
-				Lvl2 = LevelsList[Math.floor(v / Main.LARGEUR) + 1]();
 				addChild(Img2);
-				addChild(Lvl2);
 			}
 			
 			if (v % Main.LARGEUR > 0)
 			{
 				Img2.x = - (v % Main.LARGEUR) + Main.LARGEUR;
-				Lvl2.x = Img2.x + Main.LARGEUR2;
 			}
 			
 			currentScroll = v;
@@ -177,11 +129,6 @@ package
 		public function get Scroll():int
 		{
 			return currentScroll;
-		}
-		
-		public function niveauSuivant(e:Event):void
-		{
-			Pos++;
 		}
 	}
 	

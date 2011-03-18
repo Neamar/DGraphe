@@ -44,6 +44,8 @@
 
 			addChild(HUD.init());
 			HUD.showText('Version de test en développement.');
+			
+			addChild(new Game());
 		}
 	}
 }

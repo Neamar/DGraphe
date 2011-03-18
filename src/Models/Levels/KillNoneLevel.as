@@ -1,5 +1,6 @@
 package Models.Levels 
 {
+	import flash.display.Bitmap;
 	import flash.events.MouseEvent;
 	import Models.Nodes.Node;
 	/**
@@ -9,9 +10,9 @@ package Models.Levels
 	public class KillNoneLevel extends Level
 	{
 		
-		public function KillNoneLevel(Numero:int, Datas:String, NbChaines:int)
+		public function KillNoneLevel(Numero:int, Datas:String, NbChaines:int, Fond:Bitmap)
 		{
-			super(Numero, Datas, NbChaines);
+			super(Numero, Datas, NbChaines, Fond);
 			
 			for each(var Noeud:Node in Noeuds)
 			{
