@@ -1,20 +1,12 @@
 package Models.Levels
 {
-	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.display.DisplayObject;
 	import flash.display.Shape;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.filters.DropShadowFilter;
-	import flash.filters.GlowFilter;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.net.URLLoader;
-	import flash.net.URLRequest;
-	import flash.text.TextField;
-	import flash.text.TextFieldAutoSize;
+	import Models.Model;
 	import Models.Nodes.Interaction;
 	import Models.Nodes.Node;
 	import Models.Nodes.Spring;
@@ -23,7 +15,7 @@ package Models.Levels
 	* Un niveau de jeu.
 	* @author Neamar
 	*/
-	public class Level extends Sprite 
+	public class Level extends Model
 	{		
 		public static const WIN:String = 'win';
 		public static const LOST:String = 'lost';
@@ -37,23 +29,18 @@ package Models.Levels
 		private var CutterStart:Point = new Point();
 		private var CutterEnd:Point = new Point();
 		
-		public var Fond:Bitmap;
+		public var Fond:BitmapData;
 		public var isEmpty:Function;
 
 
-		public function Level(Numero:int, Datas:String, NbChaines:int, Fond:Bitmap):void 
+		public function Level(Numero:int, Datas:String, NbChaines:int, Fond:BitmapData):void 
 		{
 			ChainesACouper = NbChaines;
-
-			addChild(Cutter);
 			
 			this.Fond = Fond;
-			this.Fond.filters = [new GlowFilter(0, 1, 100, 100)];			
-			addChild(Fond);
-			setChildIndex(Fond, 0);
-			Fond.x = -Main.LARGEUR2;
-			Fond.y = -Main.HAUTEUR2;
-			isEmpty = Fond.bitmapData.getPixel;
+
+
+			isEmpty = Fond.getPixel;
 			
 			var Niv_String:String=Datas;
 			var Composants:Array;
@@ -61,8 +48,6 @@ package Models.Levels
 			var strNoeuds_Array:Array=Part[0].split("|");
 			var strArc_Array:Array = Part[1].split("|");
 			
-			x = Main.LARGEUR2
-			y = Main.HAUTEUR2;
 			for each(var Noeud:String in strNoeuds_Array)
 			{
 				Composants = Noeud.split(",");
@@ -75,8 +60,6 @@ package Models.Levels
 				Noeuds[Composants[0]].connectTo(Noeuds[Composants[1]]);
 			}
 			
-			graphics.lineStyle(1);
-			
 			addEventListener(MouseEvent.MOUSE_DOWN, lancerCoupure);
 			
 		}
@@ -86,18 +69,27 @@ package Models.Levels
 			removeEventListener(MouseEvent.MOUSE_DOWN, lancerCoupure);
 			removeEventListener(MouseEvent.MOUSE_MOVE, continuerCoupure);
 			removeEventListener(MouseEvent.MOUSE_UP, terminerCoupure);
-			while (Interactions.length>0)
+			
+			while (Interactions.length > 0)
+			{
 				Interactions.shift().destroy();
-				
+			}
+			
 			for each(var Item:Node in Noeuds)
+			{
 				Item.destroy();
+			}
+			
 			Noeuds = null;
 			
 			for each(var Obj:Interaction in Interactions)
+			{
 				Obj.destroy();
+			}
+			
 			Interactions = null;
 			
-			Fond.bitmapData.dispose();
+			Fond.dispose();
 			Fond = null;
 			
 			delete this;
@@ -121,16 +113,14 @@ package Models.Levels
 		public final function update():void
 		{		
 			for each(var Item:Node in Noeuds)
+			{
 				Item.apply();
+			}
 
 			for each(var Obj:Interaction in Interactions)
+			{
 				Obj.apply();
-				
-			//Recentrer la scène en fonction de l'espace occupé.
-			/*var Rect:Rectangle = getBounds(this);
-			scaleY = scaleX = Math.min(Main.HAUTEUR / Rect.height, Main.LARGEUR / Rect.width);
-			x = -Rect.x * scaleX;
-			y = -Rect.y * scaleY;*/
+			}
 		}
 		
 		protected final function lancerCoupure(e:MouseEvent):void
@@ -200,10 +190,10 @@ package Models.Levels
 		 */
 		private function intersectionCoupure(Lien:Spring):Boolean
 		{//Renvoie true si une intersection existe entre les deux segments.
-			var A:Node=Lien.Bout;
-			var B:Node=Lien.AutreBout;
+			var A:Node = Lien.Bout;
+			var B:Node = Lien.AutreBout;
 			var C:Point = CutterStart;
-			var D:Point=CutterEnd;
+			var D:Point = CutterEnd;
 			var r_num:Number = (A.y-C.y)*(D.x-C.x)-(A.x-C.x)*(D.y-C.y);
 			var r_den:Number = (B.x-A.x)*(D.y-C.y)-(B.y-A.y)*(D.x-C.x);
 

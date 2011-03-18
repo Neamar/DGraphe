@@ -29,7 +29,7 @@ package Views
 			
 			N.addEventListener(Node.DEAD, onDeath);
 			
-			VL.L.addChild(this);
+			VL.addChild(this);
 		}
 		
 		public final override function destroy():void

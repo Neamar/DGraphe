@@ -1,6 +1,6 @@
 package Models.Levels 
 {
-	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.events.Event;
 	import Models.Nodes.Node;
 	/**
@@ -11,7 +11,7 @@ package Models.Levels
 	{
 		public var NbDead:int = 0;
 		
-		public function KillAllLevel(Numero:int, Datas:String, NbChaines:int, Fond:Bitmap) 
+		public function KillAllLevel(Numero:int, Datas:String, NbChaines:int, Fond:BitmapData) 
 		{
 			super(Numero, Datas, NbChaines, Fond);
 			

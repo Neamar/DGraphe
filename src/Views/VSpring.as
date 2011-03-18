@@ -48,8 +48,8 @@ package Views
 			Eclair.smoothPercentage = 50;
 			Eclair.filters = GLOW;
 
-			VL.L.addChild(Eclair);
-			VL.L.setChildIndex(Eclair, 1);
+			VL.addChild(Eclair);
+			VL.setChildIndex(Eclair, 1);
 		}
 		
 		public final override function destroy():void

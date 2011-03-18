@@ -1,5 +1,7 @@
 package Views 
 {
+	import flash.display.Bitmap;
+	import flash.filters.GlowFilter;
 	import Models.Levels.Level;
 	import Models.Nodes.Node;
 	import Models.Nodes.Spring;
@@ -9,13 +11,34 @@ package Views
 	 */
 	public class VLevel extends View
 	{
+		/**
+		 * Le niveau représenté par cet objet
+		 */
 		public var L:Level;
 		
+		/**
+		 * L'image de fond du niveau (à ne pas confondre avec le background)
+		 */
+		public var Fond:Bitmap;
+		
+		/**
+		 * La liste des vues utiles à l'affichage du niveau
+		 */
 		public var Vs:Vector.<View> = new Vector.<View>();
 		
 		public function VLevel(L:Level) 
 		{
 			this.L = L;
+			
+			//Récupérer le fond
+			this.Fond = new Bitmap(L.Fond);
+			this.Fond.filters = [new GlowFilter(0, 1, 100, 100)];
+			addChild(this.Fond);
+			setChildIndex(this.Fond, 0);
+			Fond.x = -Main.LARGEUR2;
+			Fond.y = -Main.HAUTEUR2;
+			x = Main.LARGEUR2
+			y = Main.HAUTEUR2;
 			
 			//Construire les vues descendantes
 			for each(var S:Spring in L.Springs)
@@ -31,7 +54,14 @@ package Views
 		
 		public final override function destroy():void
 		{
+			for each(var V:View in Vs)
+			{
+				V.destroy();
+			}
+			
 			this.L = null;
+			
+			super.destroy();
 		}
 		
 		/**
@@ -39,7 +69,6 @@ package Views
 		 */
 		public final override function update():void
 		{
-			trace(Vs.length);
 			for each(var V:View in Vs)
 			{
 				V.update();
