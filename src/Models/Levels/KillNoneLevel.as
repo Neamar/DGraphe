@@ -1,7 +1,7 @@
-package Levels 
+package Models.Levels 
 {
 	import flash.events.MouseEvent;
-	import Nodes.Node;
+	import Models.Nodes.Node;
 	/**
 	 * Un niveau où il faut couper tous les liens sans tuer personne.
 	 * @author Neamar

@@ -1,4 +1,4 @@
-package Levels 
+package Models.Levels 
 {
 	import flash.events.Event;
 	import flash.filters.BlurFilter;

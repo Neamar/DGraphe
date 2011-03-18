@@ -1,7 +1,7 @@
-package Levels 
+package Models.Levels 
 {
 	import flash.events.Event;
-	import Nodes.Node;
+	import Models.Nodes.Node;
 	/**
 	 * Un niveau de type "tuez-les tous"
 	 * @author Neamar

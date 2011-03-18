@@ -1,11 +1,11 @@
-﻿package Nodes
+﻿package Models.Nodes
 {
 	import com.oaxoa.fx.Lightning;
 	import flash.display.BlendMode;
 	import flash.display.Shape;
 	import flash.filters.DropShadowFilter;
 	import flash.filters.GlowFilter;
-	import Levels.Level;
+	import Models.Levels.Level;
 	/**
 	 * Un ressort au sens mécanique du terme.
 	 * Réagit proportionnellement à son étirement : -k * DeltaL.

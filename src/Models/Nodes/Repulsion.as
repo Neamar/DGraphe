@@ -1,7 +1,7 @@
-﻿package Nodes
+﻿package Models.Nodes
 {
 	import flash.geom.Point;
-	import Levels.Level;
+	import Models.Levels.Level;
 	/**
 	 * Modélise une attraction (ou répulsion) entre deux objets selon une loi inversement proportionnelle au carré de la distance (type attraction des planètes).
 	 * Formule : G / d^2

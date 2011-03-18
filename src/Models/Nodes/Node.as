@@ -1,4 +1,4 @@
-﻿package Nodes
+﻿package Models.Nodes
 {
 	import com.greensock.TweenLite;
 	import flash.display.Shape;
@@ -7,7 +7,7 @@
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
-	import Levels.Level;
+	import Models.Levels.Level;
 	
 	/**
 	 * Permet de représenter un noeud (une boule) et de lui appliquer une liste de contraintes avec applyForce().

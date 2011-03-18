@@ -11,8 +11,6 @@
 	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
-	import Levels.KillAllLevel;
-	import Levels.Level;
 
 	/**
 	* Permet de mettre en forme un arbre.

@@ -1,4 +1,4 @@
-package Levels
+package Models.Levels
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -15,9 +15,9 @@ package Levels
 	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
-	import Nodes.Interaction;
-	import Nodes.Node;
-	import Nodes.Spring;
+	import Models.Nodes.Interaction;
+	import Models.Nodes.Node;
+	import Models.Nodes.Spring;
 
 	/**
 	* Un niveau de jeu.
@@ -25,7 +25,7 @@ package Levels
 	*/
 	public class Level extends Sprite 
 	{
-		[Embed(source = "../../assets/Niveaux/1.png")]
+		[Embed(source = "../../../assets/Niveaux/1.png")]
 		private static var Niveau1:Class;
 		
 		public static const WIN:String = 'win';
