@@ -1,9 +1,7 @@
 package Models.Levels
 {
 	import flash.display.BitmapData;
-	import flash.display.Shape;
 	import flash.events.Event;
-	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import Models.Model;
@@ -17,19 +15,40 @@ package Models.Levels
 	* @author Neamar
 	*/
 	public class Level extends Model
-	{		
+	{
+		/**
+		 * Evènement dispatché pour un niveau gagné
+		 */
 		public static const WIN:String = 'win';
+		
+		/**
+		 * Evènement dispatché pour un niveau perdu
+		 */
 		public static const LOST:String = 'lost';
 		
+		/**
+		 * Liste des noeuds composant le niveau
+		 */
 		public var Noeuds:Vector.<Node>;
+		
+		/**
+		 * Liste des interactions (ressorts et répulsion) composant le niveau
+		 */
 		public var Interactions:Vector.<Interaction>;
+		
+		/**
+		 * Liste des ressorts composant le niveau
+		 */
 		public var Springs:Vector.<Spring>;
+		
+		/**
+		 * Nombre maximal de chaines que l'on peut couper
+		 */
 		protected var ChainesACouper:int;
 		
-		private var Cutter:Shape = new Shape();
-		private var CutterStart:Point = new Point();
-		private var CutterEnd:Point = new Point();
-		
+		/**
+		 * Les données de l'image de fond
+		 */
 		protected var Fond:BitmapData;
 
 		public function Level(Numero:int, Noeuds:Vector.<Node>, Ressorts:Vector.<Spring>, NbChaines:int, Fond:BitmapData):void 
@@ -61,16 +80,13 @@ package Models.Levels
 					Interactions.push(new Repulsion(N, Noeuds[j]));
 				}
 			}
-			
-			addEventListener(MouseEvent.MOUSE_DOWN, lancerCoupure);
 		}
 		
+		/**
+		 * Nettoie au maximum la mémoire utilisée par le niveau pour faciliter le travail du GC
+		 */
 		public function destroy():void
-		{
-			removeEventListener(MouseEvent.MOUSE_DOWN, lancerCoupure);
-			removeEventListener(MouseEvent.MOUSE_MOVE, continuerCoupure);
-			removeEventListener(MouseEvent.MOUSE_UP, terminerCoupure);
-			
+		{		
 			while (Interactions.length > 0)
 			{
 				Interactions.shift().destroy();
@@ -96,9 +112,22 @@ package Models.Levels
 			delete this;
 		}
 		
+		/**
+		 * Récupèrer les données constituant l'image de fond
+		 * @return un bitmapdata avec les données
+		 */
 		public function getFond():BitmapData
 		{
 			return this.Fond;
+		}
+		
+		/**
+		 * Nombre maximal de chaines à couper
+		 * @return
+		 */
+		public function getChainesACouper():int
+		{
+			return ChainesACouper;
 		}
 		
 		/**
@@ -107,6 +136,7 @@ package Models.Levels
 		 */
 		protected function completed(e:Event = null):void
 		{
+			trace('you win');
 			dispatchEvent(new Event(Level.WIN));
 		}
 		
@@ -116,6 +146,7 @@ package Models.Levels
 		 */
 		protected function failed(e:Event = null):void
 		{
+			trace('you failed');
 			dispatchEvent(new Event(Level.LOST));
 		}
 	  
@@ -136,48 +167,17 @@ package Models.Levels
 			}
 		}
 		
-		protected final function lancerCoupure(e:MouseEvent):void
+		/**
+		 * Détruit tous les liens entre Start et End
+		 * @param	Start point de début
+		 * @param	End point de fin
+		 * @return les objets supprimés
+		 */
+		public function cut(Start:Point, End:Point):Vector.<Spring>
 		{
-			CutterStart.x = e.localX;
-			CutterStart.y = e.localY;
-			removeEventListener(MouseEvent.MOUSE_DOWN, lancerCoupure);
-			addEventListener(MouseEvent.MOUSE_MOVE, continuerCoupure);
-			addEventListener(MouseEvent.MOUSE_UP, terminerCoupure);
-		}
-		
-		protected final function continuerCoupure(e:MouseEvent):void
-		{
-			Cutter.graphics.clear();
-			Cutter.graphics.lineStyle(1, 0xFF);
-			Cutter.graphics.moveTo(CutterStart.x, CutterStart.y);
-			Cutter.graphics.lineTo(e.localX - Cutter.x, e.localY - Cutter.y);
+			var ToDelete:Vector.<Spring> = getIntersection(Start, End);
 			
-			CutterEnd.x = e.localX;
-			CutterEnd.y = e.localY;
-			
-			for each(var S:Spring in Springs)
-			{
-				if (intersectionCoupure(S))
-				{
-					Cutter.graphics.moveTo(S.Bout.x, S.Bout.y+5);
-					Cutter.graphics.lineTo(S.AutreBout.x, S.AutreBout.y + 5);
-				}
-			}
-		}
-		
-		protected function terminerCoupure(e:MouseEvent):void
-		{
-			CutterEnd.x = e.localX;
-			CutterEnd.y = e.localY;
-			var ToDelete:Vector.<Spring> = new Vector.<Spring>();
-			var S:Spring
-			for each(S in Springs)
-			{
-				if (intersectionCoupure(S))
-					ToDelete.push(S);
-			}
-			
-			for each(S in ToDelete)
+			for each(var S:Spring in ToDelete)
 			{
 				S.destroy();
 				ChainesACouper--;
@@ -187,41 +187,45 @@ package Models.Levels
 				}
 			}
 			
-			Cutter.graphics.clear();
-			removeEventListener(MouseEvent.MOUSE_MOVE, continuerCoupure);
-			removeEventListener(MouseEvent.MOUSE_UP, terminerCoupure);
-
-			if (ChainesACouper > 0)
-				addEventListener(MouseEvent.MOUSE_DOWN, lancerCoupure);
+			return ToDelete;
 		}
-
+		
 		/**
-		 * Renvoie true si les deux droites intersectent.
-		 * @param	Lien Le lien avec lequel on fait le test.
-		 * @param	D Le dernier point de la deuxième droite
-		 * @return
+		 * Renvoie une liste de ressorts qui sont
+		 * @param	Start le premier point
+		 * @param	End le deuxième point
+		 * @return la liste des ressorts passant entre les deux points
 		 */
-		private function intersectionCoupure(Lien:Spring):Boolean
+		public final function getIntersection(Start:Point, End:Point):Vector.<Spring>
 		{
-			var A:Node = Lien.Bout;
-			var B:Node = Lien.AutreBout;
-			var C:Point = CutterStart;
-			var D:Point = CutterEnd;
-			var r_num:Number = (A.y-C.y)*(D.x-C.x)-(A.x-C.x)*(D.y-C.y);
-			var r_den:Number = (B.x-A.x)*(D.y-C.y)-(B.y-A.y)*(D.x-C.x);
+			var Intersections:Vector.<Spring> = new Vector.<Spring>();
+			
+			var C:Point = Start;
+			var D:Point = End;
+			
+			for each(var S:Spring in Springs)
+			{
+				var A:Node = S.Bout;
+				var B:Node = S.AutreBout;
 
-			if (r_den==0) return false;     // Pas d'interesection
-			var r:Number = r_num/r_den;
-			if (r<=0 || r>=1) return false; // Intersection en dehors du segment [AB]
+				var r_num:Number = (A.y - C.y) * (D.x - C.x) - (A.x - C.x) * (D.y - C.y);
+				var r_den:Number = (B.x - A.x) * (D.y - C.y) - (B.y - A.y) * (D.x - C.x);
 
-			var s_num:Number = (A.y-C.y)*(B.x-A.x)-(A.x-C.x)*(B.y-A.y);
-			var s_den:Number = (B.x-A.x)*(D.y-C.y)-(B.y-A.y)*(D.x-C.x);
-			if (s_den==0) return false;     // Pas d'interesection
-			var s:Number = s_num/s_den;
-			if (s<=0 || s>=1) return false; // Intersection en dehors du segment [CD]
+				if (r_den==0) continue;     // Pas d'interesection
+				var r:Number = r_num/r_den;
+				if (r<=0 || r>=1) continue; // Intersection en dehors du segment [AB]
 
-			//Si on est encore là, il y a intersection...
-			return true;
+				var s_num:Number = (A.y - C.y) * (B.x - A.x) - (A.x - C.x) * (B.y - A.y);
+				var s_den:Number = (B.x - A.x) * (D.y - C.y) - (B.y - A.y) * (D.x - C.x);
+				if (s_den==0) continue;     // Pas d'interesection
+				var s:Number = s_num / s_den;
+				if (s<=0 || s>=1) continue; // Intersection en dehors du segment [CD]
+
+				//Si on est encore là, il y a intersection...
+				Intersections.push(S);
+			}
+			
+			return Intersections;
 		}
 	}
 }

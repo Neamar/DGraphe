@@ -2,6 +2,7 @@ package Models.Levels
 {
 	import flash.display.BitmapData;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	import Models.Nodes.Node;
 	import Models.Nodes.Spring;
 	/**
@@ -21,14 +22,22 @@ package Models.Levels
 			}
 		}
 		
-		protected override function terminerCoupure(e:MouseEvent):void
+		/**
+		 * Détruit tous les liens entre Start et End
+		 * @param	Start point de début
+		 * @param	End point de fin
+		 * @return les ressorts supprimés
+		 */
+		public final override function cut(Start:Point, End:Point):Vector.<Spring>
 		{
-			super.terminerCoupure(e);
+			var R:Vector.<Spring> = super.cut(Start, End);
 			
 			if (ChainesACouper == 0)
 			{
 				completed();
 			}
+			
+			return R;
 		}
 	}
 

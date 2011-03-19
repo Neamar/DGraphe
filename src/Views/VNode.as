@@ -17,11 +17,17 @@ package Views
 		/**
 		 * L'objet représenté par cette vue
 		 */
-		private var N:Node;
+		public var N:Node;
+		
+		/**
+		 * Le niveau sur lequel on est
+		 */
+		private var VL:VLevel;
 		
 		public function VNode(N:Node, VL:VLevel) 
 		{
 			this.N = N;
+			this.VL = VL;
 			
 			this.graphics.lineStyle(1);
 			this.graphics.beginFill(0xFFFFFF);
@@ -35,6 +41,7 @@ package Views
 		public final override function destroy():void
 		{
 			this.graphics.clear();
+			VL.removeView(this);
 			super.destroy();
 		}
 		
@@ -53,7 +60,8 @@ package Views
 		 */
 		private final function onDeath(e:Event):void
 		{
-			TweenLite.to(N, 1, { scaleX:0, scaleY:0 } )
+			TweenLite.to(this, 1, { scaleX:0, scaleY:0, onComplete: destroy } );
+			VL.removeVNodeSpring(this);
 		}
 	}
 

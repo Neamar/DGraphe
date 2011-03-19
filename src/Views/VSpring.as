@@ -23,11 +23,14 @@ package Views
 		/**
 		 * L'objet ressort
 		 */
-		protected var S:Spring;
+		public var S:Spring;
+		
+		protected var VL:VLevel;
 		
 		public function VSpring(S:Spring, VL:VLevel) 
 		{
 			this.S = S;
+			this.VL = VL;
 			
 			Eclair = new Lightning(0xFF0000, 2);
 			Eclair.childrenDetachedEnd=false;
@@ -48,6 +51,7 @@ package Views
 		
 		public final override function destroy():void
 		{
+			VL.removeView(this);
 			Eclair.kill();
 			Eclair.graphics.clear();
 			super.destroy();
