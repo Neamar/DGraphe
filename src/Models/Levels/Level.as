@@ -51,7 +51,7 @@ package Models.Levels
 		 */
 		protected var Fond:BitmapData;
 
-		public function Level(Numero:int, Noeuds:Vector.<Node>, Ressorts:Vector.<Spring>, NbChaines:int, Fond:BitmapData):void 
+		public function Level(Noeuds:Vector.<Node>, Ressorts:Vector.<Spring>, NbChaines:int, Fond:BitmapData):void 
 		{
 			ChainesACouper = NbChaines;
 			

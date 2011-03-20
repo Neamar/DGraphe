@@ -13,9 +13,9 @@ package Models.Levels
 	public class KillNoneLevel extends Level
 	{
 		
-		public function KillNoneLevel(Numero:int, Noeuds:Vector.<Node>, Ressorts:Vector.<Spring>, NbChaines:int, Fond:BitmapData)
+		public function KillNoneLevel(Noeuds:Vector.<Node>, Ressorts:Vector.<Spring>, NbChaines:int, Fond:BitmapData)
 		{
-			super(Numero, Noeuds, Ressorts, NbChaines, Fond);
+			super(Noeuds, Ressorts, NbChaines, Fond);
 			
 			for each(var Noeud:Node in Noeuds)
 			{

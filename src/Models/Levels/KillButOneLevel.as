@@ -19,9 +19,9 @@ package Models.Levels
 		 * @param	NbChaines
 		 * @param	TheOne Le noeud à sauver
 		 */
-		public function KillButOneLevel(Numero:int, Noeuds:Vector.<Node>, Ressorts:Vector.<Spring>, NbChaines:int, TheOne:Node, Fond:BitmapData)
+		public function KillButOneLevel(Noeuds:Vector.<Node>, Ressorts:Vector.<Spring>, NbChaines:int, TheOne:Node, Fond:BitmapData)
 		{
-			super(Numero, Noeuds, Ressorts, NbChaines, Fond);
+			super(Noeuds, Ressorts, NbChaines, Fond);
 			
 			for each(var Noeud:Node in Noeuds)
 			{

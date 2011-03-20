@@ -28,6 +28,8 @@ package
 		private static var Niveau2:Class;
 		[Embed(source = "../assets/Niveaux/3.png")]
 		private static var Niveau3:Class;
+		[Embed(source = "../assets/Niveaux/4.png")]
+		private static var Niveau4:Class;
 		
 		/**
 		 * Niveaux
@@ -37,32 +39,22 @@ package
 			LevelsList.push(
 				function():Level
 				{
-					var Parts:Array = Game.buildNodes('320,120|360,160|400,200|440,240|480,280|520,320|280,160|240,200|200,240|160,280|120,320|320,400:11,10|9,11|11,8|11,7|11,6|11,0|1,11|11,2|11,3|11,4|11,5');
-					return new KillNoneLevel(1, Parts[0], Parts[1], 3, (new Niveau1()).bitmapData);
-				},
-				function():Level
-				{
-					var Parts:Array = Game.buildNodes('280,300|380,260|420,260|520,300|420,340|380,340:0,1|1,2|2,3|3,4|4,5|5,0|1,4|0,3');
-					return new KillAllLevel(1, Parts[0], Parts[1], 8, (new Niveau1()).bitmapData);
-				},
-				function():Level
-				{
 					//FONCTIONNEL (et hard !)
 					//Couper la croix centrale.
 					//Couper le lien horizontal et attendre que les deux noeuds ainsi libérés se retrouvent à la verticale avec les les noeuds juste en dessous
 					//Couper alors d'un coup les deux liens au dessus de la partie basse horizontale, on se retrouve avec trois composantes "à deux noeuds".
 					//Couper une par une chacune de ces composantes, dans l'ordre le plus logique en fonction de leurs positions.
 					var Parts:Array = Game.buildNodes('280,300|380,260|420,260|520,300|420,340|380,340:0,1|1,2|2,3|3,4|4,5|5,0|1,4|0,3');
-					return new KillNoneLevel(1, Parts[0], Parts[1], 8, (new Niveau1()).bitmapData);
+					return new KillNoneLevel(Parts[0], Parts[1], 8, (new Niveau1()).bitmapData);
 				},
 				function():Level
 				{
-					//PLUS FONCTIONNEL
-					//Couper le lien qui amène vers la partie tarabiscotée à droite
-					//Couper ensuite les trois liens restants à droite
-					//Couper enfin en haut, puis en bas.
-					var Parts:Array = Game.buildNodes('400,181|467,198|511,252|518,319|432,416|489,381|333,198|289,252|282,319|368,416|311,381|400,300:11,10|9,11|11,8|11,7|11,6|11,0|1,11|11,2|11,3|11,4|11,5');
-					return new KillNoneLevel(1, Parts[0], Parts[1], 7,  (new Niveau2()).bitmapData);
+					//FONCTIONNEL
+					//Couper les trois liens du haut
+					//Couper ensuite les deux liens du bas
+					//Couper enfin à gauche, puis à droite.
+					var Parts:Array = Game.buildNodes('400,181|467,198|511,252|518,319|432,416|489,381|333,198|289,252|282,319|368,416|311,381|400,300:11,10|9,11|11,8|11,7|11,6|11,0|1,11|11,2|11,3|11,4|11,5|2,5|2,7|7,10|10,5');
+					return new KillNoneLevel(Parts[0], Parts[1], 11,  (new Niveau4()).bitmapData);
 				},
 				function():Level
 				{
@@ -72,7 +64,7 @@ package
 					//En haut, deux noeuds attendent d'être catapultés (structure instable) : les virer
 					//Ouvrir enfin la structure obtenue en X, puis couper. Adios !
 					var Parts:Array = Game.buildNodes('400,222|400,260|400,307|400,350|400,386|400,422|319,300|481,300|400,183|286,191|514,191:0,6|6,1|2,6|6,3|6,4|6,5|5,7|7,4|3,7|2,7|1,7|0,7|6,8|8,7|10,7|9,6|9,8|8,10');
-					return new KillButOneLevel(1, Parts[0], Parts[1], 14, Parts[0][8], (new Niveau3()).bitmapData);
+					return new KillButOneLevel(Parts[0], Parts[1], 14, Parts[0][8], (new Niveau3()).bitmapData);
 				}
 			);
 		}
@@ -121,7 +113,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = 3;		
+		private var LevelNumber:int = -1;		
 		/**
 		 * L'objet niveau chargé
 		 */
