@@ -24,8 +24,6 @@ package
 		 */
 		[Embed(source = "../assets/Niveaux/1.png")]
 		private static var Niveau1:Class;
-		[Embed(source = "../assets/Niveaux/2.png")]
-		private static var Niveau2:Class;
 		[Embed(source = "../assets/Niveaux/3.png")]
 		private static var Niveau3:Class;
 		[Embed(source = "../assets/Niveaux/4.png")]
