@@ -14,7 +14,7 @@
 	 * @author Neamar
 	 */
 	public class Node extends Model
-	{
+	{		
 		/**
 		 * Nom de l'évènement envoyé après décès
 		 */
@@ -74,6 +74,7 @@
 			Forces = null;
 			Vitesse = null;
 			Resultante = null;
+			Parent = null;
 			
 			delete this;
 		}
@@ -136,8 +137,7 @@
 			//Vidage de la liste des forces pour le prochain calcul
 			Resultante.x = Resultante.y = 0;
 			
-			//Le noeud est-il en équilibire au bord du gouffre ?
-			if (isEmpty(x + Main.LARGEUR2, y + Main.HAUTEUR2) == 0)
+			if(!Main.DEBUG_MODE && isEmpty(x + Main.LARGEUR2, y + Main.HAUTEUR2) == 0)
 			{
 				
 				//Est-ce la première fois que l'on détecte la chute ?

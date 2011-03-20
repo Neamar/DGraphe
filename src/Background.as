@@ -2,8 +2,10 @@ package
 {
 	import com.greensock.TweenLite;
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.geom.Matrix;
 	import Models.Levels.*;
 	
 	/**
@@ -61,35 +63,63 @@ package
 		private var Img2:Bitmap = null;
 		
 		/**
-		 * Le défilement (continu) du scroll
+		 * Le défilement (continu) du scroll selon l'axe X
 		 */
-		private var currentScroll:int = -1;
+		private var currentScrollX:int = -1;
+		
+		/**
+		 * Le défilement (continu) du scroll selon l'axe Y
+		 */
+		private var currentScrollY:int = -1;
 		
 		/**
 		 * La position de la frise (nombre discret)
 		 */
 		private var currentPos:int = 0;
 		
+		/**
+		 * Le nombre de .reverse() effectué (modulo 2)
+		 */
+		private var currentReverse:int = 0;
+		
 		public function Background()
 		{
-			Pos = 0;
+			moveTo(0);
 		}
 		
-		public function set Pos(v:int):void
+		/**
+		 * Décaler la frise vers la position V
+		 * @param	v position à atteindre
+		 */
+		public function moveTo(v:int):void
 		{
-			TweenLite.to(this, Background.SCROLL_DURATION / 1000 * Math.abs(currentPos - v), { Scroll:v * Main.LARGEUR} );
+			TweenLite.to(this, Background.SCROLL_DURATION / 1000 * Math.abs(currentPos - v), { ScrollX:v * Main.LARGEUR} );
 			currentPos = v;
 		}
 		
-		public function get Pos():int
+		/**
+		 * Inverse le sens de la frise
+		 */
+		public function reverse():void
 		{
-			return currentPos;
+			var Img2D:BitmapData = new BitmapData(Main.LARGEUR, Main.HAUTEUR);
+			var Transform:Matrix = new Matrix();
+			Transform.scale(1, -1);
+			Transform.translate(0, Main.HAUTEUR);
+			Img2D.draw(Img1.bitmapData, Transform);
+			Img2 = new Bitmap(Img2D);
+			addChild(Img2);
+			TweenLite.to(this, Background.SCROLL_DURATION / 200, { ScrollY:-Main.HAUTEUR} );
 		}
 		
-		public function set Scroll(v:int):void
+		/**
+		 * Fonction utilisée pour le défilement continu
+		 * Publique car TweenLite doit pouvoir y accéder
+		 */
+		public function set ScrollX(v:int):void
 		{
 			//Si changement de décor, mettre à jour les bitmaps.
-			if (Math.floor(v / Main.LARGEUR) != Math.floor(currentScroll / Main.LARGEUR))
+			if (Math.floor(v / Main.LARGEUR) != Math.floor(currentScrollX / Main.LARGEUR))
 			{
 				var Offset:int = Math.floor(v / Main.LARGEUR);
 				if (Img1 != null)
@@ -122,13 +152,25 @@ package
 				Img2.x = - (v % Main.LARGEUR) + Main.LARGEUR;
 			}
 			
-			currentScroll = v;
-			
+			currentScrollX = v;
 		}
 		
-		public function get Scroll():int
+		public function get ScrollX():int
 		{
-			return currentScroll;
+			return currentScrollX;
+		}
+		
+		public function set ScrollY(v:int):void
+		{
+			Img1.y = - (v % Main.HAUTEUR);
+			Img2.y = - (v % Main.HAUTEUR) - Main.HAUTEUR;
+			
+			currentScrollY = v;
+		}
+		
+		public function get ScrollY():int
+		{
+			return currentScrollY;
 		}
 	}
 	

@@ -2,6 +2,7 @@ package Views
 {
 	import com.greensock.TweenLite;
 	import flash.events.Event;
+	import flash.geom.Matrix;
 	import Models.Nodes.Node;
 	/**
 	 * Vue pour le niveau
@@ -52,6 +53,11 @@ package Views
 		{
 			this.x = N.x;
 			this.y = N.y;
+			
+			if (Main.DEBUG_MODE)
+			{
+				VL.Debug.draw(this, new Matrix(1, 0, 0, 1, this.x + Main.LARGEUR2, this.y + Main.HAUTEUR2));
+			}
 		}
 		
 		/**

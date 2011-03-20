@@ -1,6 +1,7 @@
 package Views 
 {
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.Shape;
 	import flash.events.MouseEvent;
 	import flash.filters.GlowFilter;
@@ -25,6 +26,11 @@ package Views
 		private var Fond:Bitmap;
 		
 		/**
+		 * Données pour le debug
+		 */
+		public var Debug:BitmapData;
+		
+		/**
 		 * La liste des vues utiles à l'affichage du niveau
 		 */
 		private var Vs:Vector.<View> = new Vector.<View>();
@@ -47,6 +53,18 @@ package Views
 			setChildIndex(this.Fond, 0);
 			Fond.x = -Main.LARGEUR2;
 			Fond.y = -Main.HAUTEUR2;
+			
+			if (Main.DEBUG_MODE)
+			{
+				removeChild(Fond);
+				Debug = new BitmapData(Main.LARGEUR, Main.HAUTEUR);
+				Fond = new Bitmap(Debug);
+				Fond.x = -Main.LARGEUR2;
+				Fond.y = -Main.HAUTEUR2;
+				addChild(Fond);
+				this.addEventListener(MouseEvent.CLICK, function():void { trace(L.export()) } );
+			}
+			
 			x = Main.LARGEUR2
 			y = Main.HAUTEUR2;
 			

@@ -9,7 +9,7 @@ package Models.Levels
 	import Models.Nodes.Node;
 	import Models.Nodes.Repulsion;
 	import Models.Nodes.Spring;
-
+	
 	/**
 	* Un niveau de jeu.
 	* @author Neamar
@@ -77,9 +77,34 @@ package Models.Levels
 				N.setIsEmpty(isEmpty);
 				for (var j:int = i + 1; j < Noeuds.length; j++)
 				{
-					Interactions.push(new Repulsion(N, Noeuds[j]));
+					var R:Repulsion = new Repulsion(N, Noeuds[j]);
+					R.setParent(this);
+					Interactions.push(R);
 				}
 			}
+		}
+		
+		/**
+		 * Renvoie le niveau sous forme exportée (chaine de caractères)
+		 * 
+		 * @return string
+		 */
+		public function export():String
+		{
+			var R:String = "";
+			for each(var N:Node in Noeuds)
+			{
+				R += Math.round(N.x + Main.LARGEUR2) + ',' + Math.round(N.y + Main.HAUTEUR2) + '|';
+			}
+			
+			R = R.substr(0, R.length - 1) + ':';
+			
+			for each(var S:Spring in Springs)
+			{
+				R += Noeuds.indexOf(S.Bout) + ',' + Noeuds.indexOf(S.AutreBout) + '|';
+			}
+			
+			return R.substr(0, R.length - 1);
 		}
 		
 		/**
@@ -89,7 +114,7 @@ package Models.Levels
 		{		
 			while (Interactions.length > 0)
 			{
-				Interactions.shift().destroy();
+				Interactions[0].destroy();
 			}
 			
 			for each(var Item:Node in Noeuds)
@@ -98,11 +123,6 @@ package Models.Levels
 			}
 			
 			Noeuds = null;
-			
-			for each(var Obj:Interaction in Interactions)
-			{
-				Obj.destroy();
-			}
 			
 			Interactions = null;
 			
@@ -137,7 +157,11 @@ package Models.Levels
 		protected function completed(e:Event = null):void
 		{
 			trace('you win');
-			dispatchEvent(new Event(Level.WIN));
+			
+			if (!Main.DEBUG_MODE)
+			{
+				dispatchEvent(new Event(Level.WIN));
+			}
 		}
 		
 		/**
@@ -155,7 +179,7 @@ package Models.Levels
 		* On choisit cet ordre pour avoir des ressorts dessinés correctement, sans avoir à refaire une boucle supplémentaire.
 		*/
 		public final function update():void
-		{		
+		{
 			for each(var Item:Node in Noeuds)
 			{
 				Item.apply();

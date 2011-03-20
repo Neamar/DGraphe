@@ -1,5 +1,6 @@
 package Models.Levels 
 {
+	import com.greensock.TweenLite;
 	import flash.display.BitmapData;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -34,7 +35,8 @@ package Models.Levels
 			
 			if (ChainesACouper == 0)
 			{
-				completed();
+				HUD.showText('Deux secondes !');
+				TweenLite.delayedCall(2, completed);
 			}
 			
 			return R;

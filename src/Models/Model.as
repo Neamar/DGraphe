@@ -7,8 +7,8 @@ package Models
 	 */
 	public class Model extends EventDispatcher
 	{
-		public var x:int = 0;
-		public var y:int = 0;
+		public var x:Number = 0;
+		public var y:Number = 0;
 		
 		public function Model() 
 		{

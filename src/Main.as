@@ -19,6 +19,11 @@
 	public class Main extends Sprite 
 	{
 		/**
+		 * Sur true, les niveaux ne peuvent pa être perdus, et une carte des déplacements s'affiche.
+		 */
+		public static const DEBUG_MODE:Boolean = false;
+		
+		/**
 		 * Largeur totale de l'animation
 		 */
 		public static const LARGEUR:int = 800;
@@ -45,7 +50,7 @@
 			addChild(HUD.init());
 			HUD.showText('Version de test en développement.');
 			
-			addChild(new Game());
+			addChild(new Game(BG));
 		}
 	}
 }
