@@ -1,7 +1,5 @@
 ﻿package Models.Nodes
 {
-	import flash.display.Shape;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
@@ -26,6 +24,10 @@
 		 */
 		private static const FROTTEMENTS:Number = .7;
 		
+		/**
+		 * Définit si le noeud joue un rôle particulier dans le niveau
+		 */
+		public var Special:Boolean = false;
 		
 		/**
 		 * Liste des contraintes qui s'appliquent sur le noeud à un moment donné.

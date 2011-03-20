@@ -13,7 +13,7 @@
 	import flash.text.TextFieldAutoSize;
 
 	/**
-	* Permet de mettre en forme un arbre.
+	* DGraphe !
 	* @author Neamar
 	*/
 	public class Main extends Sprite 

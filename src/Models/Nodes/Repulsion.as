@@ -42,7 +42,7 @@
 		{
 			var dX:int = Math.abs(Bout.x - AutreBout.x);
 			var dY:int = Math.abs(Bout.y - AutreBout.y);
-			if (dX < 200 && dY < 200)
+			if (dX < 150 && dY < 150)
 			{
 				//Mettre à jour la force.
 				var Distance:int = Math.max(minDistance,Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2)));

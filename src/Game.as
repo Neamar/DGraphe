@@ -26,6 +26,8 @@ package
 		private static var Niveau1:Class;
 		[Embed(source = "../assets/Niveaux/2.png")]
 		private static var Niveau2:Class;
+		[Embed(source = "../assets/Niveaux/3.png")]
+		private static var Niveau3:Class;
 		
 		/**
 		 * Niveaux
@@ -55,7 +57,7 @@ package
 				},
 				function():Level
 				{
-					//FONCTIONNEL
+					//PLUS FONCTIONNEL
 					//Couper le lien qui amène vers la partie tarabiscotée à droite
 					//Couper ensuite les trois liens restants à droite
 					//Couper enfin en haut, puis en bas.
@@ -64,8 +66,13 @@ package
 				},
 				function():Level
 				{
+					//FONCTIONNEL
+					//Attendre quelques secondes la résolution des contraintes : deux noeuds tombent direct
+					//Couper en bas, deux noeuds sont expulsés (sans tomber pour l'instant)
+					//En haut, deux noeuds attendent d'être catapultés (structure instable) : les virer
+					//Ouvrir enfin la structure obtenue en X, puis couper. Adios !
 					var Parts:Array = Game.buildNodes('400,222|400,260|400,307|400,350|400,386|400,422|319,300|481,300|400,183|286,191|514,191:0,6|6,1|2,6|6,3|6,4|6,5|5,7|7,4|3,7|2,7|1,7|0,7|6,8|8,7|10,7|9,6|9,8|8,10');
-					return new Level(1, Parts[0], Parts[1], 10, (new Niveau1()).bitmapData);
+					return new KillButOneLevel(1, Parts[0], Parts[1], 14, Parts[0][8], (new Niveau3()).bitmapData);
 				}
 			);
 		}
@@ -114,8 +121,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = 2;
-		
+		private var LevelNumber:int = 3;		
 		/**
 		 * L'objet niveau chargé
 		 */

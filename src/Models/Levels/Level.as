@@ -200,18 +200,19 @@ package Models.Levels
 		public function cut(Start:Point, End:Point):Vector.<Spring>
 		{
 			var ToDelete:Vector.<Spring> = getIntersection(Start, End);
-			
+			var Deleted:Vector.<Spring> = new Vector.<Spring>();
 			for each(var S:Spring in ToDelete)
 			{
 				S.destroy();
 				ChainesACouper--;
+				Deleted.push(S);
 				if (ChainesACouper == 0)
 				{
 					break;
 				}
 			}
 			
-			return ToDelete;
+			return Deleted;
 		}
 		
 		/**

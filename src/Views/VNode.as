@@ -2,6 +2,7 @@ package Views
 {
 	import com.greensock.TweenLite;
 	import flash.events.Event;
+	import flash.filters.BlurFilter;
 	import flash.geom.Matrix;
 	import Models.Nodes.Node;
 	/**
@@ -33,6 +34,11 @@ package Views
 			this.graphics.lineStyle(1);
 			this.graphics.beginFill(0xFFFFFF);
 			this.graphics.drawCircle(0, 0, NODE_RADIUS);
+			
+			if (N.Special)
+			{
+				this.filters = [new BlurFilter(8, 8)];
+			}
 			
 			N.addEventListener(Node.DEAD, onDeath);
 			
@@ -66,6 +72,7 @@ package Views
 		 */
 		private final function onDeath(e:Event):void
 		{
+			this.parent.setChildIndex(this, 0);
 			TweenLite.to(this, 1, { scaleX:0, scaleY:0, onComplete: destroy } );
 			VL.removeVNodeSpring(this);
 		}

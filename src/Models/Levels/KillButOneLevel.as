@@ -1,9 +1,9 @@
 package Models.Levels 
 {
+	import flash.display.BitmapData;
 	import flash.events.Event;
-	import flash.filters.BlurFilter;
-	import flash.filters.GlowFilter;
-	import Nodes.Node;
+	import Models.Nodes.Node;
+	import Models.Nodes.Spring;
 	/**
 	 * Un niveau de type "tuez-les tous sauf lui"
 	 * @author Neamar
@@ -11,7 +11,7 @@ package Models.Levels
 	public class KillButOneLevel extends Level
 	{
 		public var NbDead:int = 0;
-		
+		public var TheOne:Node;
 		/**
 		 * 
 		 * @param	Numero
@@ -19,18 +19,18 @@ package Models.Levels
 		 * @param	NbChaines
 		 * @param	TheOne Le noeud à sauver
 		 */
-		public function KillButOneLevel(Numero:int, Noeuds:Vector.<Node>, Ressorts:Vector.<Spring>, NbChaines:int, TheOne:int) 
+		public function KillButOneLevel(Numero:int, Noeuds:Vector.<Node>, Ressorts:Vector.<Spring>, NbChaines:int, TheOne:Node, Fond:BitmapData)
 		{
-			super(Numero, Noeuds, Ressorts, NbChaines);
+			super(Numero, Noeuds, Ressorts, NbChaines, Fond);
 			
 			for each(var Noeud:Node in Noeuds)
 			{
 				Noeud.addEventListener(Node.DEAD, decompte);
 			}
 			
-			Noeuds[TheOne].removeEventListener(Node.DEAD, decompte);
-			Noeuds[TheOne].addEventListener(Node.DEAD, failed);
-			Noeuds[TheOne].filters = [new BlurFilter(8, 8)];
+			TheOne.removeEventListener(Node.DEAD, decompte);
+			TheOne.addEventListener(Node.DEAD, failed);
+			TheOne.Special = true;
 		}
 		
 		protected function decompte(e:Event):void
