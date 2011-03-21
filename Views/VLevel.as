@@ -81,6 +81,9 @@ package Views
 			
 			addChild(Cutter);
 			addEventListener(MouseEvent.MOUSE_DOWN, lancerCoupure);
+			
+			this.doubleClickEnabled = true;
+			this.addEventListener(MouseEvent.DOUBLE_CLICK, L.failed);
 		}
 		
 		public final override function destroy():void

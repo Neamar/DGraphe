@@ -30,6 +30,8 @@ package
 		private static var Niveau4:Class;
 		[Embed(source = "assets/Niveaux/5.png")]
 		private static var Niveau5:Class;
+		[Embed(source = "assets/Niveaux/6.png")]
+		private static var Niveau6:Class;
 		
 		/**
 		 * Niveaux
@@ -68,9 +70,21 @@ package
 				},
 				function():Level
 				{
+					//FONCTIONNEL
+					//Couper selon les axes :p
+					//Attention : verticalement central, ne pas couper le lien le plus en bas
 					var Parts:Array = Game.buildNodes('170,154|274,152|272,250|167,272|355,150|359,245|441,245|445,150|526,152|528,250|633,272|630,154|250,363|354,341|446,341|550,363|342,448|458,448:3,0|0,1|1,2|2,3|7,4|4,5|5,6|6,7|11,8|8,9|9,10|10,11|7,9|6,8|1,5|2,4|15,9|9,6|6,14|14,15|14,5|13,6|12,13|13,5|5,2|2,12|17,14|14,13|13,16|16,17|1,4|7,8');
-					return new KillNoneLevel(Parts[0], Parts[1], 25, (new Niveau5()).bitmapData);
+					return new KillNoneLevel(Parts[0], Parts[1], 29, (new Niveau5()).bitmapData);
+				},
+				function():Level
+				{
+					//Fonctionnel
+					//Dans la structure du bas, couper d'un coup les deux liens sud sud est (liant le noeud "jointure entre deux bras fixes" et le bras de droite).
+					var Parts:Array = Game.buildNodes('400,320|320,260|240,200|300,340|200,360|480,380|560,440|400,400|400,480|300,440|340,380|460,260|500,180:2,1|1,0|4,3|3,0|6,5|5,0|8,7|7,0|4,9|0,11|11,12|9,3|9,8|9,7');
+					Parts[0][0].Fixe = true;
+					return new KillOneLevel(Parts[0], Parts[1], 25, Parts[0][10], (new Niveau6()).bitmapData);
 				}
+
 			);
 		}
 		

@@ -30,6 +30,11 @@
 		public var Special:Boolean = false;
 		
 		/**
+		 * Définit si le noeud est fixé
+		 */
+		public var Fixe:Boolean = false;
+		
+		/**
 		 * Liste des contraintes qui s'appliquent sur le noeud à un moment donné.
 		 */
 		private var Forces:Vector.<Vecteur> = new Vector.<Vecteur>();
@@ -116,6 +121,9 @@
 		 */
 		public final function apply():void
 		{			
+			if(Fixe)
+				return;
+				
 			//Calcul de la somme des forces. On en profite pour vider le tableau.
 			while (Forces.length > 0)
 			{

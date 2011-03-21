@@ -19,7 +19,7 @@ package Models.Levels
 		 * @param	NbChaines
 		 * @param	TheOne Le noeud à tuer
 		 */
-		public function KillOneLevel(Noeuds:Vector.<Node>, Ressorts:Vector.<Spring>, NbChaines:int, Fond:BitmapData, TheOne:int) 
+		public function KillOneLevel(Noeuds:Vector.<Node>, Ressorts:Vector.<Spring>, NbChaines:int, TheOne:Node, Fond:BitmapData) 
 		{
 			super(Noeuds, Ressorts, NbChaines, Fond);
 			
@@ -28,9 +28,9 @@ package Models.Levels
 				Noeud.addEventListener(Node.DEAD, failed);
 			}
 			
-			Noeuds[TheOne].removeEventListener(Node.DEAD, failed);
-			Noeuds[TheOne].addEventListener(Node.DEAD, completed);
-			//Noeuds[TheOne].filters = [new BlurFilter(8, 8)];
+			TheOne.removeEventListener(Node.DEAD, failed);
+			TheOne.addEventListener(Node.DEAD, nearlyCompleted);
+			TheOne.Special = true;
 		}
 	}
 

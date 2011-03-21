@@ -1,5 +1,6 @@
 package Models.Levels
 {
+	import com.greensock.TweenLite;
 	import flash.display.BitmapData;
 	import flash.events.Event;
 	import flash.geom.Point;
@@ -165,10 +166,20 @@ package Models.Levels
 		}
 		
 		/**
+		 * Déclenche l'évènement réussite si un échec ne se produit pas dans les deux secondes
+		 * @param	e
+		 */
+		protected function nearlyCompleted(e:Event = null):void
+		{
+			HUD.showText('Deux secondes !');
+			TweenLite.delayedCall(2, completed);
+		}
+		
+		/**
 		 * Helper pour envoyer l'évènement perdu.
 		 * @param	e
 		 */
-		protected function failed(e:Event = null):void
+		public function failed(e:Event = null):void
 		{
 			trace('you failed');
 			dispatchEvent(new Event(Level.LOST));
