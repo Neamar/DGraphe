@@ -17,35 +17,35 @@ package
 		/**
 		 * Images de fond
 		 */
-		[Embed(source = "../assets/Frise/frise_0.jpg")]
+		[Embed(source = "assets/Frise/frise_0.jpg")]
 		private static var F1:Class;
-		[Embed(source = "../assets/Frise/frise_1.jpg")]
+		[Embed(source = "assets/Frise/frise_1.jpg")]
 		private static var F2:Class;
-		[Embed(source = "../assets/Frise/frise_2.jpg")]
+		[Embed(source = "assets/Frise/frise_2.jpg")]
 		private static var F3:Class;
-		[Embed(source = "../assets/Frise/frise_3.jpg")]
+		[Embed(source = "assets/Frise/frise_3.jpg")]
 		private static var F4:Class;
-		[Embed(source = "../assets/Frise/frise_4.jpg")]
+		[Embed(source = "assets/Frise/frise_4.jpg")]
 		private static var F5:Class;
-		[Embed(source = "../assets/Frise/frise_5.jpg")]
+		[Embed(source = "assets/Frise/frise_5.jpg")]
 		private static var F6:Class;
-		[Embed(source = "../assets/Frise/frise_6.jpg")]
+		[Embed(source = "assets/Frise/frise_6.jpg")]
 		private static var F7:Class;
-		[Embed(source = "../assets/Frise/frise_7.jpg")]
+		[Embed(source = "assets/Frise/frise_7.jpg")]
 		private static var F8:Class;
-		[Embed(source = "../assets/Frise/frise_8.jpg")]
+		[Embed(source = "assets/Frise/frise_8.jpg")]
 		private static var F9:Class;
-		[Embed(source = "../assets/Frise/frise_9.jpg")]
+		[Embed(source = "assets/Frise/frise_9.jpg")]
 		private static var F10:Class;
-		[Embed(source = "../assets/Frise/frise_10.jpg")]
+		[Embed(source = "assets/Frise/frise_10.jpg")]
 		private static var F11:Class;
-		[Embed(source = "../assets/Frise/frise_11.jpg")]
+		[Embed(source = "assets/Frise/frise_11.jpg")]
 		private static var F12:Class;
-		[Embed(source = "../assets/Frise/frise_12.jpg")]
+		[Embed(source = "assets/Frise/frise_12.jpg")]
 		private static var F13:Class;
-		[Embed(source = "../assets/Frise/frise_13.jpg")]
+		[Embed(source = "assets/Frise/frise_13.jpg")]
 		private static var F14:Class;
-		[Embed(source = "../assets/Frise/frise_14.jpg")]
+		[Embed(source = "assets/Frise/frise_14.jpg")]
 		private static var F15:Class;
 
 		private static var Frise:Vector.<Class> = new Vector.<Class>();

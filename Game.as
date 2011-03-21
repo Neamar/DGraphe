@@ -22,11 +22,11 @@ package
 		 * Liste des images pour les niveaux.
 		 * Chargées en Embed.
 		 */
-		[Embed(source = "../assets/Niveaux/1.png")]
+		[Embed(source = "assets/Niveaux/1.png")]
 		private static var Niveau1:Class;
-		[Embed(source = "../assets/Niveaux/3.png")]
+		[Embed(source = "assets/Niveaux/3.png")]
 		private static var Niveau3:Class;
-		[Embed(source = "../assets/Niveaux/4.png")]
+		[Embed(source = "assets/Niveaux/4.png")]
 		private static var Niveau4:Class;
 		
 		/**
