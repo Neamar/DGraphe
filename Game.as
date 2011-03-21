@@ -28,6 +28,8 @@ package
 		private static var Niveau3:Class;
 		[Embed(source = "assets/Niveaux/4.png")]
 		private static var Niveau4:Class;
+		[Embed(source = "assets/Niveaux/5.png")]
+		private static var Niveau5:Class;
 		
 		/**
 		 * Niveaux
@@ -63,6 +65,11 @@ package
 					//Ouvrir enfin la structure obtenue en X, puis couper. Adios !
 					var Parts:Array = Game.buildNodes('400,222|400,260|400,307|400,350|400,386|400,422|319,300|481,300|400,183|286,191|514,191:0,6|6,1|2,6|6,3|6,4|6,5|5,7|7,4|3,7|2,7|1,7|0,7|6,8|8,7|10,7|9,6|9,8|8,10');
 					return new KillButOneLevel(Parts[0], Parts[1], 14, Parts[0][8], (new Niveau3()).bitmapData);
+				},
+				function():Level
+				{
+					var Parts:Array = Game.buildNodes('170,154|274,152|272,250|167,272|355,150|359,245|441,245|445,150|526,152|528,250|633,272|630,154|250,363|354,341|446,341|550,363|342,448|458,448:3,0|0,1|1,2|2,3|7,4|4,5|5,6|6,7|11,8|8,9|9,10|10,11|7,9|6,8|1,5|2,4|15,9|9,6|6,14|14,15|14,5|13,6|12,13|13,5|5,2|2,12|17,14|14,13|13,16|16,17|1,4|7,8');
+					return new KillNoneLevel(Parts[0], Parts[1], 25, (new Niveau5()).bitmapData);
 				}
 			);
 		}
@@ -111,7 +118,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = -1;		
+		private var LevelNumber:int = 2;
 		/**
 		 * L'objet niveau chargé
 		 */
