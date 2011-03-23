@@ -121,9 +121,11 @@
 		 */
 		public final function apply():void
 		{			
-			if(Fixe)
+			if (Fixe)
+			{
 				return;
-				
+			}
+			
 			//Calcul de la somme des forces. On en profite pour vider le tableau.
 			while (Forces.length > 0)
 			{
@@ -178,7 +180,10 @@
 		 */
 		public final function applyForce(F:Vecteur):void
 		{
-			Forces.push(F);
+			if (!Fixe)
+			{
+				Forces.push(F);
+			}
 		}
 	}
 	

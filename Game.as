@@ -32,7 +32,8 @@ package
 		private static var Niveau5:Class;
 		[Embed(source = "assets/Niveaux/6.png")]
 		private static var Niveau6:Class;
-		
+		[Embed(source = "assets/Niveaux/7.png")]
+		private static var Niveau7:Class;		
 		/**
 		 * Niveaux
 		 */
@@ -83,8 +84,15 @@ package
 					var Parts:Array = Game.buildNodes('400,320|320,260|240,200|300,340|200,360|480,380|560,440|400,400|400,480|300,440|340,380|460,260|500,180:2,1|1,0|4,3|3,0|6,5|5,0|8,7|7,0|4,9|0,11|11,12|9,3|9,8|9,7');
 					Parts[0][0].Fixe = true;
 					return new KillOneLevel(Parts[0], Parts[1], 25, Parts[0][10], (new Niveau6()).bitmapData);
+				},
+				function():Level
+				{
+					//Non fonctionnel
+					var Parts:Array = Game.buildNodes('561,246|476,340|561,434|520,340|470,271|379,340|470,409|588,340:3,0|0,1|1,2|2,3|4,0|5,1|6,2|7,3|5,4|4,7|7,6|6,5');
+					//return new KillButOneLevel(Parts[0], Parts[1], 3, Parts[0][3], (new Niveau7()).bitmapData);
+					return new Level(Parts[0], Parts[1], 3, (new Niveau7()).bitmapData);
 				}
-
+				
 			);
 		}
 		
@@ -132,7 +140,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = -1;
+		private var LevelNumber:int = 4;
 		/**
 		 * L'objet niveau chargé
 		 */
