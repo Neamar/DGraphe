@@ -6,7 +6,11 @@ package
 	import flash.text.TextFieldAutoSize;
 	
 	/**
-	 * ...
+	 * Head Up Display
+	 * Affichage d'informations à l'écran via trois panneaux :
+	 * - Le haut, qui affiche trois données : le score, le nombre de noeuds restants à couper et le numéro du niveau
+	 * - Le milieu qui affiche un message
+	 * - Le bas, qui affiche un message de statut
 	 * @author Neamar
 	 */
 	public class HUD extends Sprite
