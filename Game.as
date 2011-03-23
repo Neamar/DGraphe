@@ -132,7 +132,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = 1;
+		private var LevelNumber:int = 0;
 		/**
 		 * L'objet niveau chargé
 		 */
