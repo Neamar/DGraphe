@@ -3,3 +3,12 @@ h1. "DGraph":http://neamar.fr/Res/Dgraphe
 Jeu flash sans prétention réalisé par :
 * "Neamar":http://neamar.fr Codeur
 * "Licoti":http://licoti.fr Graphiste
+
+h2. Notes
+
+Attention, le dépôt est assez lourd car il contient plusieurs fichiers binaires (les images).
+Prévoir une bonne vingtaine de mégas... sur la connexion github, c'est pas gagné :\
+
+h2. Participer ?
+
+Ce jeu vous intéresse ? Un bug à faire remonter, une suggestion ? N'hésitez pas à forker ou à nous contacter !

@@ -14,11 +14,18 @@
 
 	/**
 	* DGraphe !
+	* Un jeu flash sans aucune prétention, basé sur un petit moteur physique.
+	* Codage par Neamar (http://neamar.fr)
+	* Graphisme par Licoti (http://licoti.fr)
+	* 
+	* @see http://blog.neamar.fr/component/content/article/18-algorithmie-et-optimisation/107-affichage-graphe-optimise
+	* 
 	* @author Neamar
 	*/
 	public class Main extends Sprite 
 	{
 		/**
+		 * Permet de passer en mode débuggage
 		 * Sur true, les niveaux ne peuvent pa être perdus, et une carte des déplacements s'affiche.
 		 */
 		public static const DEBUG_MODE:Boolean = false;

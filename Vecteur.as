@@ -4,6 +4,9 @@
 
 		/**
 		 * Un vecteur, qui est en fait un déguisement de Point, mais cela clarifie le code.
+		 * Utilisé pour la représentation mathématique des forces appliquées sur un noeud (un élément du niveau)
+		 * Implémente quelques fonctions basiques utiles.
+		 * Dans l'idéal, cette classe devrait être inlinée pour gagner en performance (trop de construction d'objets inutiles sinon...)
 		 */
 		
         public class Vecteur extends Point
