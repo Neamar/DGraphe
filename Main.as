@@ -54,7 +54,7 @@
 			var BG:Background = new Background();
 			addChild(BG);
 
-			addChild(HUD.init());
+			HUD.init(this)
 			HUD.showText('Version de test en développement.');
 			
 			addChild(new Game(BG));

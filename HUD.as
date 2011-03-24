@@ -1,9 +1,11 @@
 package 
 {
+	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFormat;
 	
 	/**
 	 * Head Up Display
@@ -15,39 +17,77 @@ package
 	 */
 	public class HUD extends Sprite
 	{
-		private static var Container:Sprite = new Sprite();
-		private static var HUDTxt:TextField = new TextField();
-		private static var HUDDisplay:DisplayObject = null;
-		public static function init():Sprite
+		//Images constituant le HUD
+		[Embed(source = "assets/HUD/bas.png")]
+		private static var HUDBottomImg:Class;
+		[Embed(source = "assets/HUD/haut.png")]
+		private static var HUDTopImg:Class;
+		[Embed(source = "assets/Imagine.ttf", fontFamily = "Imagine", mimeType="application/x-font-truetype")]
+		private static var EmbedFont:String;
+	   
+		private static var Text_Format:TextFormat = new TextFormat();
 		{
-			Container.y = Main.HAUTEUR - 15;
-			HUDTxt.selectable = false;
-			HUDTxt.autoSize = TextFieldAutoSize.LEFT;
-			return Container;
+				Text_Format.font = "Imagine";
+				Text_Format.size = 14;
+				//Text_Format.bold = true;
+				Text_Format.color = 0xFFFFFF;
 		}
 		
-		/**
-		 * Afficher un objet sur le HUD.
-		 * @param	Item
-		 */
-		public static function display(Item:DisplayObject):void
+		private static var Container:Main;
+		
+		//Bottom
+		private static var BottomTxt:TextField = new TextField();
+		private static var BottomTxtSprite:Sprite = new Sprite();
+		private static var BottomImg:Bitmap = new HUDBottomImg();
+		
+		//Top
+		private static var TopImg:Bitmap = new HUDTopImg();	
+		
+		
+		public static function init(Container:Main):void
 		{
-			if (HUDDisplay != null && Container.contains(HUDDisplay))
-				Container.removeChild(HUDDisplay);
-				
-			Container.addChild(Item);
+			HUD.Container = Container;
+			
+			//BOTTOM Hud
+			Container.addChild(BottomImg);
+			Container.addChild(BottomTxtSprite);
+			BottomTxtSprite.addChild(BottomTxt);
+			
+			BottomImg.y = Main.HAUTEUR - BottomImg.height;
+			centerX(BottomImg);
+			
+			BottomTxt.width = BottomImg.width - 40;
+			BottomTxt.y = Main.HAUTEUR - BottomImg.height + 10;
+			centerX(BottomTxt);
+			
+			BottomTxt.selectable = false;
+			BottomTxt.embedFonts = true;
+			BottomTxt.defaultTextFormat = Text_Format;
+			
+			
+			//TOP Hud
+			Container.addChild(TopImg);
+			TopImg.y = 0;
+			centerX(TopImg);
 		}
 		
 		/**
 		 * Afficher du texte HTML sur le HUD.
 		 * @param	Texte
 		 */
-		public static function showText(Texte:String):void
+		public static function showText(Text:String):void
 		{
-			HUDTxt.htmlText = Texte;
-			HUDTxt.x = (Main.LARGEUR - HUDTxt.textWidth) / 2
-			HUDTxt.border = true;
-			HUD.display(HUDTxt);
+			BottomTxt.htmlText = Text;
+			BottomTxt.x = (Main.LARGEUR - BottomTxt.textWidth) / 2
+		}
+		
+		/**
+		 * Centre une image
+		 * @param	Img
+		 */
+		private static function centerX(Img:DisplayObject):void
+		{
+			Img.x = Main.LARGEUR2 - Img.width / 2
 		}
 	}
 	
