@@ -3,6 +3,7 @@ package
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.filters.GlowFilter;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -33,7 +34,7 @@ package
 				Text_Format.color = 0xFFFFFF;
 		}
 		
-		private static var Container:Main;
+		private static var Container:Sprite;
 		
 		//Bottom
 		private static var BottomTxt:TextField = new TextField();
@@ -41,12 +42,27 @@ package
 		private static var BottomImg:Bitmap = new HUDBottomImg();
 		
 		//Top
-		private static var TopImg:Bitmap = new HUDTopImg();	
+		private static var TopImg:Bitmap = new HUDTopImg();
+		private static var TopTxtLink:TextField = new TextField();
+		private static var TopTxtLevel:TextField = new TextField();
+		private static var TopTxtSprite:Sprite = new Sprite();
 		
 		
-		public static function init(Container:Main):void
+		public static function init(Stage:Main):void
 		{
-			HUD.Container = Container;
+			/**
+			 * Initialise un champ de texte pour son affichage dans le HUD
+			 * @param	TF
+			 */
+			function initTextField(TF:TextField):void
+			{
+				TF.selectable = false;
+				TF.embedFonts = true;
+				TF.defaultTextFormat = Text_Format;
+			}
+			
+			Container = new Sprite();
+			Stage.addChild(Container);
 			
 			//BOTTOM Hud
 			Container.addChild(BottomImg);
@@ -57,18 +73,32 @@ package
 			centerX(BottomImg);
 			
 			BottomTxt.width = BottomImg.width - 40;
-			BottomTxt.y = Main.HAUTEUR - BottomImg.height + 10;
+			BottomTxt.y = Main.HAUTEUR - BottomImg.height + 21;
 			centerX(BottomTxt);
+			initTextField(BottomTxt);
 			
-			BottomTxt.selectable = false;
-			BottomTxt.embedFonts = true;
-			BottomTxt.defaultTextFormat = Text_Format;
+			BottomTxtSprite.filters = [ new GlowFilter(0xCCCCCC, 1, 4, 4, 1) ];
+			
 			
 			
 			//TOP Hud
 			Container.addChild(TopImg);
+			Container.addChild(TopTxtSprite);
+			TopTxtSprite.addChild(TopTxtLevel);
+			TopTxtSprite.addChild(TopTxtLink);
+			
 			TopImg.y = 0;
 			centerX(TopImg);
+			
+			TopTxtLink.y = TopTxtLevel.y = 5;
+			TopTxtLevel.x = 485;
+			TopTxtLink.x = 310;
+			centerX(BottomTxt);
+			Text_Format.size = 22;
+			initTextField(TopTxtLevel);
+			initTextField(TopTxtLink);
+			
+			TopTxtSprite.filters = BottomTxtSprite.filters;
 		}
 		
 		/**
@@ -79,6 +109,32 @@ package
 		{
 			BottomTxt.htmlText = Text;
 			BottomTxt.x = (Main.LARGEUR - BottomTxt.textWidth) / 2
+		}
+		
+		/**
+		 * Met à jour le nombre de liens restants
+		 * @param	Liens
+		 */
+		public static function showLink(Liens:int):void
+		{
+			TopTxtLink.text = Liens.toString();
+		}
+		
+		/**
+		 * Met à jour le numéro du niveau en cours
+		 * @param	Niveau
+		 */
+		public static function showLevel(Niveau:int):void
+		{
+			TopTxtLevel.text = Niveau.toString();
+		}
+		
+		/**
+		 * Remet le HUD au dessus de tous les élèments
+		 */
+		public static function onTop():void
+		{
+			Container.parent.setChildIndex(Container, Container.parent.numChildren - 1);
 		}
 		
 		/**

@@ -140,7 +140,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = 0;
+		private var LevelNumber:int = 2;
 		/**
 		 * L'objet niveau chargé
 		 */
@@ -233,7 +233,7 @@ package
 		
 		/**
 		 * Charge le niveau actuel.
-		 * Consdère que les opérations de nettoyage ont été effectuées !
+		 * Considère que les opérations de nettoyage ont été effectuées !
 		 */
 		protected function loadLevel():void
 		{
@@ -259,6 +259,10 @@ package
 			);
 			
 			BG.moveTo(LevelNumber);
+			
+			//Mettre à jour le tableau de bord
+			HUD.showLevel(LevelNumber);
+			HUD.showLink(LevelObject.getChainesACouper());
 		}
 		
 		protected final function update(e:Event = null):void

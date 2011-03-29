@@ -54,8 +54,8 @@
 			var BG:Background = new Background();
 			addChild(BG);
 
-			HUD.init(this)
-			HUD.showText('Version de test en développement.');
+			HUD.init(this);
+			HUD.showText('github.com/Neamar/Dgraphe');
 			
 			addChild(new Game(BG));
 		}

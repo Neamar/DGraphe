@@ -171,7 +171,7 @@ package Models.Levels
 		 */
 		protected function nearlyCompleted(e:Event = null):void
 		{
-			HUD.showText('Deux secondes !');
+			HUD.showText('Tenez deux secondes !');
 			TweenLite.delayedCall(2, completed);
 		}
 		
@@ -181,7 +181,6 @@ package Models.Levels
 		 */
 		public function failed(e:Event = null):void
 		{
-			trace('you failed');
 			dispatchEvent(new Event(Level.LOST));
 		}
 	  
@@ -223,6 +222,7 @@ package Models.Levels
 				}
 			}
 			
+			HUD.showLink(this.ChainesACouper);
 			return Deleted;
 		}
 		
