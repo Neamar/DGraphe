@@ -1,8 +1,8 @@
 h1. Dossier *Assets/*
 
 Ce dossier contient les différents composants graphiques utilisés dans le jeu.
-Ceux-ci sont chargés en tant que composant @Embed@ lors de la compilation, et intégré dans le fichier swf produit.
+Ceux-ci sont chargés en tant que composant @Embed@ lors de la compilation, et intégrés dans le fichier swf produit.
 
-Le sous dossier *Frise/* contient les différents images utilisées en arrière plan.
-Le sous dossier *HUD/* contient les différents composants de l'interface (Head Up Display)
-Le sous dossier *Niveaux/* contient les images des plateformes composant chaque niveau. Certaines de ses plateformes ont aussi une description au format SVG dans le sous dossier *Niveaux/SVG/*.
+* Le sous dossier *Frise/* contient les différents images utilisées en arrière plan.
+* Le sous dossier *HUD/* contient les différents composants de l'interface (_Head Up Display_)
+* Le sous dossier *Niveaux/* contient les images des plateformes composant chaque niveau. Certaines de ses plateformes ont aussi une description au format SVG dans le sous dossier *Niveaux/svg/*.

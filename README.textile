@@ -10,6 +10,7 @@ Attention, le dépôt est assez lourd car il contient plusieurs fichiers binaire
 Prévoir une bonne vingtaine de mégas... sur la connexion github, c'est pas gagné :\
 
 h2. Compiler
+
 Ce projet est développé avec "FlashDevelop":http://www.flashdevelop.org/. Malheureusement, ce logiciel utilise la librairie .NET non portée sous Linux et force donc l'utilisation d'une machine virtuelle.
 Cependant, le projet peut aussi être compilé avec "Adobe Flash Builder":http://www.adobe.com/products/flashbuilder/ (version gratuite accordée aux étudiants, difficilement portable sous Linux) ou avec le plugin "ASDT":http://osflash.org/projects/asdt pour Eclipse.
 
