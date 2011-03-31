@@ -34,6 +34,10 @@ package Views
 			this.graphics.lineStyle(1);
 			this.graphics.beginFill(0xFFFFFF);
 			this.graphics.drawCircle(0, 0, NODE_RADIUS);
+			this.graphics.endFill();
+			this.graphics.lineStyle(2);
+			this.graphics.moveTo(0, 0);
+			this.graphics.lineTo(NODE_RADIUS, 0);
 			
 			if (N.Special)
 			{
@@ -59,6 +63,7 @@ package Views
 		{
 			this.x = N.x;
 			this.y = N.y;
+			this.rotation = - N.rotation;
 			
 			if (Main.DEBUG_MODE)
 			{

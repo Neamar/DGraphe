@@ -48,6 +48,7 @@ package
 					//Couper alors d'un coup les deux liens au dessus de la partie basse horizontale, on se retrouve avec trois composantes "à deux noeuds".
 					//Couper une par une chacune de ces composantes, dans l'ordre le plus logique en fonction de leurs positions.
 					var Parts:Array = Game.buildNodes('280,300|380,260|420,260|520,300|420,340|380,340:0,1|1,2|2,3|3,4|4,5|5,0|1,4|0,3');
+					//var Parts:Array = Game.buildNodes('420,320|300,320|300,220|420,220:3,0|0,1|1,2|2,3');
 					return new KillNoneLevel(Parts[0], Parts[1], 8, (new Niveau1()).bitmapData);
 				},
 				function():Level
@@ -140,7 +141,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = 2;
+		private var LevelNumber:int = -1;
 		/**
 		 * L'objet niveau chargé
 		 */

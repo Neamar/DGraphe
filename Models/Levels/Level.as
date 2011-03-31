@@ -66,6 +66,8 @@ package Models.Levels
 			for each(var S:Spring in Springs)
 			{
 				S.setParent(this);
+				S.Bout.Springs.push(S);
+				S.AutreBout.Springs.push(S);
 				Interactions.push(S);
 			}
 			

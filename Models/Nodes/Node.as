@@ -35,6 +35,17 @@
 		public var Fixe:Boolean = false;
 		
 		/**
+		 * L'angle "formé" par le noeud.
+		 * Il s'agit en soi d'une donnée uniquement utile à l'affichage, mais il paraît cohérent de la calculer ici.
+		 */
+		public var rotation:int = 0;
+		
+		/**
+		 * Liste des ressorts accrochés au noeud (utile pour calculer sa rotation)
+		 */
+		public var Springs:Vector.<Spring> = new Vector.<Spring>();
+		
+		/**
 		 * Liste des contraintes qui s'appliquent sur le noeud à un moment donné.
 		 */
 		private var Forces:Vector.<Vecteur> = new Vector.<Vecteur>();
@@ -120,7 +131,17 @@
 		 * À chaque appel de la fonction, la simulation de cette particule avance d'une unité de temps.
 		 */
 		public final function apply():void
-		{			
+		{
+			//Calculer la rotation de l'objet
+			var AngleTotal:int = 0;
+			for each(var S:Spring in Springs)
+			{
+				AngleTotal += S.angle(this);
+			}
+			trace(AngleTotal);
+			rotation = AngleTotal / Springs.length;
+			
+			//Un noeud fixe est rapidement calculé ;)
 			if (Fixe)
 			{
 				return;
