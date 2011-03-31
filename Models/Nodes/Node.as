@@ -43,12 +43,16 @@
 		/**
 		 * Vecteur résultant de ces contraintes
 		 */
-		private var Resultante:Vecteur = new Vecteur();
+		private var ResultanteX:Number = 0;
+		private var ResultanteY:Number = 0;
+		
 		
 		/**
-		 * Vecteur résultant de ces contraintes
+		 * Vecteur résultant des contraintes de type ressort normalisées
+		 * Sert pour calculer l'orientation du noeud
 		 */
-		private var ResultanteRessort:Vecteur = new Vecteur();
+		private var ResultanteRessortX:Number = 0;
+		private var ResultanteRessortY:Number = 0;
 		
 		
 		/**
@@ -86,7 +90,6 @@
 		public function destroy():void
 		{
 			Vitesse = null;
-			Resultante = null;
 			Parent = null;
 			
 			delete this;
@@ -141,18 +144,19 @@
 			
 			//Puis mise à jour de la vitesse. À ce point là, le vecteur Resultante correspond au vecteur accéleration.
 			//Il faut noter qu'on fait les calculs à chaque itération : l'intégration du vecteur accéleration pour obtenir le vecteur vitesse se transforme alors en une simple addition.
-			Vitesse.ajouter(Resultante);		
+			Vitesse.x += ResultanteX;
+			Vitesse.y += ResultanteY;
 			//Ajouter des frottements pour éviter d'avoir les ressorts qui oscillent à l'infini
 			Vitesse.scalarMul(FROTTEMENTS);
 
 			//Calcul de la nouvelle position selon la même logique intégration = addition.
 			this.x += Vitesse.x;
 			this.y += Vitesse.y;
-			this.rotation = 180 * Math.atan2(ResultanteRessort.x, ResultanteRessort.y)/ Math.PI;
+			this.rotation = 180 * Math.atan2(ResultanteRessortX, ResultanteRessortY)/ Math.PI;
 			
 			//Vidage de la liste des forces pour le prochain calcul
-			Resultante.x = Resultante.y = 0;
-			ResultanteRessort.x = ResultanteRessort.y = 0;
+			ResultanteX = ResultanteY = 0;
+			ResultanteRessortX = ResultanteRessortY = 0;
 			
 			if(!Main.DEBUG_MODE && isEmpty(x + Main.LARGEUR2, y + Main.HAUTEUR2) == 0)
 			{
@@ -188,14 +192,14 @@
 		{
 			if (!Fixe)
 			{
-				Resultante.x += F.x;
-				Resultante.y += F.y;
+				ResultanteX += F.x;
+				ResultanteY += F.y;
 				
 				if (fromSpring)
 				{
 					var D:Number = Math.sqrt(F.x * F.x + F.y * F.y);
-					ResultanteRessort.x += F.x / D;
-					ResultanteRessort.y += F.y / D;
+					ResultanteRessortX += F.x / D;
+					ResultanteRessortY += F.y / D;
 				}
 			}
 		}
