@@ -28,6 +28,7 @@ package Views
 		
 		public function VNode(N:Node, VL:VLevel) 
 		{
+			this.mouseEnabled = false;
 			this.N = N;
 			this.VL = VL;
 			
@@ -37,7 +38,7 @@ package Views
 			this.graphics.endFill();
 			this.graphics.lineStyle(2);
 			this.graphics.moveTo(0, 0);
-			this.graphics.lineTo(NODE_RADIUS, 0);
+			this.graphics.lineTo(0, -NODE_RADIUS);
 			
 			if (N.Special)
 			{
@@ -63,7 +64,7 @@ package Views
 		{
 			this.x = N.x;
 			this.y = N.y;
-			this.rotation = - N.rotation;
+			this.rotation = -N.rotation;
 			
 			if (Main.DEBUG_MODE)
 			{

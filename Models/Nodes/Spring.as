@@ -40,8 +40,6 @@
 		public override final function destroy():void
 		{
 			Parent.Springs.splice(Parent.Springs.indexOf(this), 1);
-			Bout.Springs.splice(Bout.Springs.indexOf(this), 1);
-			AutreBout.Springs.splice(AutreBout.Springs.indexOf(this), 1);
 			super.destroy();
 		}
 
@@ -65,31 +63,8 @@
 			AttractionAutreBout.y = - AttractionBout.y;
 			
 			//Et appliquer la force aux objets pour le prochain calcul du PFD
-			Bout.applyForce(AttractionBout);
-			AutreBout.applyForce(AttractionAutreBout);	
-		}
-		
-		/**
-		 * Renvoie l'angle formé par les deux noeuds composant l'interaction.
-		 * à proprement parler il s'agirait plutôt d'une inclinaison, parler d'angle entre deux points étant incohérent.
-		 * 
-		 * @param	Origine par rapport à quel noeud exprimer l'angle (variation de Pi)
-		 */
-		public function angle(Origine:Node):int
-		{
-			//Un peu de mathématiques
-			var Angle:Number = -Math.atan2(AutreBout.y - Bout.y, AutreBout.x - Bout.x);
-			
-			//Inversion de Pi en fonction du centre
-			if (Origine == AutreBout)
-			{
-				Angle += Math.PI;
-			}
-			
-			//Valeur négative
-			if (Angle < 0)
-				Angle += 2 * Math.PI;
-			return 180 * Angle / Math.PI;
+			Bout.applyForce(AttractionBout, true);
+			AutreBout.applyForce(AttractionAutreBout, true);
 		}
 	}
 }

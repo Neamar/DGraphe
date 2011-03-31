@@ -41,19 +41,15 @@
 		public var rotation:int = 0;
 		
 		/**
-		 * Liste des ressorts accrochés au noeud (utile pour calculer sa rotation)
+		 * Vecteur résultant de ces contraintes
 		 */
-		public var Springs:Vector.<Spring> = new Vector.<Spring>();
-		
-		/**
-		 * Liste des contraintes qui s'appliquent sur le noeud à un moment donné.
-		 */
-		private var Forces:Vector.<Vecteur> = new Vector.<Vecteur>();
+		private var Resultante:Vecteur = new Vecteur();
 		
 		/**
 		 * Vecteur résultant de ces contraintes
 		 */
-		private var Resultante:Vecteur = new Vecteur();
+		private var ResultanteRessort:Vecteur = new Vecteur();
+		
 		
 		/**
 		 * Vitesse instantanée du noeud
@@ -89,7 +85,6 @@
 		
 		public function destroy():void
 		{
-			Forces = null;
 			Vitesse = null;
 			Resultante = null;
 			Parent = null;
@@ -131,27 +126,15 @@
 		 * À chaque appel de la fonction, la simulation de cette particule avance d'une unité de temps.
 		 */
 		public final function apply():void
-		{
-			//Calculer la rotation de l'objet
-			var AngleTotal:int = 0;
-			for each(var S:Spring in Springs)
-			{
-				AngleTotal += S.angle(this);
-			}
-			trace(AngleTotal);
-			rotation = AngleTotal / Springs.length;
-			
+		{			
 			//Un noeud fixe est rapidement calculé ;)
 			if (Fixe)
 			{
 				return;
 			}
 			
-			//Calcul de la somme des forces. On en profite pour vider le tableau.
-			while (Forces.length > 0)
-			{
-				Resultante.ajouter(Forces.pop());
-			}
+			//Calcul de la somme des forces.
+			//Ce calcul est effectué en temps réel, lors de l'ajout d'une force
 
 			//application du PFD : Somme des forces = masse * Acceleration
 			//Resultante.scalarMul(1/this.Masse);//Inutile, masse à 1
@@ -165,10 +148,11 @@
 			//Calcul de la nouvelle position selon la même logique intégration = addition.
 			this.x += Vitesse.x;
 			this.y += Vitesse.y;
-
+			this.rotation = 180 * Math.atan2(ResultanteRessort.x, ResultanteRessort.y)/ Math.PI;
 			
 			//Vidage de la liste des forces pour le prochain calcul
 			Resultante.x = Resultante.y = 0;
+			ResultanteRessort.x = ResultanteRessort.y = 0;
 			
 			if(!Main.DEBUG_MODE && isEmpty(x + Main.LARGEUR2, y + Main.HAUTEUR2) == 0)
 			{
@@ -197,13 +181,22 @@
 		
 		/**
 		 * Ajoute une force à la liste qui s'applique sur l'élément.
-		 * @param	F
+		 * @param	F la force de rappel
+		 * @param fromSpring si la force provient d'un ressort, elle est traitée de façon particulière pour déterminer l'angle
 		 */
-		public final function applyForce(F:Vecteur):void
+		public final function applyForce(F:Vecteur, fromSpring:Boolean = false):void
 		{
 			if (!Fixe)
 			{
-				Forces.push(F);
+				Resultante.x += F.x;
+				Resultante.y += F.y;
+				
+				if (fromSpring)
+				{
+					var D:Number = Math.sqrt(F.x * F.x + F.y * F.y);
+					ResultanteRessort.x += F.x / D;
+					ResultanteRessort.y += F.y / D;
+				}
 			}
 		}
 	}
