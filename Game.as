@@ -88,12 +88,22 @@ package
 				},
 				function():Level
 				{
-					//Non fonctionnel
+					//FONCTIONNEL
+					//Couper le lien central sur le noeud en haut à droite, attendre la résolution ;)
+					//Couper ce qui reste (un ou deux noeuds)
+					//Faisable en deux coups si on joue bien (même mouvement, vitesse modulée)
 					var Parts:Array = Game.buildNodes('561,246|476,340|561,434|520,340|470,271|379,340|470,409|588,340:3,0|0,1|1,2|2,3|4,0|5,1|6,2|7,3|5,4|4,7|7,6|6,5');
-					//return new KillButOneLevel(Parts[0], Parts[1], 3, Parts[0][3], (new Niveau7()).bitmapData);
+					return new KillButOneLevel(Parts[0], Parts[1], 10, Parts[0][3], (new Niveau7()).bitmapData);
+					//return new Level(Parts[0], Parts[1], 3, (new Niveau7()).bitmapData);
+				},
+				function():Level
+				{
+					//Non fonctionnel
+					var Parts:Array = Game.buildNodes('317,94|423,94|426,204|314,204|314,316|426,316|204,207|204,313|317,426|423,426|536,313|536,207:5,2|2,1|0,3|3,4|0,1|3,2|4,5|7,4|7,6|6,3|9,5|4,8|8,9|11,2|5,10|10,11');
 					return new Level(Parts[0], Parts[1], 3, (new Niveau7()).bitmapData);
 				}
 				
+
 			);
 		}
 		
@@ -141,7 +151,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = -1;
+		private var LevelNumber:int = 4;
 		/**
 		 * L'objet niveau chargé
 		 */
