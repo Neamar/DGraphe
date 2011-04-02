@@ -45,6 +45,11 @@ package Views
 				this.filters = [new BlurFilter(8, 8)];
 			}
 			
+			if (N.Fixe)
+			{
+				this.graphics.clear();
+			}
+			
 			N.addEventListener(Node.DEAD, onDeath);
 			
 			VL.addChild(this);

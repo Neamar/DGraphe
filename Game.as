@@ -34,6 +34,8 @@ package
 		private static var Niveau6:Class;
 		[Embed(source = "assets/Niveaux/7.png")]
 		private static var Niveau7:Class;		
+		[Embed(source = "assets/Niveaux/8.png")]
+		private static var Niveau8:Class;	
 		/**
 		 * Niveaux
 		 */
@@ -98,11 +100,12 @@ package
 				},
 				function():Level
 				{
-					//Non fonctionnel
-					var Parts:Array = Game.buildNodes('317,94|423,94|426,204|314,204|314,316|426,316|204,207|204,313|317,426|423,426|536,313|536,207:5,2|2,1|0,3|3,4|0,1|3,2|4,5|7,4|7,6|6,3|9,5|4,8|8,9|11,2|5,10|10,11');
-					return new Level(Parts[0], Parts[1], 3, (new Niveau7()).bitmapData);
+					//FONCTIONNEL
+					//Facile à faire pleurer une truie trisomique handicapée moteur (les horizontaux
+					var Parts:Array = Game.buildNodes('342,243|459,244|457,359|342,358|400,300|347,135|455,136:3,0|0,1|1,2|2,3|6,1|5,0|5,6');
+					return new KillOneLevel(Parts[0], Parts[1], 3, Parts[0][4], (new Niveau8()).bitmapData);
 				}
-				
+				//Quadrillage, pour un premier niveau ? 336,125|485,128|466,238|342,236|342,364|466,362|232,246|232,354|336,475|485,472|577,354|577,246|400,300:5,2|2,1|0,3|3,4|3,2|4,5|7,4|7,6|6,3|9,5|4,8|11,2|5,10|10,11|4,12|3,12|5,12|12,2
 
 			);
 		}
@@ -151,7 +154,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = 4;
+		private var LevelNumber:int = 5;
 		/**
 		 * L'objet niveau chargé
 		 */
