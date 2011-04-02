@@ -152,7 +152,21 @@
 			//Calcul de la nouvelle position selon la même logique intégration = addition.
 			this.x += Vitesse.x;
 			this.y += Vitesse.y;
-			this.rotation = 180 * Math.atan2(ResultanteRessortX, ResultanteRessortY)/ Math.PI;
+			
+			if (ResultanteRessortX == 0 && ResultanteRessortY == 0)
+			{
+				//Cas spécial : le noeud n'est plus accroché à aucun ressort, on utilise donc la résultante globale pour calculer la rotation
+				//Dans ce cas, on regarde s'il est soumis à une force. Si non, on conserve l'ancienne rotation.
+				if (ResultanteX * ResultanteY > 1)
+				{
+					this.rotation = 180 * Math.atan2( -ResultanteX, -ResultanteY) / Math.PI;
+				}
+			}
+			else
+			{
+				//Cas standard : le noeud est accroché à un ressort, en déduire l'angle correct
+				this.rotation = 180 * Math.atan2(ResultanteRessortX, ResultanteRessortY) / Math.PI;
+			}
 			
 			//Vidage de la liste des forces pour le prochain calcul
 			ResultanteX = ResultanteY = 0;

@@ -2,6 +2,7 @@ package
 {
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.filters.GlowFilter;
 	import flash.text.TextField;
@@ -46,6 +47,12 @@ package
 		private static var TopTxtLink:TextField = new TextField();
 		private static var TopTxtLevel:TextField = new TextField();
 		private static var TopTxtSprite:Sprite = new Sprite();
+		
+		//Message
+		private static var MsgBack1:Shape = new Shape();
+		private static var MsgBack2:Shape = new Shape();
+		private static var MsgSprite:Shape = new Shape();
+		
 		
 		
 		public static function init(Stage:Main):void
@@ -99,6 +106,34 @@ package
 			initTextField(TopTxtLink);
 			
 			TopTxtSprite.filters = BottomTxtSprite.filters;
+			
+			
+			//Messages
+			function drawMsgBottom(MsgBack:Shape):void
+			{
+				MsgBack.graphics.clear();
+				MsgBack.graphics.beginFill(0xDDDDDD);
+				MsgBack.graphics.lineStyle(1, 0xFFFFFF);
+				MsgBack.graphics.drawRoundRect(-600, -100, 400, 200, 25, 25);
+				MsgBack.graphics.endFill();
+				MsgBack.alpha = .3;
+				MsgBack.y = Main.HAUTEUR2;
+			}
+			//Container.addChild(MsgBack1);
+			//Container.addChild(MsgBack2);
+			
+			drawMsgBottom(MsgBack1);
+			MsgBack1.x = 800;
+			MsgBack1.rotationY = 20;
+			//MsgBack1.rotationZ = 20;
+			MsgBack1.z = 20;
+			
+			drawMsgBottom(MsgBack2);
+			MsgBack2.x = 800;
+			MsgBack2.rotationY = 40;
+			//MsgBack2.rotationZ = 40;
+			MsgBack2.z = 40;
+			
 		}
 		
 		/**
