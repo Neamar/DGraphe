@@ -36,6 +36,8 @@ package
 		private static var Niveau7:Class;		
 		[Embed(source = "assets/Niveaux/8.png")]
 		private static var Niveau8:Class;	
+		[Embed(source = "assets/Niveaux/9.png")]
+		private static var Niveau9:Class;	
 		/**
 		 * Niveaux
 		 */
@@ -44,67 +46,119 @@ package
 			LevelsList.push(
 				function():Level
 				{
-					//FONCTIONNEL (et hard !)
-					//Couper la croix centrale.
-					//Couper le lien horizontal et attendre que les deux noeuds ainsi libérés se retrouvent à la verticale avec les les noeuds juste en dessous
-					//Couper alors d'un coup les deux liens au dessus de la partie basse horizontale, on se retrouve avec trois composantes "à deux noeuds".
-					//Couper une par une chacune de ces composantes, dans l'ordre le plus logique en fonction de leurs positions.
+					/**
+					 * @state FONCTIONNEL
+					 * @brief Niveau en grand cercle
+					 * @difficulty 9
+					 * @solution
+					 * - Couper la croix centrale.
+					 * - Couper le lien horizontal-haut et attendre que les deux noeuds ainsi libérés se retrouvent à la verticale avec les les noeuds juste en dessous
+					 * - Couper alors d'un coup les deux liens au dessus de la partie basse horizontale, on se retrouve avec trois composantes "à deux noeuds".
+					 * - Couper une par une chacune de ces composantes, dans l'ordre le plus logique en fonction de leurs positions.
+					 */
 					var Parts:Array = Game.buildNodes('280,300|380,260|420,260|520,300|420,340|380,340:0,1|1,2|2,3|3,4|4,5|5,0|1,4|0,3');
 					//var Parts:Array = Game.buildNodes('420,320|300,320|300,220|420,220:3,0|0,1|1,2|2,3');
 					return new KillNoneLevel(Parts[0], Parts[1], 8, (new Niveau1()).bitmapData);
 				},
 				function():Level
 				{
-					//FONCTIONNEL
-					//Couper les trois liens du haut
-					//Couper ensuite les deux liens du bas
-					//Couper enfin à gauche, puis à droite.
+					/**
+					 * @state FONCTIONNEL
+					 * @brief Niveau à protubérances (cercle radioactif central)
+					 * @difficulty 4
+					 * @solution
+					 * - Couper les trois liens du haut
+					 * - Couper ensuite les deux liens du bas
+					 * - Couper enfin à gauche, puis à droite.
+					 */
 					var Parts:Array = Game.buildNodes('400,181|467,198|511,252|518,319|432,416|489,381|333,198|289,252|282,319|368,416|311,381|400,300:11,10|9,11|11,8|11,7|11,6|11,0|1,11|11,2|11,3|11,4|11,5|2,5|2,7|7,10|10,5');
 					return new KillNoneLevel(Parts[0], Parts[1], 11,  (new Niveau4()).bitmapData);
 				},
 				function():Level
 				{
-					//FONCTIONNEL
-					//Attendre quelques secondes la résolution des contraintes : deux noeuds tombent direct
-					//Couper en bas, deux noeuds sont expulsés (sans tomber pour l'instant)
-					//En haut, deux noeuds attendent d'être catapultés (structure instable) : les virer
-					//Ouvrir enfin la structure obtenue en X, puis couper. Adios !
+					/**
+					 * @state FONCTIONNEL
+					 * @brief Niveau "en croix à petit battant horizontal", deux rectangles arrondis placés perpendiculairement l'un à l'autre
+					 * @difficulty 9
+					 * @solution
+					 * - Attendre quelques secondes la résolution des contraintes : deux noeuds tombent direct
+					 * - Couper en bas, deux noeuds sont expulsés (sans tomber pour l'instant)
+					 * - En haut, deux noeuds attendent d'être catapultés (structure instable) : les virer
+					 * - Ouvrir enfin la structure obtenue en X, puis couper. Adios !
+					 */
 					var Parts:Array = Game.buildNodes('400,222|400,260|400,307|400,350|400,386|400,422|319,300|481,300|400,183|286,191|514,191:0,6|6,1|2,6|6,3|6,4|6,5|5,7|7,4|3,7|2,7|1,7|0,7|6,8|8,7|10,7|9,6|9,8|8,10');
 					return new KillButOneLevel(Parts[0], Parts[1], 14, Parts[0][8], (new Niveau3()).bitmapData);
 				},
 				function():Level
 				{
-					//FONCTIONNEL
-					//Couper selon les axes :p
-					//Attention : verticalement central, ne pas couper le lien le plus en bas
+					/**
+					 * @state FONCTIONNEL
+					 * @brief Niveau très large à multiples plateformes
+					 * @difficulty 5
+					 * @solution
+					 * - Couper selon les axes
+					 * - Ne pas couper le dernier lien central vertical !
+					 * - Couper ce qui reste pour atteindre l'objectif
+					 */
 					var Parts:Array = Game.buildNodes('170,154|274,152|272,250|167,272|355,150|359,245|441,245|445,150|526,152|528,250|633,272|630,154|250,363|354,341|446,341|550,363|342,448|458,448:3,0|0,1|1,2|2,3|7,4|4,5|5,6|6,7|11,8|8,9|9,10|10,11|7,9|6,8|1,5|2,4|15,9|9,6|6,14|14,15|14,5|13,6|12,13|13,5|5,2|2,12|17,14|14,13|13,16|16,17|1,4|7,8');
 					return new KillNoneLevel(Parts[0], Parts[1], 29, (new Niveau5()).bitmapData);
 				},
 				function():Level
 				{
-					//Fonctionnel
-					//Dans la structure du bas, couper d'un coup les deux liens sud sud est (liant le noeud "jointure entre deux bras fixes" et le bras de droite).
+					/**
+					 * @state FONCTIONNEL
+					 * @brief Premier niveau Mossad sur grand cercle union petit cercle
+					 * @difficulty 4
+					 * @solution
+					 * - Dans la structure du bas, couper d'un coup les deux liens sud sud est (liant le noeud "jointure entre deux bras fixes" et le bras de droite).
+					 * @note Plusieurs solutions
+					 */
 					var Parts:Array = Game.buildNodes('400,320|320,260|240,200|300,340|200,360|480,380|560,440|400,400|400,480|300,440|340,380|460,260|500,180:2,1|1,0|4,3|3,0|6,5|5,0|8,7|7,0|4,9|0,11|11,12|9,3|9,8|9,7');
 					Parts[0][0].Fixe = true;
 					return new KillOneLevel(Parts[0], Parts[1], 25, Parts[0][10], (new Niveau6()).bitmapData);
 				},
 				function():Level
 				{
-					//FONCTIONNEL
-					//Couper le lien central sur le noeud en haut à droite, attendre la résolution ;)
-					//Couper ce qui reste (un ou deux noeuds)
-					//Faisable en deux coups si on joue bien (même mouvement, vitesse modulée)
+					/**
+					 * @state FONCTIONNEL
+					 * @brief Niveau sur faible superficie sur rectangle union petit rectangle en bas
+					 * @difficulty 6
+					 * @solution
+					 * - Couper le lien central sur le noeud en haut à droite, attendre la résolution ;)
+					 * - Couper ce qui reste (un ou deux noeuds)
+					 * @note Faisable en deux coups si on joue bien (même mouvement, vitesse modulée)
+					 */
 					var Parts:Array = Game.buildNodes('561,246|476,340|561,434|520,340|470,271|379,340|470,409|588,340:3,0|0,1|1,2|2,3|4,0|5,1|6,2|7,3|5,4|4,7|7,6|6,5');
 					return new KillButOneLevel(Parts[0], Parts[1], 10, Parts[0][3], (new Niveau7()).bitmapData);
 					//return new Level(Parts[0], Parts[1], 3, (new Niveau7()).bitmapData);
 				},
 				function():Level
 				{
-					//FONCTIONNEL
-					//Facile à faire pleurer une truie trisomique handicapée moteur (les horizontaux
+					/**
+					 * @state FONCTIONNEL
+					 * @type didacticiel
+					 * @brief présentation des noeuds spéciaux
+					 * @difficulty 1
+					 * @solution
+					 * - Facile à faire pleurer une truie trisomique handicapée moteur... (couper les horizontaux)
+					 */
 					var Parts:Array = Game.buildNodes('342,243|459,244|457,359|342,358|400,300|347,135|455,136:3,0|0,1|1,2|2,3|6,1|5,0|5,6');
 					return new KillOneLevel(Parts[0], Parts[1], 3, Parts[0][4], (new Niveau8()).bitmapData);
+				},
+				function():Level
+				{
+					/**
+					 * @state FONCTIONNEL
+					 * @type didacticiel
+					 * @brief coupes multiples
+					 * @difficulty 2
+					 * @solution
+					 * - couper les 4 ressorts d'un unique trait
+					 */
+					var Parts:Array = Game.buildNodes('351,251|400,230|449,251|330,300|351,349|449,349|400,370|470,300:3,7|0,5|6,1|2,4');
+					return new KillAllLevel(Parts[0], Parts[1], 4, (new Niveau9()).bitmapData);
 				}
+				
 				//Quadrillage, pour un premier niveau ? 336,125|485,128|466,238|342,236|342,364|466,362|232,246|232,354|336,475|485,472|577,354|577,246|400,300:5,2|2,1|0,3|3,4|3,2|4,5|7,4|7,6|6,3|9,5|4,8|11,2|5,10|10,11|4,12|3,12|5,12|12,2
 
 			);
@@ -154,7 +208,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = 5;
+		private var LevelNumber:int = -1;
 		/**
 		 * L'objet niveau chargé
 		 */
