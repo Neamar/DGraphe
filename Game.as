@@ -37,7 +37,9 @@ package
 		[Embed(source = "assets/Niveaux/8.png")]
 		private static var Niveau8:Class;	
 		[Embed(source = "assets/Niveaux/9.png")]
-		private static var Niveau9:Class;	
+		private static var Niveau9:Class;
+		[Embed(source = "assets/Niveaux/10.png")]
+		private static var Niveau10:Class;	
 		/**
 		 * Niveaux
 		 */
@@ -157,8 +159,38 @@ package
 					 */
 					var Parts:Array = Game.buildNodes('351,251|400,230|449,251|330,300|351,349|449,349|400,370|470,300:3,7|0,5|6,1|2,4');
 					return new KillAllLevel(Parts[0], Parts[1], 4, (new Niveau9()).bitmapData);
+				},
+				function():Level
+				{
+					/**
+					 * @state FONCTIONNEL
+					 * @type didacticiel
+					 * @brief Présentation du jeu et du comportement des noeuds
+					 * @difficulty 1
+					 * @solution
+					 * - Tout... les coups perdants sont vraiment durs à trouver !
+					 */
+					var Parts:Array = Game.buildNodes('106,106|214,106|214,214|106,214|567,116|673,116|620,208|221,405|221,495|312,403|420,395|528,403|619,405|619,495|528,497|420,505|312,497:3,0|0,1|1,2|2,3|6,4|4,5|5,6|8,7|7,9|9,10|10,11|11,12|12,13|13,14|14,15|15,16|16,8|16,9|10,15|14,11|14,12|11,13|8,9|7,16');
+					return new KillNoneLevel(Parts[0], Parts[1], 9, (new Niveau10()).bitmapData);
+				},
+				function():Level
+				{
+					/**
+					 * @state FONCTIONNEL
+					 * @brief Reprise d'un niveau du didacticiel en plus difficile !
+					 * @difficulty 3
+					 * @solution
+					 * - Dans le groupe du bas, couper verticalement d'un coup les 9 ressorts pour séparer en deux bandes distinctes
+					 * - Séparer encore ces deux bandes en coupant les ressorts intérieurs (4, de façon à avoir au milieu de chaque ancienne bande un noeud esseulé
+					 * - Couper tous les liens du carré sans réfléchir, ça tient
+					 * - Couper un des liens du bas du triangle. Au bon moment, couper l'autre lien du bas de façon à anvoyer le noeud du bas (du triangle) sur la passerelle
+					 *  - Couper le dernier lien de l'ancien triangle
+					 */
+					var Parts:Array = Game.buildNodes('106,106|214,106|214,214|106,214|567,116|673,116|620,208|221,405|221,495|312,403|420,395|528,403|619,405|619,495|528,497|420,505|312,497:3,0|0,1|1,2|2,3|6,4|4,5|5,6|8,7|7,9|9,10|10,11|11,12|12,13|13,14|14,15|15,16|16,8|16,9|10,15|14,11|14,12|11,13|8,9|7,16');
+					return new KillNoneLevel(Parts[0], Parts[1], 20, (new Niveau10()).bitmapData);
 				}
 				
+
 				//Quadrillage, pour un premier niveau ? 336,125|485,128|466,238|342,236|342,364|466,362|232,246|232,354|336,475|485,472|577,354|577,246|400,300:5,2|2,1|0,3|3,4|3,2|4,5|7,4|7,6|6,3|9,5|4,8|11,2|5,10|10,11|4,12|3,12|5,12|12,2
 
 			);
@@ -208,7 +240,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = -1;
+		private var LevelNumber:int = 7;
 		/**
 		 * L'objet niveau chargé
 		 */
