@@ -48,7 +48,7 @@ package Views
 			
 			//Récupérer le fond
 			this.Fond = new Bitmap(L.getFond());
-			this.Fond.filters = [new GlowFilter(0, 1, 100, 100)];
+			this.Fond.filters = [new GlowFilter(0xFFFFFF, 1, 4, 4, 2, 1, true), new GlowFilter(0, 1, 100, 100)];
 			addChild(this.Fond);
 			setChildIndex(this.Fond, 0);
 			Fond.x = -Main.LARGEUR2;
