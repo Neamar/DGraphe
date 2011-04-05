@@ -1,0 +1,6 @@
+h1. Dossier *Views/*
+
+Contient les codes représentant les différents objets à l'écran.
+La partie traitant du fonctionnement interne du jeu se trouve dans *../Models/*
+
+Note : les images se trouvent dans le dossier *../assets/*.

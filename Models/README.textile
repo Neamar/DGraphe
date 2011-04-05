@@ -1,0 +1,10 @@
+h1. Dossier *Models/*
+
+Contient les codes gérant le fonctionnement logique du jeu, sans se soucier de leur représentation.
+La partie traitant de l'affichage se trouve dans *../Views/*
+
+Ce dossier se subdivise en deux gros packages :
+* *Levels/* contient les différents types de niveaux disponibles ainsi que leurs conditions de victoire spécifiques (tuer une personne, tuer tout le monde, ne tuer personne, ...)
+* *Nodes/* contient les différents objets placés sur le niveau, y compris ceux qui n'ont pas d'existence visuelle. On trouve ainsi les _noeuds_ (les bonhommes), les _ressorts_ ou les forces de _répulsion_.
+
+Pour plus d'informations sur le moteur physique utilisé consulter "cet article sur le blog de Neamar":http://blog.neamar.fr/component/content/article/18-algorithmie-et-optimisation/107-affichage-graphe-optimise.

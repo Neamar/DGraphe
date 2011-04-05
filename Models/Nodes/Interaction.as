@@ -2,6 +2,7 @@
 {
 	import flash.geom.Point;
 	import Models.Levels.Level;
+	
 	/**
 	 * Classe de base pour les interactions, héritée par Ressort et Repulsion.
 	 * Définit les deux extrémités sur lesquels la force doit s'appliquer, et deux vecteurs qui représentent lesdites forces (l'un étant l'opposé de l'autre : AttractionBout= - AttractionAutreBout).
@@ -54,5 +55,4 @@
 			throw new Error('Appel méthode abstraite');
 		}
 	}
-	
 }

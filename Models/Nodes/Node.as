@@ -35,14 +35,25 @@
 		public var Fixe:Boolean = false;
 		
 		/**
-		 * Liste des contraintes qui s'appliquent sur le noeud à un moment donné.
+		 * L'angle "formé" par le noeud.
+		 * Il s'agit en soi d'une donnée uniquement utile à l'affichage, mais il paraît cohérent de la calculer ici.
 		 */
-		private var Forces:Vector.<Vecteur> = new Vector.<Vecteur>();
+		public var rotation:int = 0;
 		
 		/**
 		 * Vecteur résultant de ces contraintes
 		 */
-		private var Resultante:Vecteur = new Vecteur();
+		private var ResultanteX:Number = 0;
+		private var ResultanteY:Number = 0;
+		
+		
+		/**
+		 * Vecteur résultant des contraintes de type ressort normalisées
+		 * Sert pour calculer l'orientation du noeud
+		 */
+		private var ResultanteRessortX:Number = 0;
+		private var ResultanteRessortY:Number = 0;
+		
 		
 		/**
 		 * Vitesse instantanée du noeud
@@ -78,9 +89,7 @@
 		
 		public function destroy():void
 		{
-			Forces = null;
 			Vitesse = null;
-			Resultante = null;
 			Parent = null;
 			
 			delete this;
@@ -121,33 +130,47 @@
 		 */
 		public final function apply():void
 		{			
+			//Un noeud fixe est rapidement calculé ;)
 			if (Fixe)
 			{
 				return;
 			}
 			
-			//Calcul de la somme des forces. On en profite pour vider le tableau.
-			while (Forces.length > 0)
-			{
-				Resultante.ajouter(Forces.pop());
-			}
+			//Calcul de la somme des forces.
+			//Ce calcul est effectué en temps réel, lors de l'ajout d'une force
 
 			//application du PFD : Somme des forces = masse * Acceleration
 			//Resultante.scalarMul(1/this.Masse);//Inutile, masse à 1
 			
 			//Puis mise à jour de la vitesse. À ce point là, le vecteur Resultante correspond au vecteur accéleration.
 			//Il faut noter qu'on fait les calculs à chaque itération : l'intégration du vecteur accéleration pour obtenir le vecteur vitesse se transforme alors en une simple addition.
-			Vitesse.ajouter(Resultante);		
+			Vitesse.x += ResultanteX;
+			Vitesse.y += ResultanteY;
 			//Ajouter des frottements pour éviter d'avoir les ressorts qui oscillent à l'infini
 			Vitesse.scalarMul(FROTTEMENTS);
 
 			//Calcul de la nouvelle position selon la même logique intégration = addition.
 			this.x += Vitesse.x;
 			this.y += Vitesse.y;
-
+			
+			if (ResultanteRessortX == 0 && ResultanteRessortY == 0)
+			{
+				//Cas spécial : le noeud n'est plus accroché à aucun ressort, on utilise donc la résultante globale pour calculer la rotation
+				//Dans ce cas, on regarde s'il est soumis à une force. Si non, on conserve l'ancienne rotation.
+				if (ResultanteX * ResultanteY > 1)
+				{
+					this.rotation = 180 * Math.atan2( -ResultanteX, -ResultanteY) / Math.PI;
+				}
+			}
+			else
+			{
+				//Cas standard : le noeud est accroché à un ressort, en déduire l'angle correct
+				this.rotation = 180 * Math.atan2(ResultanteRessortX, ResultanteRessortY) / Math.PI;
+			}
 			
 			//Vidage de la liste des forces pour le prochain calcul
-			Resultante.x = Resultante.y = 0;
+			ResultanteX = ResultanteY = 0;
+			ResultanteRessortX = ResultanteRessortY = 0;
 			
 			if(!Main.DEBUG_MODE && isEmpty(x + Main.LARGEUR2, y + Main.HAUTEUR2) == 0)
 			{
@@ -176,13 +199,22 @@
 		
 		/**
 		 * Ajoute une force à la liste qui s'applique sur l'élément.
-		 * @param	F
+		 * @param	F la force de rappel
+		 * @param fromSpring si la force provient d'un ressort, elle est traitée de façon particulière pour déterminer l'angle
 		 */
-		public final function applyForce(F:Vecteur):void
+		public final function applyForce(F:Vecteur, fromSpring:Boolean = false):void
 		{
 			if (!Fixe)
 			{
-				Forces.push(F);
+				ResultanteX += F.x;
+				ResultanteY += F.y;
+				
+				if (fromSpring)
+				{
+					var D:Number = Math.sqrt(F.x * F.x + F.y * F.y);
+					ResultanteRessortX += F.x / D;
+					ResultanteRessortY += F.y / D;
+				}
 			}
 		}
 	}

@@ -63,9 +63,8 @@
 			AttractionAutreBout.y = - AttractionBout.y;
 			
 			//Et appliquer la force aux objets pour le prochain calcul du PFD
-			Bout.applyForce(AttractionBout);
-			AutreBout.applyForce(AttractionAutreBout);	
+			Bout.applyForce(AttractionBout, true);
+			AutreBout.applyForce(AttractionAutreBout, true);
 		}
 	}
-	
 }
