@@ -24,6 +24,10 @@ package
 		private static var HUDBottomImg:Class;
 		[Embed(source = "assets/HUD/haut.png")]
 		private static var HUDTopImg:Class;
+		
+		[Embed(source = "assets/HUD/bras.png")]
+		private static var HUDArmsImg:Class;
+		
 		[Embed(source = "assets/Imagine.ttf", fontFamily = "Imagine", mimeType="application/x-font-truetype")]
 		private static var EmbedFont:String;
 	   
@@ -38,6 +42,7 @@ package
 		private static var Container:Sprite;
 		
 		//Bottom
+		private static var BottomArms:Bitmap = new HUDArmsImg();
 		private static var BottomTxt:TextField = new TextField();
 		private static var BottomTxtSprite:Sprite = new Sprite();
 		private static var BottomImg:Bitmap = new HUDBottomImg();
@@ -72,10 +77,13 @@ package
 			Stage.addChild(Container);
 			
 			//BOTTOM Hud
+			Container.addChild(BottomArms);
 			Container.addChild(BottomImg);
 			Container.addChild(BottomTxtSprite);
 			BottomTxtSprite.addChild(BottomTxt);
 			
+			BottomArms.y = Main.HAUTEUR - BottomArms.height;
+			centerX(BottomArms);
 			BottomImg.y = Main.HAUTEUR - BottomImg.height;
 			centerX(BottomImg);
 			
