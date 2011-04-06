@@ -244,7 +244,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = 8;
+		private var LevelNumber:int = 1;
 		/**
 		 * L'objet niveau chargé
 		 */
@@ -284,9 +284,9 @@ package
 				var G:Game = this;
 				TweenLite.to(
 					VLevelObject,
-					.5,
+					Background.SCROLL_DURATION / 4000,
 					{
-						alpha:0,
+						x: - Main.LARGEUR2,
 						onComplete:function():void
 						{
 							G.removeChild(OldVLevel);
@@ -314,9 +314,9 @@ package
 			//BG.reverse();
 			TweenLite.to(
 				VLevelObject,
-				.5,
+				Background.SCROLL_DURATION / 4000,
 				{
-					alpha:0,
+					x: - Main.LARGEUR2,
 					onComplete:function():void
 					{
 						G.removeChild(OldVLevel);
@@ -349,16 +349,34 @@ package
 			LevelObject.addEventListener(Level.LOST, retryLevel);
 			LevelObject.addEventListener(Level.WIN, nextLevel);
 			
+			if(LevelObject is KillAllLevel)
+			{
+				HUD.showText('Tuez-les tous !');
+			}
+			else if(LevelObject is KillButOneLevel)
+			{
+				HUD.showText('Sauvez-le ! Tuez les autres.');
+			}
+			else if(LevelObject is KillOneLevel)
+			{
+				HUD.showText('Tuez-le.');
+			}
+			else if(LevelObject is KillNoneLevel)
+			{
+				HUD.showText('Ne tuez personne !');
+			}
 			/**
 			 * ...et afficher
 			 */
-			VLevelObject.alpha = 0;
+			//VLevelObject.alpha = 0;
+			VLevelObject.x = Main.LARGEUR + Main.LARGEUR2;
 			addChild(VLevelObject);
 			TweenLite.to(
 				VLevelObject,
-				1,
+				3 * Background.SCROLL_DURATION / 4000,
 				{
-					alpha:1
+					delay:Background.SCROLL_DURATION / 4000,
+					x:Main.LARGEUR2
 				}
 			);
 			
