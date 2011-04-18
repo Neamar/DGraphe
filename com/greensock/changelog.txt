@@ -1,6 +1,408 @@
 CHANGE LOG : GREENSOCK TWEENING PLATFORM
 ----------------------------------------
 
+2011-04-12
+---------------------------------------------
+TweenMax			11.67
+	- Fixed issue that could cause allTo(), allFrom(), or allFromTo() not to function properly if the vars parameter(s) was a TweenMaxVars object (for strict data typing or code hinting). 
+
+2011-01-25
+---------------------------------------------
+TweenMax			11.66
+TimelineMax			1.66
+	- Fixed issue that could prevent an onRepeat from getting called if the repeat occurs on the same render as the tween/timeline completes. 
+
+2011-01-24
+---------------------------------------------
+AutoFitArea			2.5
+LiquidArea			2.5
+	- Added a new "customBoundsTarget" special property to AutoFitArea and LiquidArea taht allows you to define a DisplayObject to use when determining the bounds instead of the regular target. For example, maybe the target contains 3 boxes arranged next to each other, left-to-right and instead of fitting ALL of those boxes into the area, you only want the center one fit into the area. In this case, you can define the customBoundsTarget as that center box so that the AutoFitArea/LiquidArea only uses it when calculating bounds. Make sure that the object is in the display list (its visible property can be set to false if you want to use an invisible object to define custom bounds).
+	- Changed the attach() and createAround() parameters so that a a generic vars object is accepted instead of the numerous regular parameters. For example, attach(mc, {scaleMode:"proportionalOutside", crop:true}); instead of attach(mc, "proportionalOutside", "center", "center", true, 0, 99999999, 0, 99999999, false, NaN, false)
+	- Worked around an issue with Flash components that could cause them to be positioned at slightly offset x/y coordinates in some situations (forced a drawNow() call internally on the components after resizing them).
+	- Note taht even though the method signature has changed on attach() and createAround(), legacy code should still work because I implemented a technique with ...args to parse that data and convert it to the new vars data automatically. 
+
+2011-01-18
+---------------------------------------------
+TimelineLite		1.65
+TimelineMax			1.65
+	- Fixed issue that could cause a TimelineLite or TimelineMax to report an incorrect currentTime if a nested tween/timeline's onComplete called a function that changed the parent TimelineLite/Max's currentTime (this would only happen if the tween's onComplete ran at the VERY end of the parent TimelineLite/Max).
+	- Added code to reposition a TimelineLite/Max's startTime if a new tween/timeline was appended/inserted AFTER the parent timeline had completed (and only if the parent timeline is at the root level, not nested inside another timeline in which case it is generally more desireable to maintain a consistent startTime). Typically the only time you'd see the benefit of this new code is if you create a TimelineLite/Max and then a while later (after it completed), you append() a tween and then play() - the old version would render the tween as though time had elapsed between the parent timeline's startTime and now (skipping ahead). 
+
+2011-01-06
+---------------------------------------------
+TweenMax			11.64
+TimelineLite		1.64
+TimelineMax			1.64
+SimpleTimeline		1.64
+TweenCore			1.64
+	- Fixed issue that could cause a TweenMax or TimelineMax to call its onRepeat after it ran once and then was restarted (with restart() or gotoAndPlay(0)) 
+	- Fixed issue that could cause a paused tween's resume() to pick up at the wrong time if it was paused and then reparented into another TimelineLite/Max instance before being resumed.
+
+2010-12-30
+---------------------------------------------
+TimelineLite		1.63
+TimelineMax			1.63
+SimpleTimeline		1.63
+	- Fixed issue that could cause a tween that was paused while it was in one timeline but resumed after being inserted into a different timeline to not honor the correct startTime.
+	- When a new tween/timeline is inserted into a completed timeline, the timeline's new end time will be analyzed and if it exceeds the parent timeline's currentTime, the timeline (and any anscestors) will automatically be re-enabled.
+
+2010-12-24
+---------------------------------------------
+TimelineLite		1.62
+TimelineMax			1.62
+TweenMax			11.62
+SimpleTimeline		1.62
+TweenCore			1.62
+	- Consolidated the addChild() method into insert() which helped clean up the API a bit (addChild() really wasn't meant for anyone to use). This also accommodates inserting tweens into the TweenLite.rootTimeline and TweenLite.rootFramesTimeline (not a common task, but it could come in handy in some rare scenarios)
+	- [IMPORTANT]: this change affects a core class which means that if you use TweenLite or TweenMax in a parent swf that subloads a swf that was compiled with an OLDER version of TimelineLite or TimelineMax, you will get an error message about there being an illegal override of addChild() or insert(). The solution is to either recompile the child swf(s) with the latest version so that they're all consistent OR use a custom LoaderContext that defines a descrete ApplicationDomain into which the swf will be subloaded.
+
+2010-12-21
+---------------------------------------------
+TweenLite			11.61
+TweenMax			11.61
+	- Zero-duration tweens will correctly trigger their onStart now (just keep in mind that onStart and onComplete will both fire on zero-duration tweens because their start and end times are the same)
+
+
+2010-12-20
+---------------------------------------------
+TweenLite			11.6
+TweenMax			11.6
+TimelineLite		1.6
+TimelineMax			1.6
+SimpleTimeline		1.6
+OverwriteManager	6.1
+	- [IMPORTANT]: Reworked the rendering order so that when multiple overlapping tweens/timelines must be rendered at a particular time, the one that was created first renders first. Previously, tweens would render in the reverse order so that the overwriting order was prioritized. However, it seems more intuitive to have them render in order of creation (it causes less confusion for users), hence the change in this version. The benefit of the "old" way was that if a from()/fromTo() tween with immediateRender:false was created before another tween of the same target (and both are schedule to start at the same time), the from()/fromTo() tween wouldn't render its starting values because the newer tween would have overwritten them since it rendered first. So the new rendering order will make the tweens behave differently in that scenario - now the from()/fromTo() tween would render first (since it was created first) and will render its initial values and then the next tween will render and at that point it will overwrite the previous tween. Technically this means that the 2nd tween's start values would be affected by the first tween's initial render which previously didn't happen, but again, it seems to make good sense.
+	- Fixed an issue that could cause a zero-duration tween that starts at the same time as another tween of the same target to incorrectly overwrite or be overwritten (it would only happen in a VERY rare and very particular scenario with the tweens being created in a specific order)
+	- Fixed an issue that could cause a tween/timeline to skip its very first render (waiting until the next frame to render), but only if the virtual playhead landed EXACTLY on the tween's/timeline's scheduled startTime. It normally wouldn't matter anyway since there wouldn't be any change to tweening values at that point, but it could matter on fromTo() tweens.
+
+2010-12-17
+---------------------------------------------
+TweenMax			11.53
+	- Fixed an issue that could cause a TweenMax.fromTo() to skip rendering its beginning state for one frame if (and only if) the virtual playhead landed EXACTLY on the tween's startTime (very rare).  
+
+2010-12-16
+---------------------------------------------
+TweenLite			11.52
+TweenMax			11.52
+TimelineLite		1.52
+TimelineMax			1.52
+	- Fixed a timing issue that could (in VERY rare circumstances) cause a zero-duration tween or timeline not to render properly when its parent timeline is played backwards. The rendering would have to occur at exactly the right millisecond to ever see this issue.
+
+2010-12-16
+---------------------------------------------
+TweenLite			11.51
+TweenMax			11.51
+RoundPropsPlugin	2.0
+TweenPlugin			1.4
+AutoFitArea			1.7
+	- Enhanced RoundPropsPlugin so that it is now compatible with TweenLite (previously it was only for TweenMax). 
+	- Reduced the size of TweenMax (by moving the roundProps code to the plugin which is more efficient)
+	- Added roundPosition parameter to the attach() method of AutoFitArea (to round x/y values)
+	- Minor optimizations in TweenPlugin
+
+2010-12-12
+---------------------------------------------
+TweenLite			11.5
+TweenMax			11.5
+TweenCore			1.5
+	- Enhanced TweenLite's and TweenMax's ability to alter their duration on the fly so that the tween's startTime is automatically adjusted when necessary in order to make the transition smoothly (avoid a sudden skip to the new position)
+
+2010-12-10
+---------------------------------------------
+TweenLiteVars		5.1
+TweenMaxVars		5.1
+(MotionPath and all subclasses)
+	- Made TweenLiteVars and TweenMaxVars copy the properties of the optional "vars" parameter passed into the constructor instead of using that object directly for its decoration activities.
+	- Added an update() method to all MotionPath classes for manually updating. 
+
+2010-11-30
+---------------------------------------------
+TweenLite			11.42
+SteppedEase			0.5
+	- Added SteppedEase
+	- Fixed a minor issue with TweenLite's killVars() method that could (in very rare situations) cause a property of a later tween to overwrite the same property in an earlier one after it had already been overwritten.
+
+2010-11-28
+---------------------------------------------
+TweenLite			11.411
+TweenMax			11.411
+	- Fixed issue that could cause a tween's onComplete to be called even after the tween was killed in its final onUpdate (extremely rare scenario)
+	- Fixed issue that could cause a motionBlur not to render if the target's parent was masked.
+
+2010-11-23
+---------------------------------------------
+TweenMax			11.41
+	- Fixed an issue that could cause a TweenMax motionBlur tween to stop when updateTo() is called
+
+2010-11-13
+---------------------------------------------
+TweenLite			11.4
+TweenMax			11.4
+TweenCore			11.4
+TweenLiteVars		5.0
+TweenMaxVars		5.0
+	- Rewrote TweenLiteVars and TweenMaxVars to facilitate method chaining like new TweenLiteVars().prop("x", 100).onComplete(myFunction).delay(1).autoAlpha(0). This makes it possible to do things inline, greatly reducing the code necessary to accomplish the same task. 
+	- Made TweenLite and TweenMax compatible with the new TweenLiteVars and TweenMaxVars classes. 
+	- Updated ASDocs
+
+2010-10-13
+---------------------------------------------
+TimelineLite		1.392
+TimelineMax			1.392
+TweenCore			1.392
+RoughEase			0.61
+	- Fixed issue that caused a TimelineLite/Max not to fire its onComplete when its autoRemoveChildren property was true
+	- Changed RoughEase so that when a name isn't defined, the instance isn't stored in the lookup table that's used for byName(), making the instance eligible for gc
+	- Added a dispose() method to RoughEase to manually release an instance for gc.
+
+2010-09-27
+----------------------------------------------
+TweenLite			1.39
+TweenMax			1.39
+TimelineLite		1.39
+TimelineMax			1.39
+TweenCore			1.39
+	- Added return values for append(), insert(), prepend(), insertMultiple(), appendMultiple(), and prependMultiple() in TimelineLite and TimelineMax
+	- Fixed issue that could cause the parent timeline's totalDuration to be miscalculated when a paused tween or timeline is added to a TimelineLite or TimelineMax instance and then unpaused (very uncommon scenario)
+
+2010-09-25
+---------------------------------------------
+TransformMatrixPlugin		1.0
+	- Added shortRotation capability to TransformMatrixPlugin, so you can do TweenLite.to(mc, 1, {transformMatrix:{shortRotation:164, scaleX:2, scaleY:2}});
+
+2010-09-16
+----------------------------------------------
+TweenLite			11.38
+TweenMax			11.38
+TimelineLite		1.383
+TimelineMax			1.383
+OverwriteManager	6.04
+	- Very minor speed improvements. 
+
+2010-08-31
+----------------------------------------------
+OverwriteManager	6.03
+	- Worked around a bug in Flash that could (in EXTREMELY rare circumstances) cause an error in OverwriteManager.
+
+2010-05-25
+----------------------------------------------
+TimelineLite		1.382
+TweenCore			1.382
+	- Fixed issue that could cause an infinite loop if the only child of a TimelineLite/Max was removed and then added back to it and rendered. 
+
+2010-05-24
+----------------------------------------------
+TimelineLite		1.38
+SimpleTimeline		1.38
+TweenCore			1.38
+	- Fixed issue that could prevent a tween from being removed properly from a completed TimelineLite/Max and, if inserted again and it's the only child of the TimelineLite/Max, it could cause an infinite loop when determining its totalDuration. 
+
+2010-05-17
+----------------------------------------------
+TimelineMax			11.381
+	- TimelineMax.tweenTo() and TimelineMax.tweenFromTo() now automatically adjust the resulting tween's duration according to the TimelineMax's timeScale.
+
+2010-05-14
+----------------------------------------------
+TweenMax			1.37
+TimelineMax			1.38
+	- Fixed issue that caused the TweenMax or TimelineMax instance to render at its beginning state instead of its end state if the virutal playhead landed exactly on one of the times at which it repeats (like a tween/timeline with a duration of 1, repeated and rendered at a totalTime of exactly 2 would show as though it's at its beginning state). This only happened at precisely the repeat points.
+
+2010-05-11 (2)
+----------------------------------------------
+TimelineLite		1.371
+TimelineMax			1.371
+	- Fixed issue where a TimelineLite/Max didn't recognize the need to continue running when a nested tween added more tweens via its onComplete. In other words, the TimelineLite/Max was on its final render but during the course of that render, more tweens were added, lengthening the timeline thus requiring it to continue running.
+
+2010-05-11
+----------------------------------------------
+TimelineMax			1.37
+TweenNano			1.05
+	- Fixed issue with a yoyo'd TimelineMax briefly rendering its end state on restart()
+	- Fixed default overwrite mode in TweenNano to be true (ALL_IMMEDIATE) instead of false (NONE). The documentation has always been correct, but the behavior wasn't (sorry!)
+
+2010-04-28
+----------------------------------------------
+TweenCore			1.361
+TimelineMax			1.361
+	- Fixed bug that prevented complete() from working properly when called on a TimelineLite or TimelineMax immediately after creating the instance
+	- Fixed TimelineMax.tweenTo() bug that prevented the tween from working properly when the destination time/label was the same as the current time/label. 
+
+2010-04-27
+----------------------------------------------
+TweenLite			11.36
+TweenMax			11.36
+TweenCore			1.36
+TimelineLite		1.36
+TimelineMax			1.36
+	- Fixed compatibility with TweenLiteVars and TweenMaxVars (v11.35 introduced an incompatibility briefly)
+
+
+2010-04-21
+----------------------------------------------
+TweenLite			11.35
+TweenMax			11.35
+TweenCore			1.35
+TimelineLite		1.35
+TimelineMax			1.35
+	- There was a bug in the beta version of Adobe's AIR 2 for Andriod that caused TweenLite/Max/Nano not to work properly, so I implemented a workaround (the bug was NOT in TweenLite/Max/Nano). 
+	- Added LinePath2D and RectanglePath2D motion paths and added the ability to autoRotate on CirclePath2D as well. CirclePath2DPlugin was updated as well.
+	
+
+2010-04-10
+----------------------------------------------
+TweenLite			11.32
+	- Fixed bug that only appeared in the debug versions of the Flash Player which could cause an auto-overwritten tween not to be completely removed.
+	- Minor tweaks to enhance performance slightly.
+
+
+2010-03-31
+----------------------------------------------
+OverwriteManager		6.01
+	- Fixed a problem that could occur in very rare situations due to floating point math issues in Flash and could cause a tween not to be overwritten properly in AUTO mode.
+
+
+2010-03-28
+----------------------------------------------
+TimelineLite		1.32
+TimelineMax			1.32
+	- Fixed a bug introduced a little over 30 hours ago (v1.31) in TimelineLite and TimelineMax that prevented paused TimelineLites/Maxes from rendering (for example, if you paused it and tweened its currentTime property or used TimelineMax's tweenTo() method).
+
+
+2010-03-06 (2) 
+----------------------------------------------
+TimelineLite		1.31
+TimelineMax			1.31
+	- Updated the rendering routine in TimelineLite and TimelineMax so that if a child tween or callback pauses the timeline, it won't allow the rendering cycle to finish on that frame.
+
+
+2010-03-26
+----------------------------------------------
+TweenLite			11.3
+TimelineLite		1.3
+MotionBlurPlugin	2.0
+AutoFitArea			1.4
+	- Added 3rd parameter to TweenLite.killTweensOf() that allows you to define specific tweening properties to kill. This way you can kill only individual properties like "x" and "alpha" tweens of a particular object with TweenLite.killTweensOf(mc, false, {x:true, alpha:true});
+	- Added 3rd parameter to TimelineLite's killTweensOf() to match the TweenLite.killTweensOf() addition. 
+	- Rebuilt MotionBlurPlugin so that it accurately handles objects with DropShadowFilters or BevelFilters applied.
+	- Added "fastMode" special property to MotionBlurPlugin that can improve rendering speed by 500% or more. 
+	- Added "padding" special property to MotionBlurPlugin to allow you to define how much space around the object to render with it in the captured BitmapData (to accommodate filters that extend beyond an object's edges like DropShadowFilter and GlowFilter).
+	- Added "calculateVisible" parameter to AutoFitArea.attach() to allow proper handling of objects that use masks internally.
+
+
+2010-03-06
+----------------------------------------------
+TweenLite			11.2
+TweenMax			11.2
+TimelineLite		1.2
+TimelineMax			1.2
+	- Added onInit and onInitParams special properties to TweenLite and TweenMax
+	- Added tweenFromTo() to TimelineMax
+	- Improved tweenTo() in TimelineMax so that it waits to determine its duration until the tween begins, making delayed tweens and sequenced ones more reliable.
+	- Fixed bug that could cause a TimelineLite's/Max's onComplete not to fire if a nested tween altered the TimelineLite's/Max's timeScale property on its very last render.
+	- Changed invalidate() so that it doesn't eliminate event listeners that were already added. (AS3 only)
+	- Added INIT event to the TweenEvent class (AS3 only)
+	- Updated ASDocs
+
+
+2010-03-01
+----------------------------------------------
+TweenNano			1.02
+	- Worked around Flash bug that caused the useFrames feature not to work properly in the AS2 flavor of TweenNano
+
+
+2010-02-01
+----------------------------------------------
+TweenMax			11.14
+	- Added updateTo() method to TweenMax that offers more useful and flexible functionality than setDestination() (which has been deprecated now in favor of updateTo())
+	
+
+1/19/2010, 4:30PM
+-----------------
+RoughEase			0.6
+(beta versions of MotionPath classes)
+	- Added ability to taper the strength of RoughEase at the beginning or end
+	- Added ability to control whether or not the points on a RoughEase are randomized
+	- Added beta versions of MotionPath, Circle2D, PathFollower, Direction, and Circle2DPlugin classes. (note: API may change)
+	
+
+1/18/2010, 9:30AM
+-----------------
+TweenLite			1.133
+TweenMax			1.133
+TimelineLite		1.142
+SimpleTimeline		1.133
+	- Fixed bug that could cause an endless loop in a very specific (extremely rare) scenario when a TweenCore is killed/disabled more than once and its parent timeline is at a particular spot in the linked list rendering order.
+
+
+1/15/2010, 11:00AM
+------------------
+TimelineLite		1.141
+	- Fixed a bug that could prevent a TimelineLite/Max from being garbage collected in a very specific (rare) scenario.
+	
+
+1/12/2010, 5:15PM
+-----------------
+TimelineLite		1.14
+	- Added removeLabel() to TimelineLite/Max
+	- Fixed bug in TransformMatrixPlugin that caused rotating objects to skew slightly in the middle of a tween (they always ended correctly, though)
+	- Updated documentation	
+
+
+12/28/09, 9:30PM
+----------------
+TimelineMax			1.13
+	- tweenTo() now respects a timeline's timeScale, adjusting the duration of the tween accordingly.
+	
+
+12/19/09, 8:15PM
+-----------------
+TweenLite			11.131
+TweenMax			11.131
+	- Fixed minor bug that could cause a tween to report as active when it isn't. 
+	- Added RoughEase
+	- Added RoughEase and SplitTextField to documentation
+
+
+12/8/09, 1PM
+----------------
+TweenLite			11.13
+TimelineLite		11.13
+TweenCore			1.13
+	- Fixed bug that could prevent tweens from being properly removed from a TimelineLite/Max that has been completed
+
+
+11/25/09, 12:00PM
+------------------
+TweenLite			11.12
+TweenMax			11.12
+	- Fixed problem that could cause a TweenLite.from() not to honor "paused:true" passed in through the constructor's vars object
+	- Fixed problem that could prevent killVars() from working on a rounded property in TweenMax
+
+
+11/21/09, 10:30AM
+-----------------
+TimelineLite		1.12
+TimelineMax			1.12
+	- Fixed issue that could cause a TimelineLite or TimelineMax not to honor a reverse() call or a call that altered the timeline's startTime when it happened inside a child tween/timeline on the very last render when the TimelineLite/Max would have normally completed.
+
+
+11/20/09, 11:00AM
+-----------------
+TweenCore			1.11
+TweenMax			11.11
+	- Fixed issue that caused onComplete not to fire on tweens that had yoyo set to true and an odd repeat value
+	
+
+11/19/09, 10:00PM
+-----------------
+TimelineLite		1.11
+TimelineMax			1.11
+SimpleTimeline		1.11
+	- Fixed bug that could cause an unfinished tween to render once more after having been killed (and only in certain scenarios)
+	- Fixed bug with gotoAndPlay() sometimes inaccurately setting the currentTime
+
+
 11/12/09, 11:10PM
 -----------------
 TimelineLite		1.1

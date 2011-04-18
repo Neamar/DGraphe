@@ -1,19 +1,18 @@
 /**
- * VERSION: 1.04
- * DATE: 11/7/2009
+ * VERSION: 1.66
+ * DATE: 2011-01-25
  * AS3 (AS2 version is also available)
- * UPDATES AND DOCUMENTATION AT: http://blog.greensock.com/timelinemax/
+ * UPDATES AND DOCS AT: http://www.greensock.com/timelinemax/
  **/
 package com.greensock {
 	import com.greensock.core.*;
 	import com.greensock.events.TweenEvent;
 	
 	import flash.events.*;
-	import flash.utils.*;
 /**
  * 	TimelineMax extends TimelineLite, offering exactly the same functionality plus useful 
  *  (but non-essential) features like AS3 event dispatching, repeat, repeatDelay, yoyo, 
- *  currentLabel, addCallback(), removeCallback(), tweenTo(), getLabelAfter(), getLabelBefore(),
+ *  currentLabel, addCallback(), removeCallback(), tweenTo(), tweenFromTo(), getLabelAfter(), getLabelBefore(),
  * 	and getActive() (and probably more in the future). It is the ultimate sequencing tool. 
  *  Think of a TimelineMax instance like a virtual MovieClip timeline or a container where 
  *  you place tweens (or other timelines) over the course of time. You can:
@@ -68,9 +67,7 @@ package com.greensock {
  * 	
  * <b>EXAMPLE:</b><br /><br /><code>
  * 		
- * 		import com.greensock.TweenLite;<br />
- * 		import com.greensock.TweenMax;<br />
- * 		import com.greensock.TimelineMax;<br /><br />
+ * 		import com.greensock.~~;<br /><br />
  * 		
  * 		//create the timeline and add an onComplete call to myFunction when the timeline completes<br />
  * 		var myTimeline:TimelineMax = new TimelineMax({onComplete:myFunction});<br /><br />
@@ -138,24 +135,24 @@ package com.greensock {
  * <ul>
  * 	<li> TimelineMax automatically inits the OverwriteManager class to prevent unexpected overwriting behavior in sequences.
  * 	  The default mode is <code>AUTO</code>, but you can set it to whatever you want with <code>OverwriteManager.init()</code>
- * 	 (see <a href="http://blog.greensock.com/overwritemanager/">http://blog.greensock.com/overwritemanager/</a>)</li>
- * 	<li> TimelineMax adds about 4.8k to your SWF (not including OverwriteManager).</li>
+ * 	 (see <a href="http://www.greensock.com/overwritemanager/">http://www.greensock.com/overwritemanager/</a>)</li>
+ * 	<li> TimelineMax adds about 4.9k to your SWF (not including OverwriteManager).</li>
  * </ul>
  * 
- * <b>Copyright 2009, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
+ * <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
  * 
  * @author Jack Doyle, jack@greensock.com
  **/
 	public class TimelineMax extends TimelineLite implements IEventDispatcher {
 		/** @private **/
-		public static const version:Number = 1.04;
+		public static const version:Number = 1.66;
 		
 		/** @private **/
 		protected var _repeat:int;
 		/** @private **/
 		protected var _repeatDelay:Number;
 		/** @private **/
-		protected var _cyclesComplete:uint;
+		protected var _cyclesComplete:int;
 		/** @private **/
 		protected var _dispatcher:EventDispatcher;
 		/** @private **/
@@ -197,7 +194,7 @@ package com.greensock {
 		 * 											These values simply get passed to the <code>insertMultiple()</code> method.</li>
 		 * 	
 		 * 	<li><b> align : String</b>				Only used in conjunction with the <code>tweens</code> special property when multiple tweens are
-		 * 											to be inserted immediately. The value simply gets passed to the 
+		 * 											to be inserted immediately through the constructor. The value simply gets passed to the 
 		 * 											<code>insertMultiple()</code> method. The default is <code>TweenAlign.NORMAL</code>. Options are:
 		 * 											<ul>
 		 * 												<li><b> TweenAlign.SEQUENCE:</b> aligns the tweens one-after-the-other in a sequence</li>
@@ -271,10 +268,10 @@ package com.greensock {
 		 */
 		public function TimelineMax(vars:Object=null) {
 			super(vars);
-			_repeat = this.vars.repeat || 0;
-			_repeatDelay = this.vars.repeatDelay || 0;
+			_repeat = (this.vars.repeat) ? Number(this.vars.repeat) : 0;
+			_repeatDelay = (this.vars.repeatDelay) ? Number(this.vars.repeatDelay) : 0;
 			_cyclesComplete = 0;
-			this.yoyo = this.vars.yoyo || false;
+			this.yoyo = Boolean(this.vars.yoyo == true);
 			this.cacheIsDirty = true;
 			if (this.vars.onCompleteListener != null || this.vars.onUpdateListener != null || this.vars.onStartListener != null || this.vars.onRepeatListener != null || this.vars.onReverseCompleteListener != null) {
 				initDispatcher();
@@ -282,7 +279,10 @@ package com.greensock {
 		}
 		
 		/**
-		 * If you want a function to be called at a particular time or label, use addCallback.
+		 * If you want a function to be called at a particular time or label, use addCallback. When you add
+		 * a callback, it is technically considered a zero-duration tween, so if you getChildren() there will be
+		 * a tween returned for each callback. You can discern a callback from other tweens by the fact that
+		 * their target is a function and the duration is zero. 
 		 * 
 		 * @param function the function to be called
 		 * @param timeOrLabel the time in seconds (or frames for frames-based timelines) or label at which the callback should be inserted. For example, myTimeline.addCallback(myFunction, 3) would call myFunction() 3-seconds into the timeline, and myTimeline.addCallback(myFunction, "myLabel") would call it at the "myLabel" label.
@@ -300,7 +300,7 @@ package com.greensock {
 		 * particular function are removed from the timeline.
 		 * 
 		 * @param function callback function to be removed
-		 * @param timeOrLabel the time in seconds (or frames for frames-based timelines) or label from which the callback should be removed. For example, myTimeline.removeCallback(myFunction, 3) would remove the callback from 3-seconds into the timeline, and myTimeline.removeCallback(myFunction, "myLabel") would remove it from the "myLabel" label, and myTimeline.removeCallback(myFunction, null) would remove ALL callbacks of that function regardless of where they are on the timeline.
+		 * @param timeOrLabel the time in seconds (or frames for frames-based timelines) or label from which the callback should be removed. For example, <code>myTimeline.removeCallback(myFunction, 3)</code> would remove the callback from 3-seconds into the timeline, and <code>myTimeline.removeCallback(myFunction, "myLabel")</code> would remove it from the "myLabel" label, and <code>myTimeline.removeCallback(myFunction, null)</code> would remove ALL callbacks of that function regardless of where they are on the timeline.
 		 * @return true if any callbacks were successfully found and removed. false otherwise.
 		 */
 		public function removeCallback(callback:Function, timeOrLabel:*=null):Boolean {
@@ -315,7 +315,7 @@ package com.greensock {
 				}
 				var a:Array = getTweensOf(callback, false), success:Boolean;
 				var i:int = a.length;
-				while (i--) {
+				while (--i > -1) {
 					if (a[i].cachedStartTime == timeOrLabel) {
 						remove(a[i] as TweenCore);
 						success = true;
@@ -331,7 +331,7 @@ package com.greensock {
 		 * 
 		 * myTimeline.tweenTo("myLabel2"); <br /><br /></code>
 		 * 
-		 * If you want advanced control over the tween, like adding an onComplete or changing the ease or adding a dely, 
+		 * If you want advanced control over the tween, like adding an onComplete or changing the ease or adding a delay, 
 		 * just pass in a vars object with the appropriate properties. For example, to tween to the 5-second point on the 
 		 * timeline and then call a function named <code>myFunction</code> and pass in a parameter that's references this 
 		 * TimelineMax and use a Strong.easeOut ease, you'd do: <br /><br /><code>
@@ -339,40 +339,90 @@ package com.greensock {
 		 * myTimeline.tweenTo(5, {onComplete:myFunction, onCompleteParams:[myTimeline], ease:Strong.easeOut});<br /><br /></code>
 		 * 
 		 * Remember, this method simply creates a TweenLite instance that tweens the <code>currentTime</code> property of your timeline. 
-		 * So you can store a reference to that tween if you want, and you can kill() it anytime. Also note that tweenTo()
+		 * So you can store a reference to that tween if you want, and you can kill() it anytime. Also note that <code>tweenTo()</code>
 		 * does <b>NOT</b> affect the timeline's <code>reversed</code> property. So if your timeline is oriented normally
 		 * (not reversed) and you tween to a time/label that precedes the current time, it will appear to go backwards
 		 * but the <code>reversed</code> property will <b>not</b> change to <code>true</code>. Also note that <code>tweenTo()</code>
-		 * pauses the timeline immediately before tweening its <code>currentTime</code> property, and it stays paused after the tween.
-		 * If you need to resume playback, you could always use an onComplete to call the <code>resume()</code> method.
+		 * pauses the timeline immediately before tweening its <code>currentTime</code> property, and it stays paused after the tween completes.
+		 * If you need to resume playback, you could always use an onComplete to call the <code>resume()</code> method.<br /><br />
 		 * 
+		 * If you plan to sequence multiple playhead tweens one-after-the-other, it is typically better to use 
+		 * <code>tweenFromTo()</code> so that you can define the starting point and ending point, allowing the 
+		 * duration to be accurately determined immediately. 
+		 * 
+		 * @see #tweenFromTo()
 		 * @param timeOrLabel The destination time in seconds (or frame if the timeline is frames-based) or label to which the timeline should play. For example, myTimeline.tweenTo(5) would play from wherever the timeline is currently to the 5-second point whereas myTimeline.tweenTo("myLabel") would play to wherever "myLabel" is on the timeline.
-		 * @param vars An optional vars object that will be passed to the TweenLite instance. This allows you to define an onComplete, ease, delay, or any other TweenLite special property.
+		 * @param vars An optional vars object that will be passed to the TweenLite instance. This allows you to define an onComplete, ease, delay, or any other TweenLite special property. onInit is the only special property that is not available (tweenTo() sets it internally)
 		 * @return TweenLite instance that handles tweening the timeline to the desired time/label.
 		 */
 		public function tweenTo(timeOrLabel:*, vars:Object=null):TweenLite {
-			var varsCopy:Object = {ease:easeNone, overwrite:2, useFrames:this.useFrames};
+			var varsCopy:Object = {ease:easeNone, overwrite:2, useFrames:this.useFrames, immediateRender:false};
 			for (var p:String in vars) {
 				varsCopy[p] = vars[p];
 			}
-			if (typeof(timeOrLabel) == "string") {
-				if (!(timeOrLabel in _labels)) {
-					trace("TimelineMax warning: tweenTo(" + timeOrLabel + ") failed because the label was not found.");
-					return null; //don't tween if the label isn't found.
-				}
-				varsCopy.currentTime = getLabelTime(String(timeOrLabel));
-			} else {
-				varsCopy.currentTime = Number(timeOrLabel);
+			varsCopy.onInit = onInitTweenTo;
+			varsCopy.onInitParams = [null, this, NaN];
+			varsCopy.currentTime = parseTimeOrLabel(timeOrLabel);
+			var tl:TweenLite = new TweenLite(this, (Math.abs(Number(varsCopy.currentTime) - this.cachedTime) / this.cachedTimeScale) || 0.001, varsCopy);
+			tl.vars.onInitParams[0] = tl;
+			return tl;
+		}
+		
+		/**
+		 * Creates a linear tween that essentially scrubs the playhead from a particular time or label to another 
+		 * time or label and then stops. If you plan to sequence multiple playhead tweens one-after-the-other, 
+		 * <code>tweenFromTo()</code> is better to use than <code>tweenTo()</code> because it allows the duration 
+		 * to be determined immediately, ensuring that subsequent tweens that are appended to a sequence are 
+		 * positioned appropriately. For example, to make the TimelineMax play from the label "myLabel1" to the "myLabel2" 
+		 * label, and then from "myLabel2" back to the beginning (a time of 0), simply do: <br /><br /><code>
+		 * 
+		 * var playheadTweens:TimelineMax = new TimelineMax(); <br />
+		 * playheadTweens.append( myTimeline.tweenFromTo("myLabel1", "myLabel2") );<br />
+		 * playheadTweens.append( myTimeline.tweenFromTo("myLabel2", 0); <br /><br /></code>
+		 * 
+		 * If you want advanced control over the tween, like adding an onComplete or changing the ease or adding a delay, 
+		 * just pass in a vars object with the appropriate properties. For example, to tween from the start (0) to the 
+		 * 5-second point on the timeline and then call a function named <code>myFunction</code> and pass in a parameter 
+		 * that's references this TimelineMax and use a Strong.easeOut ease, you'd do: <br /><br /><code>
+		 * 
+		 * myTimeline.tweenFromTo(0, 5, {onComplete:myFunction, onCompleteParams:[myTimeline], ease:Strong.easeOut});<br /><br /></code>
+		 * 
+		 * Remember, this method simply creates a TweenLite instance that tweens the <code>currentTime</code> property of your timeline. 
+		 * So you can store a reference to that tween if you want, and you can <code>kill()</code> it anytime. Also note that <code>tweenFromTo()</code>
+		 * does <b>NOT</b> affect the timeline's <code>reversed</code> property. So if your timeline is oriented normally
+		 * (not reversed) and you tween to a time/label that precedes the current time, it will appear to go backwards
+		 * but the <code>reversed</code> property will <b>not</b> change to <code>true</code>. Also note that <code>tweenFromTo()</code>
+		 * pauses the timeline immediately before tweening its <code>currentTime</code> property, and it stays paused after the tween completes.
+		 * If you need to resume playback, you could always use an onComplete to call the <code>resume()</code> method.
+		 * 
+		 * @see #tweenTo()
+		 * @param fromTimeOrLabel The beginning time in seconds (or frame if the timeline is frames-based) or label from which the timeline should play. For example, <code>myTimeline.tweenTo(0, 5)</code> would play from 0 (the beginning) to the 5-second point whereas <code>myTimeline.tweenFromTo("myLabel1", "myLabel2")</code> would play from "myLabel1" to "myLabel2".
+		 * @param toTimeOrLabel The destination time in seconds (or frame if the timeline is frames-based) or label to which the timeline should play. For example, <code>myTimeline.tweenTo(0, 5)</code> would play from 0 (the beginning) to the 5-second point whereas <code>myTimeline.tweenFromTo("myLabel1", "myLabel2")</code> would play from "myLabel1" to "myLabel2".
+		 * @param vars An optional vars object that will be passed to the TweenLite instance. This allows you to define an onComplete, ease, delay, or any other TweenLite special property. onInit is the only special property that is not available (<code>tweenFromTo()</code> sets it internally)
+		 * @return TweenLite instance that handles tweening the timeline between the desired times/labels.
+		 */
+		public function tweenFromTo(fromTimeOrLabel:*, toTimeOrLabel:*, vars:Object=null):TweenLite {
+			var tl:TweenLite = tweenTo(toTimeOrLabel, vars);
+			tl.vars.onInitParams[2] = parseTimeOrLabel(fromTimeOrLabel);
+			tl.duration = Math.abs(Number(tl.vars.currentTime) - tl.vars.onInitParams[2]) / this.cachedTimeScale;
+			return tl;
+		}
+		
+		/** @private **/
+		private static function onInitTweenTo(tween:TweenLite, timeline:TimelineMax, fromTime:Number):void {
+			timeline.paused = true;
+			if (!isNaN(fromTime)) {
+				timeline.currentTime = fromTime;
 			}
-			this.paused = true;
-			return new TweenLite(this, Math.abs(Number(varsCopy.currentTime) - this.cachedTime), varsCopy);
+			if (tween.vars.currentTime != timeline.currentTime) { //don't make the duration zero - if it's supposed to be zero, don't worry because it's already initting the tween and will complete immediately, effectively making the duration zero anyway. If we make duration zero, the tween won't run at all.
+				tween.duration = Math.abs(Number(tween.vars.currentTime) - timeline.currentTime) / timeline.cachedTimeScale;
+			}
 		}
 		
 		/** @private **/
 		private static function easeNone(t:Number, b:Number, c:Number, d:Number):Number {
 			return t / d;
 		}
-		
 		
 		
 		/** @private **/
@@ -382,17 +432,17 @@ package com.greensock {
 			} else if (!this.active && !this.cachedPaused) {
 				this.active = true; //so that if the user renders a tween (as opposed to the timeline rendering it), the timeline is forced to re-render and align it with the proper time/frame on the next rendering cycle. Maybe the tween already finished but the user manually re-renders it as halfway done.
 			}
-			var totalDur:Number = (this.cacheIsDirty) ? this.totalDuration : this.cachedTotalDuration, prevTime:Number = this.cachedTime, tween:TweenCore, isComplete:Boolean, rendered:Boolean, repeated:Boolean, next:TweenCore, dur:Number;
+			var totalDur:Number = (this.cacheIsDirty) ? this.totalDuration : this.cachedTotalDuration, prevTime:Number = this.cachedTime, prevTotalTime:Number = this.cachedTotalTime, prevStart:Number = this.cachedStartTime, prevTimeScale:Number = this.cachedTimeScale, tween:TweenCore, isComplete:Boolean, rendered:Boolean, repeated:Boolean, next:TweenCore, dur:Number, prevPaused:Boolean = this.cachedPaused;
 			if (time >= totalDur) {
 				if (_rawPrevTime <= totalDur && _rawPrevTime != time) {
-					if (!this.cachedReversed && this.yoyo && _repeat % 2 != 0) {
-						forceChildrenToBeginning(0, suppressEvents);
-						this.cachedTime = 0;
-					} else {
-						forceChildrenToEnd(this.cachedDuration, suppressEvents);
-						this.cachedTime = this.cachedDuration;
-					}
 					this.cachedTotalTime = totalDur;
+					if (!this.cachedReversed && this.yoyo && _repeat % 2 != 0) {
+						this.cachedTime = 0;
+						forceChildrenToBeginning(0, suppressEvents);
+					} else {
+						this.cachedTime = this.cachedDuration;
+						forceChildrenToEnd(this.cachedDuration, suppressEvents);
+					}
 					isComplete = !this.hasPausedChild();
 					rendered = true;
 					if (this.cachedDuration == 0 && isComplete && (time == 0 || _rawPrevTime < 0)) { //In order to accommodate zero-duration timelines, we must discern the momentum/direction of time in order to render values properly when the "playhead" goes past 0 in the forward direction or lands directly on it, and also when it moves past it in the backward direction (from a postitive time to a negative time).
@@ -403,20 +453,17 @@ package com.greensock {
 			} else if (time <= 0) {
 				if (time < 0) {
 					this.active = false; 
-					if (this.cachedDuration == 0 && _rawPrevTime > 0) { //In order to accommodate zero-duration timelines, we must discern the momentum/direction of time in order to render values properly when the "playhead" goes past 0 in the forward direction or lands directly on it, and also when it moves past it in the backward direction (from a postitive time to a negative time).
+					if (this.cachedDuration == 0 && _rawPrevTime >= 0) { //In order to accommodate zero-duration timelines, we must discern the momentum/direction of time in order to render values properly when the "playhead" goes past 0 in the forward direction or lands directly on it, and also when it moves past it in the backward direction (from a postitive time to a negative time).
 						force = true;
 						isComplete = true;
 					}
+				} else if (time == 0 && !this.initted) {
+					force = true;
 				}
 				if (_rawPrevTime >= 0 && _rawPrevTime != time) {
 					this.cachedTotalTime = 0;
-					if (!this.cachedReversed && this.yoyo && _repeat % 2 != 0) {
-						forceChildrenToEnd(this.cachedDuration, suppressEvents);
-						this.cachedTime = this.cachedDuration;
-					} else {
-						forceChildrenToBeginning(0, suppressEvents);
-						this.cachedTime = 0;
-					}
+					this.cachedTime = 0;
+					forceChildrenToBeginning(0, suppressEvents);
 					rendered = true;
 					if (this.cachedReversed) {
 						isComplete = true;
@@ -428,18 +475,21 @@ package com.greensock {
 			_rawPrevTime = time;
 			
 			if (_repeat != 0) {
-				
 				var cycleDuration:Number = this.cachedDuration + _repeatDelay;
+				var prevCycles:int = _cyclesComplete;
+				_cyclesComplete = (this.cachedTotalTime / cycleDuration) >> 0; //rounds result, like int()
+				if (_cyclesComplete == this.cachedTotalTime / cycleDuration) {
+					_cyclesComplete--; //otherwise when rendered exactly at the end time, it will act as though it is repeating (at the beginning)
+				}
+				if (prevCycles != _cyclesComplete) {
+					repeated = true;
+				}
+				
 				if (isComplete) {
 					if (this.yoyo && _repeat % 2) {
 						this.cachedTime = 0;
 					}
 				} else if (time > 0) {
-					var prevCycle:Number = _cyclesComplete;
-					if (_cyclesComplete != (_cyclesComplete = int(this.cachedTotalTime / cycleDuration))) {
-						repeated = true;
-					}
-					
 					this.cachedTime = ((this.cachedTotalTime / cycleDuration) - _cyclesComplete) * cycleDuration; //originally this.cachedTotalTime % cycleDuration but floating point errors caused problems, so I normalized it. (4 % 0.8 should be 0 but Flash reports it as 0.79999999!)
 					
 					if (this.yoyo && _cyclesComplete % 2) {
@@ -450,6 +500,8 @@ package com.greensock {
 					if (this.cachedTime < 0) {
 						this.cachedTime = 0;
 					}
+				} else {
+					_cyclesComplete = 0;
 				}
 				
 				if (repeated && !isComplete && (this.cachedTime != prevTime || force)) {
@@ -463,9 +515,9 @@ package com.greensock {
 					*/
 					
 					var forward:Boolean = Boolean(!this.yoyo || (_cyclesComplete % 2 == 0));
-					var prevForward:Boolean = Boolean(!this.yoyo || (prevCycle % 2 == 0));
+					var prevForward:Boolean = Boolean(!this.yoyo || (prevCycles % 2 == 0));
 					var wrap:Boolean = Boolean(forward == prevForward);
-					if (prevCycle > _cyclesComplete) {
+					if (prevCycles > _cyclesComplete) {
 						prevForward = !prevForward;
 					}
 					
@@ -485,13 +537,13 @@ package com.greensock {
 				
 			}
 			
-			if (this.cachedTime == prevTime && !force) {
+			if (this.cachedTotalTime == prevTotalTime && !force) {
 				return;
 			} else if (!this.initted) {
 				this.initted = true;
 			}
 			
-			if (prevTime == 0 && this.cachedTotalTime != 0 && !suppressEvents) {
+			if (prevTotalTime == 0 && this.cachedTotalTime != 0 && !suppressEvents) {
 				if (this.vars.onStart) {
 					this.vars.onStart.apply(null, this.vars.onStartParams);
 				}
@@ -506,7 +558,9 @@ package com.greensock {
 				tween = _firstChild;
 				while (tween) {
 					next = tween.nextNode; //record it here because the value could change after rendering...
-					if (tween.active || (!tween.cachedPaused && tween.cachedStartTime <= this.cachedTime)) {
+					if (this.cachedPaused && !prevPaused) { //in case a tween pauses the timeline when rendering
+						break;
+					} else if (tween.active || (!tween.cachedPaused && tween.cachedStartTime <= this.cachedTime && !tween.gc)) {
 						
 						if (!tween.cachedReversed) {
 							tween.renderTime((this.cachedTime - tween.cachedStartTime) * tween.cachedTimeScale, suppressEvents, false);
@@ -523,7 +577,9 @@ package com.greensock {
 				tween = _lastChild;
 				while (tween) {
 					next = tween.prevNode; //record it here because the value could change after rendering...
-					if (tween.active || (!tween.cachedPaused && tween.cachedStartTime <= prevTime)) {
+					if (this.cachedPaused && !prevPaused) { //in case a tween pauses the timeline when rendering
+						break;
+					} else if (tween.active || (!tween.cachedPaused && tween.cachedStartTime <= prevTime && !tween.gc)) {
 						
 						if (!tween.cachedReversed) {
 							tween.renderTime((this.cachedTime - tween.cachedStartTime) * tween.cachedTimeScale, suppressEvents, false);
@@ -543,15 +599,16 @@ package com.greensock {
 			if (_hasUpdateListener && !suppressEvents) {
 				_dispatcher.dispatchEvent(new TweenEvent(TweenEvent.UPDATE));
 			}
-			if (isComplete) {
-				complete(true, suppressEvents);
-			} else if (repeated && !suppressEvents) {
+			if (repeated && !suppressEvents) {
 				if (this.vars.onRepeat) {
 					this.vars.onRepeat.apply(null, this.vars.onRepeatParams);
 				}
 				if (_dispatcher) {
 					_dispatcher.dispatchEvent(new TweenEvent(TweenEvent.REPEAT));
 				}
+			}
+			if (isComplete && (prevStart == this.cachedStartTime || prevTimeScale != this.cachedTimeScale) && (totalDur >= this.totalDuration || this.cachedTime == 0)) { //if one of the tweens that was rendered altered this timeline's startTime (like if an onComplete reversed the timeline) or if it added more tweens to the timeline, we shouldn't run complete() because it probably isn't complete. If it is, don't worry, because whatever call altered the startTime would have called complete() if it was necessary at the new time. The only exception is the timeScale property.
+				complete(true, suppressEvents);
 			}
 		}
 		
@@ -582,10 +639,11 @@ package com.greensock {
 		 */
 		public function getActive(nested:Boolean=true, tweens:Boolean=true, timelines:Boolean=false):Array {
 			var a:Array = [], all:Array = getChildren(nested, tweens, timelines), i:int;
-			var l:uint = all.length;
-			for (i = 0; i < l; i++) {
+			var l:int = all.length;
+			var cnt:int = 0;
+			for (i = 0; i < l; i += 1) {
 				if (TweenCore(all[i]).active) {
-					a[a.length] = all[i];
+					a[cnt++] = all[i];
 				}
 			}
 			return a;
@@ -593,10 +651,9 @@ package com.greensock {
 		
 		/** @inheritDoc **/
 		override public function invalidate():void {
-			_repeat = this.vars.repeat || 0;
-			_repeatDelay = this.vars.repeatDelay || 0;
-			this.yoyo = this.vars.yoyo || false;
-			_hasUpdateListener = false;
+			_repeat = (this.vars.repeat) ? Number(this.vars.repeat) : 0;
+			_repeatDelay = (this.vars.repeatDelay) ? Number(this.vars.repeatDelay) : 0;
+			this.yoyo = Boolean(this.vars.yoyo == true);
 			if (this.vars.onCompleteListener != null || this.vars.onUpdateListener != null || this.vars.onStartListener != null || this.vars.onRepeatListener != null || this.vars.onReverseCompleteListener != null) {
 				initDispatcher();
 			}
@@ -617,8 +674,8 @@ package com.greensock {
 				time = this.cachedTime;
 			}
 			var labels:Array = getLabelsArray();
-			var l:uint = labels.length;
-			for (var i:int = 0; i < l; i++) {
+			var l:int = labels.length;
+			for (var i:int = 0; i < l; i += 1) {
 				if (labels[i].time > time) {
 					return labels[i].name;
 				}
@@ -640,7 +697,7 @@ package com.greensock {
 			}
 			var labels:Array = getLabelsArray();
 			var i:int = labels.length;
-			while (i--) {
+			while (--i > -1) {
 				if (labels[i].time < time) {
 					return labels[i].name;
 				}
@@ -665,22 +722,22 @@ package com.greensock {
 		protected function initDispatcher():void {
 			if (_dispatcher == null) {
 				_dispatcher = new EventDispatcher(this);
-				if (this.vars.onStartListener is Function) {
-					_dispatcher.addEventListener(TweenEvent.START, this.vars.onStartListener, false, 0, true);
-				}
-				if (this.vars.onUpdateListener is Function) {
-					_dispatcher.addEventListener(TweenEvent.UPDATE, this.vars.onUpdateListener, false, 0, true);
-					_hasUpdateListener = true;
-				}
-				if (this.vars.onCompleteListener is Function) {
-					_dispatcher.addEventListener(TweenEvent.COMPLETE, this.vars.onCompleteListener, false, 0, true);
-				}
-				if (this.vars.onRepeatListener is Function) {
-					_dispatcher.addEventListener(TweenEvent.REPEAT, this.vars.onRepeatListener, false, 0, true);
-				}
-				if (this.vars.onReverseCompleteListener is Function) {
-					_dispatcher.addEventListener(TweenEvent.REVERSE_COMPLETE, this.vars.onReverseCompleteListener, false, 0, true);
-				}
+			}
+			if (this.vars.onStartListener is Function) {
+				_dispatcher.addEventListener(TweenEvent.START, this.vars.onStartListener, false, 0, true);
+			}
+			if (this.vars.onUpdateListener is Function) {
+				_dispatcher.addEventListener(TweenEvent.UPDATE, this.vars.onUpdateListener, false, 0, true);
+				_hasUpdateListener = true;
+			}
+			if (this.vars.onCompleteListener is Function) {
+				_dispatcher.addEventListener(TweenEvent.COMPLETE, this.vars.onCompleteListener, false, 0, true);
+			}
+			if (this.vars.onRepeatListener is Function) {
+				_dispatcher.addEventListener(TweenEvent.REPEAT, this.vars.onRepeatListener, false, 0, true);
+			}
+			if (this.vars.onReverseCompleteListener is Function) {
+				_dispatcher.addEventListener(TweenEvent.REVERSE_COMPLETE, this.vars.onReverseCompleteListener, false, 0, true);
 			}
 		}
 		/** @private **/
@@ -748,7 +805,7 @@ package com.greensock {
 			return this.cachedTotalDuration;
 		}
 		
-		/** @inheritDoc **/
+		/** @private **/
 		override public function set currentTime(n:Number):void {
 			if (_cyclesComplete == 0) {
 				setTotalTime(n, false);

@@ -1,11 +1,10 @@
 /**
- * VERSION: 1.02
- * DATE: 10/2/2009
+ * VERSION: 1.2
+ * DATE: 12/17/2009
  * ACTIONSCRIPT VERSION: 3.0 
  * UPDATES AND DOCUMENTATION AT: http://www.TweenMax.com
  **/
 package com.greensock.plugins {
-	import flash.display.*;
 	import com.greensock.*;
 /**
  * To tween any rotation property of the target object in the shortest direction, use "shortRotation" 
@@ -30,7 +29,7 @@ package com.greensock.plugins {
  * 		TweenLite.to(mc, 1, {shortRotation:{rotationX:-170, rotationY:35, rotationZ:10}}); <br /><br />
  * </code>
  * 
- * <b>Copyright 2009, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
+ * <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
  * 
  * @author Jack Doyle, jack@greensock.com
  */
@@ -48,11 +47,10 @@ package com.greensock.plugins {
 		/** @private **/
 		override public function onInitTween(target:Object, value:*, tween:TweenLite):Boolean {
 			if (typeof(value) == "number") {
-				trace("WARNING: You appear to be using the old shortRotation syntax. Instead of passing a number, please pass an object with properties that correspond to the rotations values For example, TweenMax.to(mc, 2, {shortRotation:{rotationX:-170, rotationY:25}})");
 				return false;
 			}
 			for (var p:String in value) {
-				initRotation(target, p, target[p], value[p]);
+				initRotation(target, p, target[p], (typeof(value[p]) == "number") ? Number(value[p]) : target[p] + Number(value[p]));
 			}
 			return true;
 		}

@@ -1,15 +1,15 @@
 /**
- * VERSION: 0.9
- * DATE: 10/22/2009
+ * VERSION: 1.0
+ * DATE: 2010-09-18
  * ACTIONSCRIPT VERSION: 3.0 
  * UPDATES AND DOCUMENTATION AT: http://blog.greensock.com
  **/
 package com.greensock.plugins {
 	import com.greensock.*;
 	
-	import flash.display.*;
+	import __AS3__.vec.Vector; //due to a bug in Flex Builder, this must be included in order to correctly compile a swc
 /**
- * Tweens numbers in an Vector.<Number>. Remember, Vectors require that you publish to <strong>Flash Player 10</strong> or later.<br /><br />
+ * Tweens numbers in an Vector.&lt;Number&gt;. Remember, Vectors require that you publish to <strong>Flash Player 10</strong> or later.<br /><br />
  * 
  * <b>USAGE:</b><br /><br />
  * <code>
@@ -18,11 +18,11 @@ package com.greensock.plugins {
  * 		import com.greensock.plugins.EndVectorPlugin; <br />
  * 		TweenPlugin.activate([EndVectorPlugin]); //activation is permanent in the SWF, so this line only needs to be run once.<br /><br />
  * 
- * 		var v:Vector.<Number> = new Vector.<Number>();<br />
+ * 		var v:Vector.&lt;Number&gt; = new Vector.&lt;Number&gt;();<br />
  * 		v[0] = 0;<br />
  * 		v[1] = 1;<br />
  * 		v[2] = 2;<br />
- * 		var end:Vector.<Number> = new Vector.<Number>();<br />
+ * 		var end:Vector.&lt;Number&gt; = new Vector.&lt;Number&gt;();<br />
  * 		end[0] = 100;<br />
  * 		end[1] = 250;<br />
  * 		end[2] = 500;<br />
@@ -32,7 +32,7 @@ package com.greensock.plugins {
  * 		}<br /><br />
  * </code>
  * 
- * <b>Copyright 2009, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
+ * <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
  * 
  * @author Jack Doyle, jack@greensock.com
  */	
@@ -80,7 +80,11 @@ package com.greensock.plugins {
 				while (i--) {
 					vi = _info[i];
 					val = vi.start + (vi.change * n);
-					_v[vi.index] = (val > 0) ? int(val + 0.5) : int(val - 0.5); //4 times as fast as Math.round()
+					if (val > 0) {
+						_v[vi.index] = (val + 0.5) >> 0; //4 times as fast as Math.round()
+					} else {
+						_v[vi.index] = (val - 0.5) >> 0;
+					}
 				}
 			} else {
 				while (i--) {

@@ -1,8 +1,8 @@
 ﻿/**
- * VERSION: 11.104
- * DATE: 11/7/2009
+ * VERSION: 11.67
+ * DATE: 2011-04-12
  * AS3 (AS2 version is also available)
- * UPDATES AND DOCUMENTATION AT: http://www.TweenMax.com 
+ * UPDATES AND DOCS AT: http://www.greensock.com 
  **/
 package com.greensock {
 	import com.greensock.core.*;
@@ -14,14 +14,14 @@ package com.greensock {
 	import flash.utils.*;
 /**
  * 	TweenMax extends the extremely lightweight, fast TweenLite engine, adding many useful features
- * 	like timeScale, event dispatching, setDestination(), yoyo, repeat, repeatDelay, rounding, and more. It also 
+ * 	like timeScale, event dispatching, updateTo(), yoyo, repeat, repeatDelay, rounding, and more. It also 
  * 	activates many extra plugins by default, making it extremely full-featured. Since TweenMax extends 
  * 	TweenLite, it can do ANYTHING TweenLite can do plus much more. The syntax is identical. With plenty 
  *  of other tweening engines to choose from, here's why you might want to consider TweenMax: 
  * 
  * <ul>
  * 		<li><b> SPEED </b>- TweenMax has been highly optimized for maximum performance. See some speed comparisons yourself at 
- * 			 <a href="http://blog.greensock.com/tweening-speed-test/">http://blog.greensock.com/tweening-speed-test/</a></li>
+ * 			 <a href="http://www.greensock.com/tweening-speed-test/">http://www.greensock.com/tweening-speed-test/</a></li>
  * 
  * 	    <li><b> Feature set </b>- In addition to tweening ANY numeric property of ANY object, TweenMax can tween filters, 
  * 		  	hex colors, volume, tint, frames, saturation, contrast, hue, colorization, brightness, and even do 
@@ -48,9 +48,9 @@ package com.greensock {
  * 		<li><b> AS2 and AS3 </b>- Most other engines are only developed for AS2 or AS3 but not both.</li>
  * 	</ul>
  * 	         			
- * <b>SPECIAL PROPERTIES (no plugins required):</b><br /><br />
- * 	
- * 	Any of the following special properties can optionally be passed in through the vars object (the third parameter):
+ * <b>SPECIAL PROPERTIES:</b><br /><br />
+ * The following special properties can be defined in the <code>vars</code> parameter which can 
+ * be either a generic Object or a <code><a href="data/TweenMaxVars.html">TweenMaxVars</a></code> instance:
  *  <ul>
  * 	 <li><b> delay : Number</b>				Amount of delay in seconds (or frames for frames-based tweens) before the tween should begin.</li>
  * 	
@@ -59,14 +59,24 @@ package com.greensock {
  * 											always determined by its parent timeline. </li>
  * 	
  * 	<li><b> ease : Function</b>				Use any standard easing equation to control the rate of change. For example, 
- * 											Elastic.easeOut. The Default is Regular.easeOut.</li>
+ * 											Elastic.easeOut. The Default is Quad.easeOut.</li>
  * 	
  * 	<li><b> easeParams : Array</b>			An Array of extra parameters to feed the easing equation (beyond the standard first 4). 
  * 											This can be useful when using an ease like Elastic and want to control extra parameters 
  * 											like the amplitude and period.	Most easing equations, however, don't require extra parameters 
  * 											so you won't need to pass in any easeParams.</li>
  * 	
- * 	<li><b> onStart : Function</b>			A function that should be called when the tween begins.</li>
+ * 	<li><b> onInit : Function</b>			A function that should be called just before the tween inits (renders for the first time).
+ * 											Since onInit runs before the start/end values are recorded internally, it is a good place to run
+ * 											code that affects the target's initial position or other tween-related properties. onStart, by
+ * 											contrast, runs AFTER the tween inits and the start/end values are recorded internally. onStart
+ * 											is called every time the tween begins which can happen more than once if the tween is restarted
+ * 											multiple times.</li>
+ * 	
+ *  <li><b> onInitParams : Array</b>		An Array of parameters to pass the onInit function.</li>	
+ * 
+ *  <li><b> onStart : Function</b>			A function that should be called when the tween begins (when its currentTime is at 0 and 
+ * 											changes to some other value which can happen more than once if the tween is restarted multiple times).</li>
  * 	
  * 	<li><b> onStartParams : Array</b>		An Array of parameters to pass the onStart function.</li>
  * 	
@@ -107,7 +117,7 @@ package com.greensock {
  * 	<li><b> overwrite : int</b>			Controls how (and if) other tweens of the same target are overwritten by this tween. There are
  * 										several modes to choose from, and TweenMax automatically calls <code>OverwriteManager.init()</code> if you haven't
  * 										already manually dones so, which means that by default <code>AUTO</code> mode is used (please see 
- * 										<a href="http://blog.greensock.com/overwritemanager/">http://blog.greensock.com/overwritemanager/</a> 
+ * 										<a href="http://www.greensock.com/overwritemanager/">http://www.greensock.com/overwritemanager/</a> 
  * 										for details and a full explanation of the various modes):
  * 										<ul>
  * 			  								<li>NONE (0) (or false) </li>
@@ -155,6 +165,10 @@ package com.greensock {
  * 												to set just before the tween begins. For example, if mc.x is currently 100, and you'd like to 
  * 												tween it from 0 to 500, do <code>TweenMax.to(mc, 2, {x:500, startAt:{x:0}});</code> </li>
  * </ul>
+ * 
+ * <b>Note:</b> Using a <code><a href="data/TweenMaxVars.html">TweenMaxVars</a></code> instance 
+ * instead of a generic Object to define your <code>vars</code> is a bit more verbose but provides 
+ * code hinting and improved debugging because it enforces strict data typing. Use whichever one you prefer.<br /><br />
  * 
  * <b>PLUGINS: </b><br /><br />
  * 
@@ -257,7 +271,7 @@ package com.greensock {
  * 	  <code>TweenMax.to(mc, 2, {x:"-20"});</code> it'll move the mc.x to the left 20 pixels which is the same as doing
  * 	  <code>TweenMax.to(mc, 2, {x:mc.x - 20});</code> You could also cast it like: <code>TweenMax.to(mc, 2, {x:String(myVariable)});</code></li>
  * 	  
- * 	<li> If you prefer, instead of using the onCompleteListener, onStartListener, and onUpdateListener special properties, 
+ * 	<li> If you prefer, instead of using the onCompleteListener, onInitListener, onStartListener, and onUpdateListener special properties, 
  * 	  you can set up listeners the typical way, like:<br /><code>
  * 	  var myTween:TweenMax = new TweenMax(my_mc, 2, {x:200});<br />
  * 	  myTween.addEventListener(TweenEvent.COMPLETE, myFunction);</code></li>
@@ -273,16 +287,16 @@ package com.greensock {
  * 
  * 	<li> If you find this class useful, please consider joining Club GreenSock which not only helps to sustain
  * 	  ongoing development, but also gets you bonus plugins, classes and other benefits that are ONLY available 
- * 	  to members. Learn more at <a href="http://blog.greensock.com/club/">http://blog.greensock.com/club/</a></li>
+ * 	  to members. Learn more at <a href="http://www.greensock.com/club/">http://www.greensock.com/club/</a></li>
  * 	</ul>
  * 	  
- * <b>Copyright 2009, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
+ * <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
  * 
  * @author Jack Doyle, jack@greensock.com
  */
 	public class TweenMax extends TweenLite implements IEventDispatcher {
 		/** @private **/
-		public static const version:Number = 11.104;
+		public static const version:Number = 11.67;
 		
 		TweenPlugin.activate([
 			
@@ -349,11 +363,11 @@ package com.greensock {
 		/** @private **/
 		protected var _repeatDelay:Number = 0;
 		/** @private **/
-		protected var _cyclesComplete:uint = 0;
+		protected var _cyclesComplete:int = 0;
 		/** @private Indicates the strength of the fast ease - only used for eases that are optimized to make use of the internal code in the render() loop (ones that are activated with FastEase.activate()) **/
-		protected var _easePower:uint;
+		protected var _easePower:int;
 		/** @private 0 = standard function, 1 = optimized easeIn, 2 = optimized easeOut, 3 = optimized easeInOut. Only used for eases that are optimized to make use of the internal code in the render() loop (ones that are activated with FastEase.activate()) **/
-		protected var _easeType:uint; 
+		protected var _easeType:int; 
 		
 		
 		/** 
@@ -373,22 +387,22 @@ package com.greensock {
 		 */
 		public function TweenMax(target:Object, duration:Number, vars:Object) {
 			super(target, duration, vars);
-			if (TweenLite.version < 11.1) {
+			if (TweenLite.version < 11.2) {
 				throw new Error("TweenMax error! Please update your TweenLite class or try deleting your ASO files. TweenMax requires a more recent version. Download updates at http://www.TweenMax.com.");
 			}
 			this.yoyo = Boolean(this.vars.yoyo);
-			_repeat = this.vars.repeat || 0;
-			_repeatDelay = this.vars.repeatDelay || 0;
+			_repeat = uint(this.vars.repeat);
+			_repeatDelay = (this.vars.repeatDelay) ? Number(this.vars.repeatDelay) : 0;
 			this.cacheIsDirty = true; //ensures that if there is any repeat, the totalDuration will get recalculated to accurately report it.
 
-			if (this.vars.onCompleteListener || this.vars.onUpdateListener || this.vars.onStartListener || this.vars.onRepeatListener || this.vars.onReverseCompleteListener) {
+			if (this.vars.onCompleteListener || this.vars.onInitListener || this.vars.onUpdateListener || this.vars.onStartListener || this.vars.onRepeatListener || this.vars.onReverseCompleteListener) {
 				initDispatcher();
 				if (duration == 0 && _delay == 0) {
 					_dispatcher.dispatchEvent(new TweenEvent(TweenEvent.UPDATE));
 					_dispatcher.dispatchEvent(new TweenEvent(TweenEvent.COMPLETE));
 				}
 			}
-			if ("timeScale" in this.vars && !(this.target is TweenCore)) {
+			if (this.vars.timeScale && !(this.target is TweenCore)) {
 				this.cachedTimeScale = this.vars.timeScale;
 			}
 		}
@@ -404,102 +418,21 @@ package com.greensock {
 				this.vars.startAt.immediateRender = true;
 				var startTween:TweenMax = new TweenMax(this.target, 0, this.vars.startAt);
 			}
+			if (_dispatcher) {
+				_dispatcher.dispatchEvent(new TweenEvent(TweenEvent.INIT));
+			}
 			super.init();
 			if (_ease in fastEaseLookup) {
 				_easeType = fastEaseLookup[_ease][0];
 				_easePower = fastEaseLookup[_ease][1];
 			}
-			//accommodate rounding if necessary...
-			if (this.vars.roundProps != null && "roundProps" in TweenLite.plugins) {
-				var j:int, prop:String, multiProps:String, rp:Array = this.vars.roundProps, plugin:Object, pt:PropTween;
-				var i:int = rp.length;
-				while (i--) {
-					prop = rp[i];
-					pt = this.cachedPT1;
-					while (pt) {
-						if (pt.name == prop) {
-							if (pt.isPlugin) {
-								pt.target.round = true;
-							} else {
-								if (plugin == null) {
-									plugin = new TweenLite.plugins.roundProps();
-									plugin.add(pt.target, prop, pt.start, pt.change);
-									_hasPlugins = true;
-									this.cachedPT1 = insertPropTween(plugin, "changeFactor", 0, 1, "_MULTIPLE_", true, this.cachedPT1);
-								} else {
-									plugin.add(pt.target, prop, pt.start, pt.change); //using a single plugin for rounding speeds processing
-								}
-								this.removePropTween(pt);
-							}
-						} else if (pt.isPlugin && pt.name == "_MULTIPLE_" && !pt.target.round) {
-							multiProps = " " + pt.target.overwriteProps.join(" ") + " ";
-							if (multiProps.indexOf(" " + prop + " ") != -1) {
-								pt.target.round = true;
-							}
-						}
-						pt = pt.nextNode;
-					}
-				}
-			}
-		}
-		
-		/**
-		 * @private
-		 * Inserts a new property tween into the linked list.
-		 * 
-		 * @param target Object whose property is being tweened
-		 * @param property Name of the property that is being tweened (according to the property tween's target)
-		 * @param start Starting value of the property
-		 * @param end End value of the property (if it is a String, it will be interpreted as relative)
-		 * @param name The name of the property that is being tweened (according to tween's target). This can be different than the "property". For example, for a bezier tween, the target could be the plugin, the property could be "changeFactor", and the name could be "x" or "_MULTIPLE_" if the plugin is managing more than one property. This aids in overwrite management.
-		 * @param isPlugin Indicates whether or not the property tween is a plugin
-		 * @param nextNode Next PropTween instance in the linked list. (this just helps speed things up)
-		 * @return PropTween instance that was created/inserted
-		 */
-		protected function insertPropTween(target:Object, property:String, start:Number, end:*, name:String, isPlugin:Boolean, nextNode:PropTween):PropTween {
-			var pt:PropTween = new PropTween(target, property, start, (typeof(end) == "number") ? end - start : Number(end), name, isPlugin, nextNode);
-			if (isPlugin && name == "_MULTIPLE_") {
-				var op:Array = target.overwriteProps;
-				var i:int = op.length;
-				while (i--) {
-					this.propTweenLookup[op[i]] = pt;
-				}
-			} else {
-				this.propTweenLookup[name] = pt;
-			}
-			return pt;
-		}
-		
-		/**
-		 * @private
-		 * Removes a PropTween from the linked list
-		 * 
-		 * @param propTween PropTween to remove
-		 * @return Boolean value indicating whether or not properties may have changed on the target when the PropTween was disabled. For example, when a motionBlur (plugin) is disabled, it swaps out a BitmapData for the target and may alter the alpha. We need to know this in order to determine whether or not a new tween that is overwriting this one should be re-initted() with the changed properties. 
-		 */
-		protected function removePropTween(propTween:PropTween):Boolean {
-			if (propTween.nextNode) {
-				propTween.nextNode.prevNode = propTween.prevNode;
-			}
-			if (propTween.prevNode) {
-				propTween.prevNode.nextNode = propTween.nextNode;
-			} else if (this.cachedPT1 == propTween) {
-				this.cachedPT1 = propTween.nextNode;
-			}
-			if (propTween.isPlugin && propTween.target.onDisable) {
-				propTween.target.onDisable(); //some plugins need to be notified so they can perform cleanup tasks first
-				if (propTween.target.activeDisable) {
-					return true;
-				}
-			}
-			return false;
 		}
 	
 		/** @inheritDoc **/
 		override public function invalidate():void {
 			this.yoyo = Boolean(this.vars.yoyo == true);
-			_repeat = this.vars.repeat || 0;
-			_repeatDelay = this.vars.repeatDelay || 0;
+			_repeat = (this.vars.repeat) ? Number(this.vars.repeat) : 0;
+			_repeatDelay = (this.vars.repeatDelay) ? Number(this.vars.repeatDelay) : 0;
 			_hasUpdateListener = false;
 			if (this.vars.onCompleteListener != null || this.vars.onUpdateListener != null || this.vars.onStartListener != null) {			
 				initDispatcher();
@@ -509,61 +442,70 @@ package com.greensock {
 		}
 		
 		/**
-		 * @private
-		 * Adjusts tween values on the fly. This is a work-in-progress and, when finished, will be made public.
+		 * Updates tweening values on the fly so that they appear to seamlessly change course even if the tween is in-progress.
+		 * Think of it as dynamically updating the <code>vars</code> object that you passed in to the tween when it was originally
+		 * created. You do <b>NOT</b> need to redefine all of the <code>vars</code> values - only the ones that you want
+		 * to update. You can even define new properties that you didn't define in the original <code>vars</code> object. 
+		 * If the <code>resetDuration</code> parameter is <code>true</code> and the tween has already started (or finished), 
+		 * <code>updateTo()</code> will restart the tween. Otherwise, the tween's timing will be honored. And if
+		 * <code>resetDuration</code> is <code>false</code> and the tween is in-progress, the starting values of each 
+		 * property will be adjusted so that the tween appears to seamlessly redirect to the new destination values. 
+		 * For example:<br /><br /><code>
 		 * 
-		 * @param vars Object containing properties with the end values that should be udpated. For example, to update the destination x value to 300 and the destination y value to 500, pass: {x:300, y:500}
-		 * @param adjustStartValues If true, the property's start value will be adjusted to make the tween appear to seamlessly/smoothly redirect without any skipping/jerking. Beware that if start values are adjusted, reversing the tween will not make it travel back to the original starting value.
+		 * //create the tween <br />
+		 * var tween:TweenMax = new TweenMax(mc, 2, {x:100, y:200, alpha:0.5});<br /><br />
+		 * 
+		 * //then later, update the destination x and y values, restarting the tween<br />
+		 * tween.updateTo({x:300, y:0}, true);<br /><br />
+		 * 
+		 * //or to update the values mid-tween while keeping the end time the same (don't restart the tween), do this:<br />
+		 * tween.updateTo({x:300, y:0}, false);<br /><br /></code>
+		 * 
+		 * Note: If you plan to constantly update values, please look into using the <code>DynamicPropsPlugin</code>.
+		 * 
+		 * @param vars Object containing properties with the end values that should be udpated. You do <b>NOT</b> need to redefine all of the original <code>vars</code> values - only the ones that should be updated (although if you change a plugin value, you will need to fully define it). For example, to update the destination <code>x</code> value to 300 and the destination <code>y</code> value to 500, pass: <code>{x:300, y:500}</code>.
+		 * @param resetDuration If the tween has already started (or finished) and <code>resetDuration</code> is true, the tween will restart. If <code>resetDuration</code> is false, the tween's timing will be honored (no restart) and each tweening property's starting value will be adjusted so that it appears to seamlessly redirect to the new destination value.
 		 **/
-		protected function updateTo(vars:Object, adjustStartingValues:Boolean=true):void {
-			var pt:PropTween = this.cachedPT1, curTime:Number = this.cachedTotalTime, p:String, plugin:Object, prioritize:Boolean, pluginKillVars:Object, i:int;
+		public function updateTo(vars:Object, resetDuration:Boolean=false):void {
+			var curRatio:Number = this.ratio;
+			if (resetDuration && this.timeline != null && this.cachedStartTime < this.timeline.cachedTime) {
+				this.cachedStartTime = this.timeline.cachedTime;
+				this.setDirtyCache(false);
+				if (this.gc) {
+					this.setEnabled(true, false);
+				} else {
+					this.timeline.insert(this, this.cachedStartTime - _delay); //ensures that any necessary re-sequencing of TweenCores in the timeline occurs to make sure the rendering order is correct.
+				}
+			}
+			for (var p:String in vars) {
+				this.vars[p] = vars[p];
+			}
 			if (this.initted) {
-				if (!adjustStartingValues) {
-					this.totalTime = 0;
-				}
-				killVars(vars, false);
-				
-				for (p in vars) {
-					if (p in _reservedProps) { 
-						//ignore
-					} else if (p in plugins && (plugin = new (plugins[p] as Class)()).onInitTween(this.target, vars[p], this)) {
-						pluginKillVars = {};
-						i = plugin.overwriteProps.length;
-						while (i--) {
-							pluginKillVars[plugin.overwriteProps[i]] = true;
-						}
-						killVars(pluginKillVars, false);
-						
-						this.cachedPT1 = insertPropTween(plugin, "changeFactor", 0, 1, (plugin.overwriteProps.length == 1) ? plugin.overwriteProps[0] : "_MULTIPLE_", true, this.cachedPT1); 
-						_hasPlugins = true;
-						if (plugin.priority) {
-							this.cachedPT1.priority = plugin.priority;
-							prioritize = true;
-						}
-							
-					} else {
-						this.cachedPT1 = insertPropTween(this.target, p, this.target[p], vars[p], p, false, this.cachedPT1); 
+				this.initted = false;
+				if (!resetDuration) {
+					if (_notifyPluginsOfEnabled && this.cachedPT1) {
+						onPluginEvent("onDisable", this); //in case a plugin like MotionBlur must perform some cleanup tasks
 					}
-					this.vars[p] = vars[p];
-				}
-				if (prioritize) {
-					onPluginEvent("onInit", this); //reorders the linked list in order of priority. Uses a static TweenPlugin method in order to minimize file size in TweenLite
-				}
-				
-				if (adjustStartingValues && this.cachedTotalTime) {
-					adjustStartValues();
-					//this.totalTime = curTime;
-				}
-			} else {
-				for (p in vars) {
-					this.vars[p] = vars[p];
+					init();
+					if (!resetDuration && this.cachedTime > 0 && this.cachedTime < this.cachedDuration) {
+						var inv:Number = 1 / (1 - curRatio);
+						var pt:PropTween = this.cachedPT1, endValue:Number;
+						while (pt) {
+							endValue = pt.start + pt.change; 
+							pt.change *= inv;
+							pt.start = endValue - pt.change;
+							pt = pt.nextNode;
+						}
+					}
+					
 				}
 			}
 		}
 		
 		/**
 		 * Adjusts a destination value on the fly, optionally adjusting the start values so that it appears to redirect seamlessly
-		 * without skipping/jerking. If you plan to constantly update values, please look into using the DynamicPropsPlugin.
+		 * without skipping/jerking (<b>this method has been deprecated in favor of <code>updateTo()</code></b>). 
+		 * If you plan to constantly update values, please look into using the DynamicPropsPlugin.
 		 * 
 		 * @param property Name of the property that should be updated. For example, "x".
 		 * @param value The new destination value
@@ -572,27 +514,7 @@ package com.greensock {
 		public function setDestination(property:String, value:*, adjustStartValues:Boolean=true):void {
 			var vars:Object = {};
 			vars[property] = value;
-			updateTo(vars, adjustStartValues);
-		}
-		
-		/**
-		 * @private
-		 * Adjusts the start values in the tweens so that the current progress and end values are maintained 
-		 * which prevents "skipping" when changing destination values mid-way through the tween.
-		 */
-		protected function adjustStartValues():void { 
-			if (this.cachedTime != 0) {
-				var inv:Number = 1 / (1 - this.ratio);
-				var pt:PropTween = this.cachedPT1, endValue:Number;
-				while (pt) {
-					if (!pt.isPlugin) { 
-						endValue = pt.start + pt.change; 
-						pt.change = (endValue - pt.target[pt.property]) * inv;
-						pt.start = endValue - pt.change;
-						pt = pt.nextNode;
-					}
-				}
-			}
+			updateTo(vars, !adjustStartValues);
 		}
 		
 		
@@ -604,7 +526,7 @@ package com.greensock {
 		 */
 		public function killProperties(names:Array):void {
 			var v:Object = {}, i:int = names.length;
-			while (i--) {
+			while (--i > -1) {
 				v[names[i]] = true;
 			}
 			killVars(v);
@@ -621,10 +543,7 @@ package com.greensock {
 		 * @param force Normally the tween will skip rendering if the time matches the cachedTotalTime (to improve performance), but if force is true, it forces a render. This is primarily used internally for tweens with durations of zero in TimelineLite/Max instances.
 		 */
 		override public function renderTime(time:Number, suppressEvents:Boolean=false, force:Boolean=false):void {
-			if (!this.active && !this.cachedPaused) {
-				this.active = true;  //so that if the user renders a tween (as opposed to the timeline rendering it), the timeline is forced to re-render and align it with the proper time/frame on the next rendering cycle. Maybe the tween already finished but the user manually re-renders it as halfway done.
-			}
-			var totalDur:Number = (this.cacheIsDirty) ? this.totalDuration : this.cachedTotalDuration, prevTime:Number = this.cachedTime, isComplete:Boolean, repeated:Boolean, setRatio:Boolean;
+			var totalDur:Number = (this.cacheIsDirty) ? this.totalDuration : this.cachedTotalDuration, prevTime:Number = this.cachedTotalTime, isComplete:Boolean, repeated:Boolean, setRatio:Boolean;
 			if (time >= totalDur) {
 				this.cachedTotalTime = totalDur;
 				this.cachedTime = this.cachedDuration;
@@ -641,12 +560,14 @@ package com.greensock {
 				if (time < 0) {
 					this.active = false;
 					if (this.cachedDuration == 0) { //zero-duration tweens are tricky because we must discern the momentum/direction of time in order to determine whether the starting values should be rendered or the ending values. If the "playhead" of its timeline goes past the zero-duration tween in the forward direction or lands directly on it, the end values should be rendered, but if the timeline's "playhead" moves past it in the backward direction (from a postitive time to a negative time), the starting values must be rendered.
-						if (_rawPrevTime > 0) {
+						if (_rawPrevTime >= 0) {
 							force = true;
 							isComplete = true;
 						}
 						_rawPrevTime = time;
 					}
+				} else if (time == 0 && !this.initted) { //if we render the very beginning (time == 0) of a TweenMax.fromTo(), we must force the render (normal tweens wouldn't need to render at a time of 0 when the prevTime was also 0). This is also mandatory to make sure overwriting kicks in immediately.
+					force = true;
 				}
 				this.cachedTotalTime = this.cachedTime = this.ratio = 0;
 				if (this.cachedReversed && prevTime != 0) {
@@ -660,15 +581,20 @@ package com.greensock {
 			if (_repeat != 0) {
 				
 				var cycleDuration:Number = this.cachedDuration + _repeatDelay;
+				var prevCycles:int = _cyclesComplete;
+				_cyclesComplete = (this.cachedTotalTime / cycleDuration) >> 0; //rounds result down, like int()
+				if (_cyclesComplete == this.cachedTotalTime / cycleDuration) {
+					_cyclesComplete--; //otherwise when rendered exactly at the end time, it will act as though it is repeating (at the beginning)
+				}
+				if (prevCycles != _cyclesComplete) {
+					repeated = true;
+				}
+				
 				if (isComplete) {
 					if (this.yoyo && _repeat % 2) {
 						this.cachedTime = this.ratio = 0;
 					}
 				} else if (time > 0) {
-					if (_cyclesComplete != (_cyclesComplete = int(this.cachedTotalTime / cycleDuration))) {
-						repeated = true;
-					}
-					
 					this.cachedTime = ((this.cachedTotalTime / cycleDuration) - _cyclesComplete) * cycleDuration; //originally this.cachedTotalTime % cycleDuration but floating point errors caused problems, so I normalized it. (4 % 0.8 should be 0 but Flash reports it as 0.79999999!)
 					
 					if (this.yoyo && _cyclesComplete % 2) {
@@ -683,42 +609,47 @@ package com.greensock {
 						this.cachedTime = this.ratio = 0;
 						setRatio = false;
 					}
-				}	
+				} else {
+					_cyclesComplete = 0;
+				}
 				
 			}
 			
-			if (prevTime == this.cachedTime && !force) {
+			if (prevTime == this.cachedTotalTime && !force) {
 				return;
 			} else if (!this.initted) {
 				init();
+			}
+			if (!this.active && !this.cachedPaused) {
+				this.active = true;  //so that if the user renders a tween (as opposed to the timeline rendering it), the timeline is forced to re-render and align it with the proper time/frame on the next rendering cycle. Maybe the tween already finished but the user manually re-renders it as halfway done.
 			}
 			
 			if (setRatio) {
 				//if the ease is optimized, process it inline (function calls are expensive performance-wise)...
 				if (_easeType) {
-					var power:uint = _easePower;
+					var power:int = _easePower;
 					var val:Number = this.cachedTime / this.cachedDuration;
 					if (_easeType == 2) { 			//easeOut
 						this.ratio = val = 1 - val;
-						while (power--) {
+						while (--power > -1) {
 							this.ratio = val * this.ratio;
 						}
 						this.ratio = 1 - this.ratio;
 					} else if (_easeType == 1) { 	//easeIn
 						this.ratio = val;
-						while (power--) {
+						while (--power > -1) {
 							this.ratio = val * this.ratio;
 						}
 					} else {						//easeInOut
 						if (val < 0.5) {
 							this.ratio = val = val * 2;
-							while (power--) {
+							while (--power > -1) {
 								this.ratio = val * this.ratio;
 							}
 							this.ratio = this.ratio * 0.5;
 						} else {
 							this.ratio = val = (1 - val) * 2;
-							while (power--) {
+							while (--power > -1) {
 								this.ratio = val * this.ratio;
 							}
 							this.ratio = 1 - (0.5 * this.ratio);
@@ -730,7 +661,7 @@ package com.greensock {
 				}
 			}
 			
-			if (prevTime == 0 && this.cachedTotalTime != 0 && !suppressEvents) {
+			if (prevTime == 0 && (this.cachedTotalTime != 0 || this.cachedDuration == 0) && !suppressEvents) {
 				if (this.vars.onStart) {
 					this.vars.onStart.apply(null, this.vars.onStartParams);
 				}
@@ -750,18 +681,19 @@ package com.greensock {
 			if (_hasUpdateListener && !suppressEvents) {
 				_dispatcher.dispatchEvent(new TweenEvent(TweenEvent.UPDATE));
 			}
-			if (isComplete) {
-				if (_hasPlugins && this.cachedPT1) {
-					onPluginEvent("onComplete", this);
-				}
-				complete(true, suppressEvents);
-			} else if (repeated && !suppressEvents) {
+			if (repeated && !suppressEvents && !this.gc) { 
 				if (this.vars.onRepeat) {
 					this.vars.onRepeat.apply(null, this.vars.onRepeatParams);
 				}
 				if (_dispatcher) {
 					_dispatcher.dispatchEvent(new TweenEvent(TweenEvent.REPEAT));
 				}
+			}
+			if (isComplete && !this.gc) { //check gc because there's a chance that kill() could be called in an onUpdate
+				if (_hasPlugins && this.cachedPT1) {
+					onPluginEvent("onComplete", this);
+				}
+				complete(true, suppressEvents);
 			}
 		}
 		
@@ -774,7 +706,7 @@ package com.greensock {
 		override public function complete(skipRender:Boolean=false, suppressEvents:Boolean=false):void {
 			super.complete(skipRender, suppressEvents);
 			if (!suppressEvents && _dispatcher) {
-				if (this.cachedTime == this.cachedDuration && !this.cachedReversed) {
+				if (this.cachedTotalTime == this.cachedTotalDuration && !this.cachedReversed) {
 					_dispatcher.dispatchEvent(new TweenEvent(TweenEvent.COMPLETE));
 				} else if (this.cachedReversed && this.cachedTotalTime == 0) {
 					_dispatcher.dispatchEvent(new TweenEvent(TweenEvent.REVERSE_COMPLETE));
@@ -792,6 +724,9 @@ package com.greensock {
 		protected function initDispatcher():void {
 			if (_dispatcher == null) {
 				_dispatcher = new EventDispatcher(this);
+			}
+			if (this.vars.onInitListener is Function) {
+				_dispatcher.addEventListener(TweenEvent.INIT, this.vars.onInitListener, false, 0, true);
 			}
 			if (this.vars.onStartListener is Function) {
 				_dispatcher.addEventListener(TweenEvent.START, this.vars.onStartListener, false, 0, true);
@@ -900,7 +835,7 @@ package com.greensock {
 		 * 
 		 * @param target Target object whose properties this tween affects. This can be ANY object, not just a DisplayObject. 
 		 * @param duration Duration in seconds (or in frames for frames-based tweens)
-		 * @param fromVars An object containing the starting values of the properties you're tweening. For example, to tween from x=0, y=0, you could pass {x:0, y:0}.
+		 * @param fromVars An object containing the starting values of the properties you're tweening. For example, to tween from x=0, y=0, you could pass {x:0, y:0}. Only put starting values in the fromVars parameter - all special properties for the tween (like onComplete, onUpdate, delay, etc.) belong in the toVars parameter. 
 		 * @param toVars An object containing the ending values of the properties you're tweening. For example, to tween to x=100, y=100, you could pass {x:100, y:100}. It can also contain special properties like "onComplete", "ease", "delay", etc.
 		 * @return TweenMax instance
 		 */
@@ -933,13 +868,16 @@ package com.greensock {
 		 */
 		public static function allTo(targets:Array, duration:Number, vars:Object, stagger:Number=0, onCompleteAll:Function=null, onCompleteAllParams:Array=null):Array {
 			var i:int, varsDup:Object, p:String;
-			var l:uint = targets.length;
+			var l:int = targets.length;
 			var a:Array = [];
-			var curDelay:Number = vars.delay || 0;
+			if (vars.isGSVars) { //to accommodate TweenMaxVars instances for strong data typing and code hinting
+				vars = vars.vars;
+			}
+			var curDelay:Number = ("delay" in vars) ? Number(vars.delay) : 0;
 			var onCompleteProxy:Function = vars.onComplete;
 			var onCompleteParamsProxy:Array = vars.onCompleteParams;
-			var lastIndex:int = (stagger <= 0) ? 0 : l - 1;
-			for (i = 0; i < l; i++) {
+			var lastIndex:int = l - 1;
+			for (i = 0; i < l; i += 1) {
 				varsDup = {};
 				for (p in vars) {
 					varsDup[p] = vars[p];
@@ -953,7 +891,7 @@ package com.greensock {
 						onCompleteAll.apply(null, onCompleteAllParams);
 					}
 				}
-				a[a.length] = new TweenMax(targets[i], duration, varsDup);
+				a[i] = new TweenMax(targets[i], duration, varsDup);
 				curDelay += stagger;
 			}
 			return a;
@@ -1042,9 +980,10 @@ package com.greensock {
 			var toReturn:Array = [];
 			if (a) {
 				var i:int = a.length;
-				while (i--) {
-					if (!a[i].gc) {
-						toReturn[toReturn.length] = a[i];
+				var cnt:int = 0;
+				while (--i > -1) {
+					if (!TweenLite(a[i]).gc) {
+						toReturn[cnt++] = a[i];
 					}
 				}
 			}
@@ -1062,7 +1001,7 @@ package com.greensock {
 			var a:Array = getTweensOf(target);
 			var i:int = a.length;
 			var tween:TweenLite;
-			while (i--) {
+			while (--i > -1) {
 				tween = a[i];
 				if ((tween.active || (tween.cachedStartTime == tween.timeline.cachedTime && tween.timeline.active))) {
 					return true;
@@ -1080,11 +1019,11 @@ package com.greensock {
 		 */
 		public static function getAllTweens():Array {
 			var ml:Dictionary = masterList; //speeds things up slightly
-			var cnt:uint = 0;
+			var cnt:int = 0;
 			var toReturn:Array = [], a:Array, i:int;
 			for each (a in ml) {
 				i = a.length;
-				while (i--) {
+				while (--i > -1) {
 					if (!TweenLite(a[i]).gc) {
 						toReturn[cnt++] = a[i];
 					}
@@ -1094,9 +1033,20 @@ package com.greensock {
 		}
 		
 		/**
-		 * @private
-		 * Kills all tweens and/or delayedCalls/callbacks, optionally forcing them to completion first.
+		 * Kills all tweens and/or delayedCalls/callbacks, optionally forcing them to completion first. The 
+		 * various parameters provide a way to distinguish between delayedCalls and tweens, so if you want to 
+		 * kill EVERYTHING (tweens and delayedCalls), you'd do:<br /><br /><code>
 		 * 
+		 * TweenMax.killAll(false, true, true);<br /><br /></code>
+		 * 
+		 * But if you want to kill only the tweens but allow the delayedCalls to continue, you'd do:<br /><br /><code>
+		 * 
+		 * TweenMax.killAll(false, true, false);<br /><br /></code>
+		 * 
+		 * And if you want to kill only the delayedCalls but not the tweens, you'd do:<br /><br /><code>
+		 * 
+		 * TweenMax.killAll(false, false, true);<br /></code>
+		 *  
 		 * @param complete Determines whether or not the tweens/delayedCalls/callbacks should be forced to completion before being killed.
 		 * @param tweens If true, all tweens will be killed
 		 * @param delayedCalls If true, all delayedCalls will be killed. TimelineMax callbacks are treated the same as delayedCalls.
@@ -1105,7 +1055,7 @@ package com.greensock {
 			var a:Array = getAllTweens();
 			var isDC:Boolean;  //is delayedCall
 			var i:int = a.length;
-			while (i--) {
+			while (--i > -1) {
 				isDC = (a[i].target == a[i].vars.onComplete);
 				if (isDC == delayedCalls || isDC != tweens) {
 					if (complete) {
@@ -1127,7 +1077,7 @@ package com.greensock {
 			var a:Array = getAllTweens();
 			var curTarget:Object, curParent:DisplayObjectContainer;
 			var i:int = a.length;
-			while (i--) {
+			while (--i > -1) {
 				curTarget = a[i].target;
 				if (curTarget is DisplayObject) {
 					curParent = curTarget.parent;
@@ -1177,7 +1127,7 @@ package com.greensock {
 			var a:Array = getAllTweens();
 			var isDC:Boolean; //is delayedCall 
 			var i:int = a.length;
-			while (i--) {
+			while (--i > -1) {
 				isDC = (TweenLite(a[i]).target == TweenLite(a[i]).vars.onComplete);
 				if (isDC == delayedCalls || isDC != tweens) {
 					TweenCore(a[i]).paused = pause;
@@ -1268,7 +1218,7 @@ package com.greensock {
 			this.duration = (n - (_repeat * _repeatDelay)) / (_repeat + 1);
 		}
 		
-		/** Multiplier describing the speed of the timeline where 1 is normal speed, 0.5 is half-speed, 2 is double speed, etc. **/
+		/** Multiplier affecting the speed of the timeline where 1 is normal speed, 0.5 is half-speed, 2 is double speed, etc. **/
 		public function get timeScale():Number {
 			return this.cachedTimeScale;
 		}
@@ -1277,7 +1227,7 @@ package com.greensock {
 			if (n == 0) { //can't allow zero because it'll throw the math off
 				n = 0.0001;
 			}
-			var tlTime:Number = (_pauseTime || _pauseTime == 0) ? _pauseTime : this.timeline.cachedTotalTime;
+			var tlTime:Number = (this.cachedPauseTime || this.cachedPauseTime == 0) ? this.cachedPauseTime : this.timeline.cachedTotalTime;
 			this.cachedStartTime = tlTime - ((tlTime - this.cachedStartTime) * this.cachedTimeScale / n);
 			this.cachedTimeScale = n;
 			setDirtyCache(false);

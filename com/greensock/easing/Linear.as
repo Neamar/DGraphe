@@ -1,6 +1,6 @@
 package com.greensock.easing {
 	
-	public class Linear extends FastEase {
+	public class Linear {
 		public static const power:uint = 0;
 		
 		public static function easeNone (t:Number, b:Number, c:Number, d:Number):Number {

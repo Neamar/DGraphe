@@ -1,6 +1,6 @@
 package com.greensock.easing {
 	
-	public class Cubic extends FastEase {
+	public class Cubic {
 		public static const power:uint = 2;
 		
 		public static function easeIn (t:Number, b:Number, c:Number, d:Number):Number {
