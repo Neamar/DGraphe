@@ -22,24 +22,17 @@ package
 		 * Liste des images pour les niveaux.
 		 * Chargées en Embed.
 		 */
-		[Embed(source = "assets/Niveaux/1.png")]
-		private static var Niveau1:Class;
-		[Embed(source = "assets/Niveaux/3.png")]
-		private static var Niveau3:Class;
-		[Embed(source = "assets/Niveaux/4.png")]
-		private static var Niveau4:Class;
-		[Embed(source = "assets/Niveaux/5.png")]
-		private static var Niveau5:Class;
-		[Embed(source = "assets/Niveaux/6.png")]
-		private static var Niveau6:Class;
-		[Embed(source = "assets/Niveaux/7.png")]
-		private static var Niveau7:Class;		
-		[Embed(source = "assets/Niveaux/8.png")]
-		private static var Niveau8:Class;	
-		[Embed(source = "assets/Niveaux/9.png")]
-		private static var Niveau9:Class;
-		[Embed(source = "assets/Niveaux/10.png")]
-		private static var Niveau10:Class;	
+		[Embed(source = "assets/Niveaux/1.png")] private static var Niveau1:Class;
+		[Embed(source = "assets/Niveaux/3.png")] private static var Niveau3:Class;
+		[Embed(source = "assets/Niveaux/4.png")] private static var Niveau4:Class;
+		[Embed(source = "assets/Niveaux/5.png")] private static var Niveau5:Class;
+		[Embed(source = "assets/Niveaux/6.png")] private static var Niveau6:Class;
+		[Embed(source = "assets/Niveaux/7.png")] private static var Niveau7:Class;		
+		[Embed(source = "assets/Niveaux/8.png")] private static var Niveau8:Class;	
+		[Embed(source = "assets/Niveaux/9.png")] private static var Niveau9:Class;
+		[Embed(source = "assets/Niveaux/10.png")] private static var Niveau10:Class;	
+		[Embed(source = "assets/Niveaux/11.png")] private static var Niveau11:Class;
+		
 		/**
 		 * Niveaux
 		 */
@@ -189,13 +182,16 @@ package
 					//var Parts:Array = Game.buildNodes('420,320|300,320|300,220|420,220:3,0|0,1|1,2|2,3');
 					return new KillNoneLevel(Parts[0], Parts[1], 8, (new Niveau1()).bitmapData);
 				},
-				
-				//Quadrillage, pour un premier niveau ? 336,125|485,128|466,238|342,236|342,364|466,362|232,246|232,354|336,475|485,472|577,354|577,246|400,300:5,2|2,1|0,3|3,4|3,2|4,5|7,4|7,6|6,3|9,5|4,8|11,2|5,10|10,11|4,12|3,12|5,12|12,2
 				function():Level
 				{
-					var Parts:Array = Game.buildNodes('400,300:');
+					var Parts:Array = Game.buildNodes('60,180|60,280|60,380|160,280|160,180|160,380|240,180|340,180|340,280|240,280|240,380|340,380|420,180|420,280|420,380|500,380|580,380|580,280|580,180|680,180|680,280:5,3|3,4|3,1|1,0|1,2|11,10|10,9|9,6|6,7|9,8|15,14|14,13|13,12|20,17|17,18|18,19|19,20|17,16');
+					return new Level(Parts[0], Parts[1], 20, (new Niveau11()).bitmapData);
+				},
+				function():Level
+				{
+					var Parts:Array = Game.buildNodes('336,125|485,128|466,238|342,236|342,364|466,362|232,246|232,354|336,475|485,472|577,354|577,246|400,300:5,2|2,1|0,3|3,4|3,2|4,5|7,4|7,6|6,3|9,5|4,8|11,2|5,10|10,11|4,12|3,12|5,12|12,2');
 					//var Parts:Array = Game.buildNodes('420,320|300,320|300,220|420,220:3,0|0,1|1,2|2,3');
-					return new Level(Parts[0], Parts[1], 0, (new Niveau1()).bitmapData);
+					return new Level(Parts[0], Parts[1], 20, (new Niveau11()).bitmapData);
 				}
 			);
 		}
@@ -220,7 +216,7 @@ package
 			for each(var Noeud:String in strNoeuds_Array)
 			{
 				Composants = Noeud.split(",");
-				var NouveauNoeud:Node = new Node(Composants[0] - Main.LARGEUR2, Composants[1] - Main.HAUTEUR2);
+				var NouveauNoeud:Node = new Node(Composants[0] - Main.LARGEUR2 + 50, Composants[1] - Main.HAUTEUR2);
 				Noeuds.push(NouveauNoeud);
 			}
 			
@@ -244,7 +240,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = 1;
+		private var LevelNumber:int = 9;
 		/**
 		 * L'objet niveau chargé
 		 */
@@ -256,6 +252,11 @@ package
 		private var VLevelObject:VLevel;
 		
 		private var BG:Background;
+		
+		/**
+		 * Faut-il mettre à jour le niveau ?
+		 */
+		private var UpdateLevel:Boolean = true;
 		
 		/**
 		 * Lancement du jeu !
@@ -368,14 +369,15 @@ package
 			/**
 			 * ...et afficher
 			 */
-			//VLevelObject.alpha = 0;
 			VLevelObject.x = Main.LARGEUR + Main.LARGEUR2;
 			addChild(VLevelObject);
+			UpdateLevel = false;
 			TweenLite.to(
 				VLevelObject,
 				3 * Background.SCROLL_DURATION / 4000,
 				{
 					delay:Background.SCROLL_DURATION / 4000,
+					onInit:function():void{UpdateLevel = true},
 					x:Main.LARGEUR2
 				}
 			);
@@ -389,7 +391,7 @@ package
 		
 		protected final function update(e:Event = null):void
 		{
-			if (LevelObject != null)
+			if (LevelObject != null && UpdateLevel)
 			{
 				//Mettre à jour le niveau
 				LevelObject.update();
