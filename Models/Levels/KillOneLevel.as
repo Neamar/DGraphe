@@ -18,6 +18,7 @@ package Models.Levels
 		 * @param	Datas
 		 * @param	NbChaines
 		 * @param	TheOne Le noeud à tuer
+		 * @param	Fond
 		 */
 		public function KillOneLevel(Noeuds:Vector.<Node>, Ressorts:Vector.<Spring>, NbChaines:int, TheOne:Node, Fond:BitmapData) 
 		{

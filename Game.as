@@ -32,6 +32,7 @@ package
 		[Embed(source = "assets/Niveaux/9.png")] private static var Niveau9:Class;
 		[Embed(source = "assets/Niveaux/10.png")] private static var Niveau10:Class;	
 		[Embed(source = "assets/Niveaux/11.png")] private static var Niveau11:Class;
+		[Embed(source = "assets/Niveaux/12.png")] private static var Niveau12:Class;
 		
 		/**
 		 * Niveaux
@@ -185,7 +186,7 @@ package
 				function():Level
 				{
 					var Parts:Array = Game.buildNodes('60,180|60,280|60,380|160,280|160,180|160,380|240,180|340,180|340,280|240,280|240,380|340,380|420,180|420,280|420,380|500,380|580,380|580,280|580,180|680,180|680,280:5,3|3,4|3,1|1,0|1,2|11,10|10,9|9,6|6,7|9,8|15,14|14,13|13,12|20,17|17,18|18,19|19,20|17,16');
-					return new Level(Parts[0], Parts[1], 20, (new Niveau11()).bitmapData);
+					return new CutAllLevel(Parts[0], Parts[1], 15, (new Niveau12()).bitmapData);
 				},
 				function():Level
 				{

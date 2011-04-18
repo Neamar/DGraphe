@@ -12,6 +12,13 @@ package Models.Levels
 	{
 		public var NbDead:int = 0;
 		
+		/**
+		 * 
+		 * @param	Noeuds
+		 * @param	Ressorts
+		 * @param	NbChaines
+		 * @param	Fond
+		 */
 		public function KillAllLevel( Noeuds:Vector.<Node>, Ressorts:Vector.<Spring>, NbChaines:int, Fond:BitmapData) 
 		{
 			super(Noeuds, Ressorts, NbChaines, Fond);

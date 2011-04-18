@@ -26,7 +26,7 @@
 	{
 		/**
 		 * Permet de passer en mode débuggage
-		 * Sur true, les niveaux ne peuvent pa être perdus, et une carte des déplacements s'affiche.
+		 * Sur true, les niveaux ne peuvent pas être perdus, et une carte des déplacements s'affiche.
 		 */
 		public static const DEBUG_MODE:Boolean = false;
 		

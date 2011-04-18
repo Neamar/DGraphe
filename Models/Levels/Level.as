@@ -52,6 +52,14 @@ package Models.Levels
 		 */
 		protected var Fond:BitmapData;
 
+		/**
+		 * Crée un nouveau niveau
+		 * 
+		 * @param	Noeuds la liste des noeuds constituant le niveau
+		 * @param	Ressorts la liste des ressorts liant les noeuds entre eux
+		 * @param	NbChaines le nombre de chaînes imparti
+		 * @param	Fond l'image à utiliser pour faire les tests de collision.
+		 */
 		public function Level(Noeuds:Vector.<Node>, Ressorts:Vector.<Spring>, NbChaines:int, Fond:BitmapData):void 
 		{
 			ChainesACouper = NbChaines;
