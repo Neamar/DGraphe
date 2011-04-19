@@ -84,7 +84,7 @@ package
 					/**
 					 * @state FONCTIONNEL
 					 * @brief Premier niveau Mossad sur grand cercle union petit cercle
-					 * @difficulty 4
+					 * @difficulty 3
 					 * @solution
 					 * - Dans la structure du bas, couper d'un coup les deux liens sud sud est (liant le noeud "jointure entre deux bras fixes" et le bras de droite).
 					 * @note Plusieurs solutions
@@ -92,6 +92,19 @@ package
 					var Parts:Array = Game.buildNodes('400,320|320,260|240,200|300,340|200,360|480,380|560,440|400,400|400,480|300,440|340,380|460,260|500,180:2,1|1,0|4,3|3,0|6,5|5,0|8,7|7,0|4,9|0,11|11,12|9,3|9,8|9,7');
 					Parts[0][0].Fixe = true;
 					return new KillOneLevel(Parts[0], Parts[1], 25, Parts[0][10], (new Niveau6()).bitmapData);
+				},
+								function():Level
+				{
+					/**
+					 * @state FONCTIONNEL
+					 * @brief Niveau "quadrillage de morpion"
+					 * @difficulty 4
+					 * @solution
+					 * - Couper les deux liens de la croix centrale.
+					 * - Couper les deux extrémités verticales
+					 */
+					var Parts:Array = Game.buildNodes('336,125|485,128|466,238|342,236|342,364|466,362|232,246|232,354|336,475|485,472|577,354|577,246|400,300:5,2|2,1|0,3|3,4|3,2|4,5|7,4|7,6|6,3|9,5|4,8|11,2|5,10|10,11|4,12|3,12|5,12|12,2');
+					return new KillNoneLevel(Parts[0], Parts[1], 6, (new Niveau11()).bitmapData);
 				},
 				function():Level
 				{
@@ -152,20 +165,21 @@ package
 					return new KillButOneLevel(Parts[0], Parts[1], 10, Parts[0][3], (new Niveau7()).bitmapData);
 					//return new Level(Parts[0], Parts[1], 3, (new Niveau7()).bitmapData);
 				},
-				function():Level
+								function():Level
 				{
 					/**
 					 * @state FONCTIONNEL
-					 * @brief Niveau "en croix à petit battant horizontal", deux rectangles arrondis placés perpendiculairement l'un à l'autre
-					 * @difficulty 9
+					 * @brief HELP
+					 * @difficulty 7 (spécial)
 					 * @solution
-					 * - Attendre quelques secondes la résolution des contraintes : deux noeuds tombent direct
-					 * - Couper en bas, deux noeuds sont expulsés (sans tomber pour l'instant)
-					 * - En haut, deux noeuds attendent d'être catapultés (structure instable) : les virer
-					 * - Ouvrir enfin la structure obtenue en X, puis couper. Adios !
+					 * - Aller vite :D
+					 * - Avant que les noeuds se coupent seuls, les trancher manuellement pour faire du score
+					 * - Accorder une attention particulière au haut du E et du P, et à la partie gauche du H.
+					 * 
+					 * @note Les très bons peuvent couper 17 liens... 14 semble raisonnable cependant pour cibler les gens modérément doués à la souris.
 					 */
-					var Parts:Array = Game.buildNodes('400,222|400,260|400,307|400,350|400,386|400,422|319,300|481,300|400,183|286,191|514,191:0,6|6,1|2,6|6,3|6,4|6,5|5,7|7,4|3,7|2,7|1,7|0,7|6,8|8,7|10,7|9,6|9,8|8,10');
-					return new KillButOneLevel(Parts[0], Parts[1], 14, Parts[0][8], (new Niveau3()).bitmapData);
+					var Parts:Array = Game.buildNodes('110,180|110,280|110,380|210,280|210,180|210,380|290,180|390,180|390,280|290,280|290,380|390,380|470,180|470,280|470,430|550,380|630,380|630,280|630,180|730,180|730,280:5,3|3,4|3,1|1,0|1,2|11,10|10,9|9,6|6,7|9,8|15,14|14,13|13,12|20,17|17,18|18,19|19,20|17,16');
+					return new CutAllLevel(Parts[0], Parts[1], 15, (new Niveau12()).bitmapData);
 				},
 				function():Level
 				{
@@ -180,19 +194,22 @@ package
 					 * - Couper une par une chacune de ces composantes, dans l'ordre le plus logique en fonction de leurs positions.
 					 */
 					var Parts:Array = Game.buildNodes('280,300|380,260|420,260|520,300|420,340|380,340:0,1|1,2|2,3|3,4|4,5|5,0|1,4|0,3');
-					//var Parts:Array = Game.buildNodes('420,320|300,320|300,220|420,220:3,0|0,1|1,2|2,3');
 					return new KillNoneLevel(Parts[0], Parts[1], 8, (new Niveau1()).bitmapData);
 				},
 				function():Level
 				{
-					var Parts:Array = Game.buildNodes('60,180|60,280|60,380|160,280|160,180|160,380|240,180|340,180|340,280|240,280|240,380|340,380|420,180|420,280|420,380|500,380|580,380|580,280|580,180|680,180|680,280:5,3|3,4|3,1|1,0|1,2|11,10|10,9|9,6|6,7|9,8|15,14|14,13|13,12|20,17|17,18|18,19|19,20|17,16');
-					return new CutAllLevel(Parts[0], Parts[1], 15, (new Niveau12()).bitmapData);
-				},
-				function():Level
-				{
-					var Parts:Array = Game.buildNodes('336,125|485,128|466,238|342,236|342,364|466,362|232,246|232,354|336,475|485,472|577,354|577,246|400,300:5,2|2,1|0,3|3,4|3,2|4,5|7,4|7,6|6,3|9,5|4,8|11,2|5,10|10,11|4,12|3,12|5,12|12,2');
-					//var Parts:Array = Game.buildNodes('420,320|300,320|300,220|420,220:3,0|0,1|1,2|2,3');
-					return new Level(Parts[0], Parts[1], 20, (new Niveau11()).bitmapData);
+					/**
+					 * @state FONCTIONNEL
+					 * @brief Niveau "en croix à petit battant horizontal", deux rectangles arrondis placés perpendiculairement l'un à l'autre
+					 * @difficulty 9
+					 * @solution
+					 * - Attendre quelques secondes la résolution des contraintes : deux noeuds tombent direct
+					 * - Couper en bas, deux noeuds sont expulsés (sans tomber pour l'instant)
+					 * - En haut, deux noeuds attendent d'être catapultés (structure instable) : les virer
+					 * - Ouvrir enfin la structure obtenue en X, puis couper. Adios !
+					 */
+					var Parts:Array = Game.buildNodes('400,222|400,260|400,307|400,350|400,386|400,422|319,300|481,300|400,183|286,191|514,191:0,6|6,1|2,6|6,3|6,4|6,5|5,7|7,4|3,7|2,7|1,7|0,7|6,8|8,7|10,7|9,6|9,8|8,10');
+					return new KillButOneLevel(Parts[0], Parts[1], 14, Parts[0][8], (new Niveau3()).bitmapData);
 				}
 			);
 		}
@@ -217,7 +234,7 @@ package
 			for each(var Noeud:String in strNoeuds_Array)
 			{
 				Composants = Noeud.split(",");
-				var NouveauNoeud:Node = new Node(Composants[0] - Main.LARGEUR2 + 50, Composants[1] - Main.HAUTEUR2);
+				var NouveauNoeud:Node = new Node(Composants[0] - Main.LARGEUR2, Composants[1] - Main.HAUTEUR2);
 				Noeuds.push(NouveauNoeud);
 			}
 			
@@ -241,7 +258,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = 9;
+		private var LevelNumber:int = -1;
 		/**
 		 * L'objet niveau chargé
 		 */
