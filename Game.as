@@ -179,7 +179,7 @@ package
 					 * @note Les très bons peuvent couper 17 liens... 14 semble raisonnable cependant pour cibler les gens modérément doués à la souris.
 					 */
 					var Parts:Array = Game.buildNodes('110,180|110,280|110,380|210,280|210,180|210,380|290,180|390,180|390,280|290,280|290,380|390,380|470,180|470,280|470,430|550,380|630,380|630,280|630,180|730,180|730,280:5,3|3,4|3,1|1,0|1,2|11,10|10,9|9,6|6,7|9,8|15,14|14,13|13,12|20,17|17,18|18,19|19,20|17,16');
-					return new CutAllLevel(Parts[0], Parts[1], 15, (new Niveau12()).bitmapData);
+					return new CutAllLevel(Parts[0], Parts[1], 14, (new Niveau12()).bitmapData);
 				},
 				function():Level
 				{

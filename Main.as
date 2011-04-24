@@ -25,10 +25,14 @@
 	public class Main extends Sprite 
 	{
 		/**
-		 * Permet de passer en mode débuggage
-		 * Sur true, les niveaux ne peuvent pas être perdus, et une carte des déplacements s'affiche.
+		 * Les différents mode.
+		 * En version "release", seul MODE_GAME est intéressant
 		 */
-		public static const DEBUG_MODE:Boolean = false;
+		public static const MODE_GAME:String = "game"; //Jeu classique
+		public static const MODE_CREATOR:String = "creator"; //Pour la création de niveaux
+		public static const MODE_INFLUENCE:String = "influence"; //Pour comprendre les répartitions des contraintes
+
+		public static const MODE:String = MODE_CREATOR;
 		
 		/**
 		 * Largeur totale de l'animation

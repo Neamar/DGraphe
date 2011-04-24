@@ -47,23 +47,22 @@ package Views
 			this.L = L;
 			
 			//Récupérer le fond
-			this.Fond = new Bitmap(L.getFond());
-			this.Fond.filters = [new GlowFilter(0xFFFFFF, 1, 4, 4, 2, 1, true), new GlowFilter(0, 1, 100, 100)];
+			if (Main.MODE == Main.MODE_GAME)
+			{
+				this.Fond = new Bitmap(L.getFond());
+				this.Fond.filters = [new GlowFilter(0xFFFFFF, 1, 4, 4, 2, 1, true), new GlowFilter(0, 1, 100, 100)];
+			}
+			else
+			{
+				this.Debug = new BitmapData(Main.LARGEUR, Main.HAUTEUR);
+				this.Fond = new Bitmap(this.Debug);
+				
+				this.addEventListener(MouseEvent.CLICK, function():void { trace(L.export()) } );
+			}
 			addChild(this.Fond);
 			setChildIndex(this.Fond, 0);
 			Fond.x = -Main.LARGEUR2;
 			Fond.y = -Main.HAUTEUR2;
-			
-			if (Main.DEBUG_MODE)
-			{
-				removeChild(Fond);
-				Debug = new BitmapData(Main.LARGEUR, Main.HAUTEUR);
-				Fond = new Bitmap(Debug);
-				Fond.x = -Main.LARGEUR2;
-				Fond.y = -Main.HAUTEUR2;
-				addChild(Fond);
-				this.addEventListener(MouseEvent.CLICK, function():void { trace(L.export()) } );
-			}
 			
 			x = Main.LARGEUR2
 			y = Main.HAUTEUR2;

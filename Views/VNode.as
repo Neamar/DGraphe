@@ -71,7 +71,7 @@ package Views
 			this.y = N.y;
 			this.rotation = -N.rotation;
 			
-			if (Main.DEBUG_MODE)
+			if (Main.MODE == Main.MODE_CREATOR)
 			{
 				VL.Debug.draw(this, new Matrix(1, 0, 0, 1, this.x + Main.LARGEUR2, this.y + Main.HAUTEUR2));
 			}

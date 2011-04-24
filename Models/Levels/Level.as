@@ -167,7 +167,7 @@ package Models.Levels
 		{
 			trace('you win');
 			
-			if (!Main.DEBUG_MODE)
+			if (Main.MODE == Main.MODE_CREATOR)
 			{
 				dispatchEvent(new Event(Level.WIN));
 			}

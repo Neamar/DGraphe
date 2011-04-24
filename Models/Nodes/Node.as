@@ -172,7 +172,7 @@
 			ResultanteX = ResultanteY = 0;
 			ResultanteRessortX = ResultanteRessortY = 0;
 			
-			if(!Main.DEBUG_MODE && isEmpty(x + Main.LARGEUR2, y + Main.HAUTEUR2) == 0)
+			if(Main.MODE == Main.MODE_GAME && isEmpty(x + Main.LARGEUR2, y + Main.HAUTEUR2) == 0)
 			{
 				
 				//Est-ce la première fois que l'on détecte la chute ?
