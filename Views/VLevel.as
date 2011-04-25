@@ -6,6 +6,7 @@ package Views
 	import flash.events.MouseEvent;
 	import flash.filters.GlowFilter;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import Models.Levels.Level;
 	import Models.Nodes.Node;
 	import Models.Nodes.Spring;
@@ -143,6 +144,39 @@ package Views
 			for each(var V:View in Vs)
 			{
 				V.update();
+			}
+			
+			if (Main.MODE == Main.MODE_INFLUENCE)
+			{
+				const Resolution:int = 2;
+				var Carre:Rectangle = new Rectangle(0, 0, Resolution, Resolution);
+				
+				for (var i:int = 0; i < Main.LARGEUR; i += Resolution)
+				{	
+					for (var j:int = 0; j < Main.HAUTEUR; j += Resolution)
+					{
+						//Calculer le champ résiduel à l'emplacement désigné
+						//Seule la valeur numérique est intéressante, la direction importe peu.
+						var absRepulsion:Number = 0;
+						var Distance:int;
+						var x:int = i + Resolution / 2 - Main.LARGEUR2;
+						var y:int = j + Resolution / 2 - Main.HAUTEUR2;
+						for each(var N:Node in L.Noeuds)
+						{
+							Distance = Math.max(5, Math.sqrt(Math.pow(N.x - x, 2) + Math.pow(N.y - y, 2)));
+							absRepulsion += 1 / Math.pow(Distance, 2);
+						}
+						Carre.x = i;
+						Carre.y = j;
+						var Pixels:Vector.<uint> = Debug.getVector(Carre);
+						for (var k:int = 0; k < Pixels.length; k++)
+						{
+							Pixels[k] = 0xFF000000 + absRepulsion*0xFFFFFF;
+						}
+						
+						Debug.setVector(Carre, Pixels);
+					}
+				}
 			}
 		}
 		
