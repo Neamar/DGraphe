@@ -28,6 +28,14 @@ package
 		[Embed(source = "assets/hud/chrome/haut.png")]
 		private static var HUDTopImg:Class;
 		
+		[Embed(source = "assets/hud/tips/tip-level.png")]
+		private static var HUDTipLevel:Class;
+		private static var tipLevel:Bitmap = new HUDTipLevel();
+		
+		[Embed(source = "assets/hud/tips/tip-links.png")]
+		private static var HUDTipLinks:Class;
+		private static var tipLinks:Bitmap = new HUDTipLinks();
+		
 		[Embed(source = "assets/HUD/messages/main.png")]
 		private static var HUDMessageTop:Class;
 		[Embed(source = "assets/HUD/messages/bottom.png")]
@@ -110,13 +118,17 @@ package
 			
 			
 			//TOP Hud
-			Container.addChild(TopImg);
-			Container.addChild(TopTxtSprite);
+			var topHud:Sprite = new Sprite();
+			topHud.addChild(TopImg);
+			topHud.addChild(TopTxtSprite);
+			topHud.mouseChildren = false;
+			Container.addChild(topHud);
 			TopTxtSprite.addChild(TopTxtLevel);
 			TopTxtSprite.addChild(TopTxtLink);
 			
 			TopImg.y = 0;
 			centerX(TopImg);
+
 			
 			TopTxtLink.y = TopTxtLevel.y = 5;
 			TopTxtLevel.x = 460;
@@ -127,6 +139,15 @@ package
 			initTextField(TopTxtLink);
 			
 			TopTxtSprite.filters = BottomTxtSprite.filters;		
+			
+			topHud.addEventListener(MouseEvent.MOUSE_MOVE, displayTip);
+			topHud.addEventListener(MouseEvent.MOUSE_OUT, hideTip);
+			Container.addChild(tipLevel);
+			tipLinks.y = 22;
+			tipLevel.y = tipLinks.y - 5;
+			
+			Container.addChild(tipLinks);
+			hideTip();
 			
 			//MESSAGES
 			var message:Sprite;
@@ -228,6 +249,27 @@ package
 		private static function centerX(Img:DisplayObject):void
 		{
 			Img.x = Main.LARGEUR2 - Img.width / 2
+		}
+		
+		private static function displayTip(e:MouseEvent):void
+		{
+			if (TopImg.parent.mouseX - TopImg.x < TopImg.width/2)
+			{
+				tipLinks.visible = true;
+				tipLevel.visible = false;
+				tipLinks.x = Container.mouseX - 150;
+			}
+			else
+			{
+				tipLevel.visible = true;
+				tipLinks.visible = false;
+				tipLevel.x = Container.mouseX - 52;
+			}
+		}
+		
+		private static function hideTip(e:Event = null):void
+		{
+			tipLevel.visible = tipLinks.visible = false;
 		}
 	}
 	
