@@ -244,7 +244,7 @@ package
 			messageModal.alpha = 0;
 			TweenLite.to(messageModal, 5, { delay:2, alpha:1 } );
 			
-			messageText.alpha = 1;
+			TweenLite.to(messageText, 1, { alpha:1 } );
 			messageText.htmlText = "   <font size=\"+10\">" + title + "</font><br><br><font size=\"-2\">" + message + "</font>";
 			for (var i:int = 0; i < messagesSprites.length; i++)
 			{		
@@ -257,15 +257,18 @@ package
 		
 		public static function hideMessage(e:Event = null):void
 		{
-			Container.removeChild(messageModal);
-			
-			TweenLite.to(messageText, 1, { alpha:0 } );
-			for (var i:int = 0; i < messagesSprites.length; i++)
+			if (Container.contains(messageModal))
 			{
-				TweenLite.to(messagesSprites[i], 2, { rotationY : 90, rotationZ: 0, x:1200 } );
+				Container.removeChild(messageModal);
+				
+				TweenLite.to(messageText, 1, { alpha:0 } );
+				for (var i:int = 0; i < messagesSprites.length; i++)
+				{
+					TweenLite.to(messagesSprites[i], 2, { rotationY : 90, rotationZ: 0, x:1200 } );
+				}
+				
+				messageFleche.filters = [];
 			}
-			
-			messageFleche.filters = [];
 		}
 		
 		/**
@@ -316,6 +319,7 @@ package
 		
 		private static function gotoNextLevel(e:Event):void
 		{
+			hideMessage();
 			(Container.parent as Main).game.nextLevel();
 		}
 	}

@@ -36,7 +36,6 @@ package Models.Levels
 		
 		protected function decompte(e:Event):void
 		{
-			trace('Décompte');
 			NbDead++;
 			if (NbDead + 1 == Noeuds.length)
 			{
