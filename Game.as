@@ -260,7 +260,9 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = 7;
+		private var CurrentLevelNumber:int = -1;
+		private var UnlockedLevelNumber:int = CurrentLevelNumber;
+		
 		/**
 		 * L'objet niveau chargé
 		 */
@@ -319,7 +321,9 @@ package
 			}
 			
 			//Afficher le nouveau niveau
-			LevelNumber++;
+			CurrentLevelNumber++;
+			UnlockedLevelNumber = Math.max(CurrentLevelNumber, UnlockedLevelNumber);
+			
 			this.loadLevel();
 		}
 		
@@ -357,15 +361,53 @@ package
 		}
 		
 		/**
+		 * Passe au niveau suivant
+		 * @param	e évènement Level.WIN
+		 */
+		public function previousLevel(e:Event = null):void
+		{			
+			if (LevelObject != null)
+			{
+				LevelObject.removeEventListener(Level.LOST, retryLevel);
+				LevelObject.removeEventListener(Level.WIN, nextLevel);
+				
+				var OldLevel:Level = LevelObject;
+				var OldVLevel:VLevel = VLevelObject;
+				var G:Game = this;
+				TweenLite.to(
+					VLevelObject,
+					Background.SCROLL_DURATION / 4000,
+					{
+						x: Main.LARGEUR,
+						onComplete:function():void
+						{
+							G.removeChild(OldVLevel);
+							OldLevel.destroy();
+							OldVLevel.destroy();
+						}
+					}
+				);
+			}
+			
+			//Afficher le nouveau niveau
+			CurrentLevelNumber--;
+			this.loadLevel();
+		}
+		
+		
+		/**
 		 * Charge le niveau actuel.
 		 * Considère que les opérations de nettoyage ont été effectuées !
 		 */
 		protected function loadLevel():void
 		{
+			HUD.PreviousButton.visible = (CurrentLevelNumber >= 1);
+			HUD.NextButton.visible = (CurrentLevelNumber < UnlockedLevelNumber);
+			
 			/**
 			 * Charger...
 			 */
-			LevelObject = new Game.LevelsList[LevelNumber];
+			LevelObject = new Game.LevelsList[CurrentLevelNumber];
 			VLevelObject = new VLevel(LevelObject);
 			LevelObject.addEventListener(Level.LOST, retryLevel);
 			LevelObject.addEventListener(Level.WIN, nextLevel);
@@ -408,10 +450,10 @@ package
 				}
 			);
 			
-			BG.moveTo(LevelNumber);
+			BG.moveTo(CurrentLevelNumber);
 			
 			//Mettre à jour le tableau de bord
-			HUD.showLevel(LevelNumber);
+			HUD.showLevel(CurrentLevelNumber);
 			HUD.showLink(LevelObject.getChainesACouper());
 			HUD.onTop();
 		}

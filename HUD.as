@@ -72,8 +72,8 @@ package
 		
 		//Bottom
 		private static var BottomArms:Bitmap = new HUDArmsImg();
-		private static var NextButton:Bitmap = new HUDArmsNext();
-		private static var PreviousButton:Bitmap = new HUDArmsPrevious();
+		public static var NextButton:Bitmap = new HUDArmsNext();
+		public static var PreviousButton:Bitmap = new HUDArmsPrevious();
 		private static var BottomTxt:TextField = new TextField();
 		private static var BottomTxtSprite:Sprite = new Sprite();
 		private static var BottomImg:Bitmap = new HUDBottomImg();
@@ -341,7 +341,7 @@ package
 		private static function gotoPreviousLevel(e:Event):void
 		{
 			hideMessage();
-			(Container.parent as Main).game.nextLevel();
+			(Container.parent as Main).game.previousLevel();
 		}
 	}
 	
