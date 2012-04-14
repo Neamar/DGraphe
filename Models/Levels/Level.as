@@ -1,6 +1,7 @@
 package Models.Levels
 {
 	import com.greensock.TweenLite;
+	import com.oaxoa.fx.Lightning;
 	import flash.display.BitmapData;
 	import flash.events.Event;
 	import flash.geom.Point;

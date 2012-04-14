@@ -18,7 +18,7 @@ package Views
 		/**
 		 * L'éclair utilisé pour représenter le ressort
 		 */
-		private var Eclair:Lightning;
+		public var Eclair:Lightning;
 		
 		/**
 		 * L'objet ressort

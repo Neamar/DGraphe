@@ -1,11 +1,15 @@
 package Views 
 {
 	import com.greensock.plugins.TintPlugin;
+	import com.greensock.TweenLite;
+	import com.oaxoa.fx.Lightning;
+	import com.oaxoa.fx.LightningFadeType;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.BitmapDataChannel;
 	import flash.display.BlendMode;
 	import flash.display.Shape;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.filters.DisplacementMapFilter;
 	import flash.filters.GlowFilter;
@@ -47,6 +51,7 @@ package Views
 		private var Cutter:Shape = new Shape();
 		private var CutterStart:Point = new Point();
 		private var CutterEnd:Point = new Point();
+		private var Eclair:Lightning;
 		
 		public function VLevel(L:Level) 
 		{
@@ -89,6 +94,23 @@ package Views
 			
 			this.doubleClickEnabled = true;
 			this.addEventListener(MouseEvent.DOUBLE_CLICK, L.failed);
+			
+			Eclair = new Lightning(0xFFFFFF, 2);
+			Eclair.steps = 100;
+			Eclair.maxLength = Eclair.maxLengthVary = 0
+			Eclair.alphaFadeType = LightningFadeType.GENERATION;
+			Eclair.childrenProbability = 1;
+			Eclair.childrenLifeSpanMin = 1;
+			Eclair.childrenLifeSpanMax = 3;
+			Eclair.smoothPercentage = 75;
+			Eclair.childrenAngleVariation = 100;
+			Eclair.childrenMaxCount = 4;
+			Eclair.wavelength = 0 ;
+			Eclair.amplitude = .9;
+			Eclair.speed = .75;
+			Eclair.filters = [new GlowFilter(0xFFFFFF, 1, 10, 10, 3.5, 3)];
+			addChild(Eclair);
+			Eclair.visible = false;
 		}
 		
 		public final override function destroy():void
@@ -185,20 +207,6 @@ package Views
 				}
 				
 				Debug.draw(Influence);
-				/*Debug.applyFilter(
-					Debug,
-					Debug.rect,
-					new Point(),
-					new DisplacementMapFilter(
-						Influence,
-						new Point(),
-						BitmapDataChannel.RED,
-						BitmapDataChannel.GREEN,
-						35,
-						35
-					)
-				);*/
-				
 			}
 		}
 		
@@ -210,6 +218,11 @@ package Views
 		{
 			CutterStart.x = e.localX;
 			CutterStart.y = e.localY;
+			Eclair.visible = true;
+			Eclair.startX = Eclair.endX = CutterStart.x;
+			Eclair.startY = Eclair.endY = CutterStart.y;
+			
+			addEventListener(Event.ENTER_FRAME, Eclair.update);
 			removeEventListener(MouseEvent.MOUSE_DOWN, lancerCoupure);
 			addEventListener(MouseEvent.MOUSE_MOVE, continuerCoupure);
 			addEventListener(MouseEvent.MOUSE_UP, terminerCoupure);
@@ -224,16 +237,35 @@ package Views
 			Cutter.graphics.clear();
 			Cutter.graphics.lineStyle(1, 0xFF);
 			Cutter.graphics.moveTo(CutterStart.x, CutterStart.y);
-			Cutter.graphics.lineTo(e.localX - Cutter.x, e.localY - Cutter.y);
+			//Cutter.graphics.lineTo(e.localX - Cutter.x, e.localY - Cutter.y);
 			
 			CutterEnd.x = e.localX;
 			CutterEnd.y = e.localY;
 			
+			Eclair.endX = CutterEnd.x;
+			Eclair.endY = CutterEnd.y;
+			
 			var Intersection:Vector.<Spring> = L.getIntersection(CutterStart, CutterEnd);
-			for each(var S:Spring in Intersection)
+			for each(var V:View in Vs)
 			{
-				Cutter.graphics.moveTo(S.Bout.x, S.Bout.y+5);
-				Cutter.graphics.lineTo(S.AutreBout.x, S.AutreBout.y + 5);
+				if (V is VSpring)
+				{
+					var VS:VSpring = V as VSpring;
+					if(Intersection.indexOf(VS.S) != -1)
+					{
+						VS.Eclair.childrenDetachedEnd = true;
+						VS.Eclair.alphaFadeType = LightningFadeType.GENERATION;
+						VS.Eclair.thicknessFadeType = LightningFadeType.TIP_TO_END;
+						VS.Eclair.speed = 1;
+					}
+					else
+					{
+						VS.Eclair.childrenDetachedEnd = false;
+						VS.Eclair.alphaFadeType = LightningFadeType.NONE;
+						VS.Eclair.thicknessFadeType = LightningFadeType.GENERATION;
+						VS.Eclair.speed = .09;
+					}
+				}
 			}
 		}
 		
@@ -243,6 +275,8 @@ package Views
 		 */
 		protected function terminerCoupure(e:MouseEvent):void
 		{
+			Eclair.visible = false;
+			removeEventListener(Event.ENTER_FRAME, Eclair.update);
 			CutterEnd.x = e.localX;
 			CutterEnd.y = e.localY;
 			
