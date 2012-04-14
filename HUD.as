@@ -177,6 +177,7 @@ package
 				message.getChildAt(0).x = -600;
 				message.getChildAt(0).y = -100;
 				message.rotationY = 90;
+				message.mouseEnabled = message.mouseChildren = false;
 				message.y = Main.HAUTEUR2;
 				message.x = 1200;
 				Container.addChild(message);
@@ -185,6 +186,7 @@ package
 				messagesSprites.push(message);
 			}
 			message = messagesSprites[0];
+			message.mouseEnabled = message.mouseChildren = true;
 			message.removeChildAt(0);
 			initTextField(messageText);
 			messageText.x = -580;
