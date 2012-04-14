@@ -212,6 +212,18 @@ package
 					 */
 					var Parts:Array = Game.buildNodes('400,222|400,260|400,307|400,350|400,386|400,422|319,300|481,300|400,183|286,191|514,191:0,6|6,1|2,6|6,3|6,4|6,5|5,7|7,4|3,7|2,7|1,7|0,7|6,8|8,7|10,7|9,6|9,8|8,10');
 					return new KillButOneLevel(Parts[0], Parts[1], 14, Parts[0][8], (new Niveau3()).bitmapData);
+				},
+				function():Level
+				{
+					/**
+					 * @state NONFONCTIONNEL
+					 * @brief 
+					 * @difficulty 
+					 * @solution
+					 */
+					
+					var Parts:Array = Game.buildNodes('515,290|375,290|280,240|280,330|375,180|375,400|450,230|450,350|310,393|310,186:0,1|3,1|1,2|2,3|2,4|5,3|7,5|4,6|6,7|7,0|6,0|8,1|1,9|4,1|1,5');
+					return new Level(Parts[0], Parts[1], 14, (new Niveau3()).bitmapData);
 				}
 			);
 		}
@@ -260,7 +272,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var CurrentLevelNumber:int = -1;
+		private var CurrentLevelNumber:int = 11;
 		private var UnlockedLevelNumber:int = CurrentLevelNumber;
 		
 		/**
@@ -323,7 +335,6 @@ package
 			//Afficher le nouveau niveau
 			CurrentLevelNumber++;
 			UnlockedLevelNumber = Math.max(CurrentLevelNumber, UnlockedLevelNumber);
-			
 			this.loadLevel();
 		}
 		

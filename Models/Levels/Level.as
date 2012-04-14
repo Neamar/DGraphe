@@ -79,7 +79,7 @@ package Models.Levels
 			}
 			
 			//Indiquer aux noeuds la fonction à utiliser pour déterminer le vide, leur indiquer leur parent et leur mettre des forces de répulsion entre eux
-			var isEmpty:Function = Fond.getPixel;
+			var isEmpty:Function = Fond.getPixel32;
 			for (var i:int = 0; i < Noeuds.length; i++ )
 			{
 				var N:Node = Noeuds[i];
