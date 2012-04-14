@@ -166,7 +166,6 @@ package
 					 */
 					var Parts:Array = Game.buildNodes('561,246|476,340|561,434|520,340|470,271|379,340|470,409|588,340:3,0|0,1|1,2|2,3|4,0|5,1|6,2|7,3|5,4|4,7|7,6|6,5');
 					return new KillButOneLevel(Parts[0], Parts[1], 10, Parts[0][3], (new Niveau7()).bitmapData);
-					//return new Level(Parts[0], Parts[1], 3, (new Niveau7()).bitmapData);
 				},
 				function():Level
 				{

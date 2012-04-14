@@ -38,10 +38,12 @@ package
 		
 		[Embed(source = "assets/HUD/messages/main.png")]
 		private static var HUDMessageTop:Class;
-		[Embed(source = "assets/HUD/messages/bottom.png")]
-		private static var HUDMessageBottom:Class;
+		[Embed(source = "assets/HUD/messages/second.png")]
+		private static var HUDMessageSecond:Class;
 		[Embed(source = "assets/HUD/messages/fleche.png")]
 		private static var HUDMessageFleche:Class;
+		[Embed(source = "assets/HUD/messages/bottom.png")]
+		private static var HUDMessageBottom:Class;
 		
 		[Embed(source = "assets/hud/chrome/bras.png")]
 		private static var HUDArmsImg:Class;
@@ -80,7 +82,7 @@ package
 		private static var messagesSprites:Vector.<Sprite> = new Vector.<Sprite>();
 		private static var messageText:TextField = new TextField();
 		private static var messageFleche:Bitmap = new HUDMessageFleche();
-		
+		private static var messageModal:Bitmap = new HUDMessageBottom();
 		
 		public static function init(Stage:Main):void
 		{
@@ -157,7 +159,7 @@ package
 			for (var i:int = 0; i < 5; i++)
 			{
 				message = new Sprite();
-				message.addChild(new HUDMessageBottom());
+				message.addChild(new HUDMessageSecond());
 				message.getChildAt(0).x = -600;
 				message.getChildAt(0).y = -100;
 				message.rotationY = 90;
@@ -221,6 +223,11 @@ package
 		
 		public static function showMessage(title:String, message:String):void
 		{
+			Container.addChild(messageModal);
+			Container.setChildIndex(messageModal, messagesSprites.length);
+			messageModal.alpha = 0;
+			TweenLite.to(messageModal, 5, { delay:2, alpha:1 } );
+			
 			messageText.alpha = 1;
 			messageText.htmlText = "   <font size=\"+10\">" + title + "</font><br><br><font size=\"-2\">" + message;
 			for (var i:int = 0; i < messagesSprites.length; i++)
@@ -234,6 +241,8 @@ package
 		
 		public static function hideMessage(e:Event):void
 		{
+			Container.removeChild(messageModal);
+			
 			TweenLite.to(messageText, 1, { alpha:0 } );
 			for (var i:int = 0; i < messagesSprites.length; i++)
 			{
@@ -262,13 +271,13 @@ package
 		
 		private static function displayTip(e:MouseEvent):void
 		{
-			if (TopImg.parent.mouseX - TopImg.x < TopImg.width/2)
+			if (TopImg.parent.mouseX - TopImg.x < TopImg.width/2 && TopImg.parent.mouseX - TopImg.x > 45)
 			{
 				tipLinks.visible = true;
 				tipLevel.visible = false;
 				tipLinks.x = Container.mouseX - 150;
 			}
-			else
+			else if (TopImg.parent.mouseX - TopImg.x > TopImg.width/2 && TopImg.parent.mouseX - TopImg.x < 275)
 			{
 				tipLevel.visible = true;
 				tipLinks.visible = false;
