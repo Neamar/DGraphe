@@ -112,8 +112,8 @@ package
 			centerX(TopImg);
 			
 			TopTxtLink.y = TopTxtLevel.y = 5;
-			TopTxtLevel.x = 485;
-			TopTxtLink.x = 310;
+			TopTxtLevel.x = 460;
+			TopTxtLink.x = 355;
 			centerX(BottomTxt);
 			Text_Format.size = 22;
 			initTextField(TopTxtLevel);
