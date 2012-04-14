@@ -62,6 +62,8 @@
 			HUD.showText('github.com/Neamar/Dgraphe');
 			
 			addChild(new Game(BG));
+			
+			HUD.onTop();
 		}
 	}
 }

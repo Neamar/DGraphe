@@ -28,6 +28,9 @@ package
 		[Embed(source = "assets/HUD/haut.png")]
 		private static var HUDTopImg:Class;
 		
+		[Embed(source = "assets/HUD/message_top.png")]
+		private static var HUDMessageTop:Class;
+		
 		[Embed(source = "assets/HUD/bras.png")]
 		private static var HUDArmsImg:Class;
 		
@@ -141,17 +144,22 @@ package
 			message = messagesSprites[0];
 			initTextField(messageText);
 			messageText.x = -580;
-			messageText.y = -80;
+			messageText.y = -90;
 			messageText.filters = [ new GlowFilter(0, 1, 4, 4, 2) ];
-			messageText.width = 560;
+			messageText.width = 360;
 			messageText.height = 160;
 			messageText.multiline = true;
+			messageText.wordWrap = true;
 			
+			message.graphics.clear();
+			message.addChild(new HUDMessageTop());
+			message.getChildAt(0).x = - 600;
+			message.getChildAt(0).y = -100;
 			message.addChild(messageText);
-			message.alpha = .6;
+			
+			message.alpha = 1;
 			message.addEventListener(MouseEvent.CLICK, hideMessage);
 			Container.setChildIndex(message, Container.numChildren - 1);
-			showMessage("<font size=\"+8\">Bienvenue !</font><br>Ce jeu est cool.");
 		}
 		
 		/**
@@ -182,10 +190,10 @@ package
 			TopTxtLevel.text = Niveau.toString();
 		}
 		
-		public static function showMessage(message:String):void
+		public static function showMessage(title:String, message:String):void
 		{
 			messageText.alpha = 1;
-			messageText.htmlText = message;
+			messageText.htmlText = "  <font size=\"+8\">" + title + "</font><br><br><font size=\"-4\">" + message;
 			for (var i:int = 0; i < messagesSprites.length; i++)
 			{		
 				TweenLite.to(messagesSprites[i], 2, { rotationY : 30 * i, rotationZ: 10 * i } );

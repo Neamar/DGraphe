@@ -42,6 +42,7 @@ package
 			LevelsList.push(
 				function():Level
 				{
+					HUD.showMessage("Welcome", "Click and drag to cut red ropes.<br>Make sure no one falls over the edge.");
 					/**
 					 * @state FONCTIONNEL
 					 * @type didacticiel
@@ -165,7 +166,7 @@ package
 					return new KillButOneLevel(Parts[0], Parts[1], 10, Parts[0][3], (new Niveau7()).bitmapData);
 					//return new Level(Parts[0], Parts[1], 3, (new Niveau7()).bitmapData);
 				},
-								function():Level
+				function():Level
 				{
 					/**
 					 * @state FONCTIONNEL
@@ -392,7 +393,8 @@ package
 			 * ...et afficher
 			 */
 			VLevelObject.x = Main.LARGEUR + Main.LARGEUR2;
-			//addChild(VLevelObject);
+			addChild(VLevelObject);
+			
 			UpdateLevel = false;
 			TweenLite.to(
 				VLevelObject,
@@ -409,6 +411,7 @@ package
 			//Mettre à jour le tableau de bord
 			HUD.showLevel(LevelNumber);
 			HUD.showLink(LevelObject.getChainesACouper());
+			HUD.onTop();
 		}
 		
 		protected final function update(e:Event = null):void
