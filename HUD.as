@@ -245,7 +245,7 @@ package
 			TweenLite.to(messageModal, 5, { delay:2, alpha:1 } );
 			
 			messageText.alpha = 1;
-			messageText.htmlText = "   <font size=\"+10\">" + title + "</font><br><br><font size=\"-2\">" + message;
+			messageText.htmlText = "   <font size=\"+10\">" + title + "</font><br><br><font size=\"-2\">" + message + "</font>";
 			for (var i:int = 0; i < messagesSprites.length; i++)
 			{		
 				TweenLite.to(messagesSprites[i], 2, { rotationY : 30 * i, rotationZ: 10 * i, x:800 } );
@@ -255,7 +255,7 @@ package
 			TweenLite.to(messageFleche, 5, { delay:5, glowFilter: {color:0xFF5555, blurX:24, blurY:24, strength:2}});
 		}
 		
-		public static function hideMessage(e:Event):void
+		public static function hideMessage(e:Event = null):void
 		{
 			Container.removeChild(messageModal);
 			
