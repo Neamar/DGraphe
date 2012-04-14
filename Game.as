@@ -22,17 +22,17 @@ package
 		 * Liste des images pour les niveaux.
 		 * Chargées en Embed.
 		 */
-		[Embed(source = "assets/Niveaux/1.png")] private static var Niveau1:Class;
-		[Embed(source = "assets/Niveaux/3.png")] private static var Niveau3:Class;
-		[Embed(source = "assets/Niveaux/4.png")] private static var Niveau4:Class;
-		[Embed(source = "assets/Niveaux/5.png")] private static var Niveau5:Class;
-		[Embed(source = "assets/Niveaux/6.png")] private static var Niveau6:Class;
-		[Embed(source = "assets/Niveaux/7.png")] private static var Niveau7:Class;		
-		[Embed(source = "assets/Niveaux/8.png")] private static var Niveau8:Class;	
-		[Embed(source = "assets/Niveaux/9.png")] private static var Niveau9:Class;
-		[Embed(source = "assets/Niveaux/10.png")] private static var Niveau10:Class;	
-		[Embed(source = "assets/Niveaux/11.png")] private static var Niveau11:Class;
-		[Embed(source = "assets/Niveaux/12.png")] private static var Niveau12:Class;
+		[Embed(source = "assets/niveaux/niveaux/1.png")] private static var Niveau1:Class;
+		[Embed(source = "assets/niveaux/niveaux/3.png")] private static var Niveau3:Class;
+		[Embed(source = "assets/niveaux/niveaux/4.png")] private static var Niveau4:Class;
+		[Embed(source = "assets/niveaux/niveaux/5.png")] private static var Niveau5:Class;
+		[Embed(source = "assets/niveaux/niveaux/6.png")] private static var Niveau6:Class;
+		[Embed(source = "assets/niveaux/niveaux/7.png")] private static var Niveau7:Class;		
+		[Embed(source = "assets/niveaux/niveaux/8.png")] private static var Niveau8:Class;	
+		[Embed(source = "assets/niveaux/niveaux/9.png")] private static var Niveau9:Class;
+		[Embed(source = "assets/niveaux/niveaux/10.png")] private static var Niveau10:Class;	
+		[Embed(source = "assets/niveaux/niveaux/11.png")] private static var Niveau11:Class;
+		[Embed(source = "assets/niveaux/niveaux/12.png")] private static var Niveau12:Class;
 		
 		/**
 		 * Niveaux
@@ -259,7 +259,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = -1;
+		private var LevelNumber:int = 0;
 		/**
 		 * L'objet niveau chargé
 		 */
@@ -371,24 +371,25 @@ package
 			
 			if(LevelObject is KillAllLevel)
 			{
-				HUD.showText('Tuez-les tous !');
+				HUD.showText('Kill them all.');
 			}
 			else if(LevelObject is KillButOneLevel)
 			{
-				HUD.showText('Sauvez-le ! Tuez les autres.');
+				HUD.showText('Save him, kill the others.');
 			}
 			else if(LevelObject is KillOneLevel)
 			{
-				HUD.showText('Tuez-le.');
+				HUD.showText('Kill him.');
 			}
 			else if(LevelObject is KillNoneLevel)
 			{
-				HUD.showText('Ne tuez personne !');
+				HUD.showText('Do not kill anyone.');
 			}
 			else if (LevelObject is CutAllLevel)
 			{
-				HUD.showText('Coupez tous les liens !');
+				HUD.showText('Remove all links.');
 			}
+			
 			/**
 			 * ...et afficher
 			 */
