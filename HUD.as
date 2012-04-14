@@ -40,6 +40,8 @@ package
 		private static var HUDMessageTop:Class;
 		[Embed(source = "assets/HUD/messages/bottom.png")]
 		private static var HUDMessageBottom:Class;
+		[Embed(source = "assets/HUD/messages/fleche.png")]
+		private static var HUDMessageFleche:Class;
 		
 		[Embed(source = "assets/hud/chrome/bras.png")]
 		private static var HUDArmsImg:Class;
@@ -77,6 +79,7 @@ package
 		//Messages
 		private static var messagesSprites:Vector.<Sprite> = new Vector.<Sprite>();
 		private static var messageText:TextField = new TextField();
+		private static var messageFleche:Bitmap = new HUDMessageFleche();
 		
 		
 		public static function init(Stage:Main):void
@@ -175,14 +178,15 @@ package
 			messageText.height = 180;
 			messageText.multiline = true;
 			messageText.wordWrap = true;
+			messageFleche.x = -280;
+			messageFleche.y = 55;
 			
-			message.graphics.clear();
 			message.addChild(new HUDMessageTop());
 			message.getChildAt(0).x = - 600;
 			message.getChildAt(0).y = -100;
+			message.addChild(messageFleche);
 			message.addChild(messageText);
-			
-			message.alpha = 1;
+
 			message.addEventListener(MouseEvent.CLICK, hideMessage);
 			Container.setChildIndex(message, Container.numChildren - 1);
 		}
@@ -223,6 +227,9 @@ package
 			{		
 				TweenLite.to(messagesSprites[i], 2, { rotationY : 30 * i, rotationZ: 10 * i, x:800 } );
 			}
+			
+			messageFleche.filters = [ new GlowFilter(0xFFFFFF, 1, 1, 1)];
+			TweenLite.to(messageFleche, 5, { delay:5, glowFilter: {color:0xFF5555, blurX:24, blurY:24, strength:2}});
 		}
 		
 		public static function hideMessage(e:Event):void
@@ -232,6 +239,8 @@ package
 			{
 				TweenLite.to(messagesSprites[i], 2, { rotationY : 90, rotationZ: 0, x:1200 } );
 			}
+			
+			messageFleche.filters = [];
 		}
 		
 		/**

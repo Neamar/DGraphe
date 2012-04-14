@@ -419,7 +419,7 @@ package com.greensock {
 				var startTween:TweenMax = new TweenMax(this.target, 0, this.vars.startAt);
 			}
 			if (_dispatcher) {
-				_dispatcher.dispatchEvent(new TweenEvent(TweenEvent.INIT));
+				_dispatcher.dispatchEvent(new TweenEvent(TweenEvent.START));
 			}
 			super.init();
 			if (_ease in fastEaseLookup) {
@@ -726,7 +726,7 @@ package com.greensock {
 				_dispatcher = new EventDispatcher(this);
 			}
 			if (this.vars.onInitListener is Function) {
-				_dispatcher.addEventListener(TweenEvent.INIT, this.vars.onInitListener, false, 0, true);
+				_dispatcher.addEventListener(TweenEvent.START, this.vars.onInitListener, false, 0, true);
 			}
 			if (this.vars.onStartListener is Function) {
 				_dispatcher.addEventListener(TweenEvent.START, this.vars.onStartListener, false, 0, true);

@@ -42,7 +42,7 @@ package
 			LevelsList.push(
 				function():Level
 				{
-					HUD.showMessage("Welcome", "Click and drag to cut <font color=\"#AACCAA\">nine (9)</font> red ropes.<br>Make sure no one falls over the edge.<br><br>Once free, a prisoner will try to get as far as possible from the others.");
+					HUD.showMessage("Welcome", "Click and drag to cut <font color=\"#AACCAA\">nine (9)</font> red ropes.<br>Make sure no one falls over the edge.<br><br>Once free, a prisoner will try to get away from the others.");
 					/**
 					 * @state FONCTIONNEL
 					 * @type didacticiel

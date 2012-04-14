@@ -1,5 +1,7 @@
 ﻿package 
 {
+	import com.greensock.plugins.GlowFilterPlugin;
+	import com.greensock.plugins.TweenPlugin;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -55,6 +57,8 @@
 
 		public function Main():void 
 		{
+			TweenPlugin.activate([GlowFilterPlugin]);
+			
 			var BG:Background = new Background();
 			addChild(BG);
 
