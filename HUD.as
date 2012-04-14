@@ -49,6 +49,8 @@ package
 		private static var HUDArmsImg:Class;
 		[Embed(source = "assets/HUD/fleches/next.png")]
 		private static var HUDArmsNext:Class;
+		[Embed(source = "assets/HUD/fleches/previous.png")]
+		private static var HUDArmsPrevious:Class;
 		
 		[Embed(source="assets/hud/chrome/Imagine.ttf",
 			fontName = "Imagine",
@@ -71,6 +73,7 @@ package
 		//Bottom
 		private static var BottomArms:Bitmap = new HUDArmsImg();
 		private static var NextButton:Bitmap = new HUDArmsNext();
+		private static var PreviousButton:Bitmap = new HUDArmsPrevious();
 		private static var BottomTxt:TextField = new TextField();
 		private static var BottomTxtSprite:Sprite = new Sprite();
 		private static var BottomImg:Bitmap = new HUDBottomImg();
@@ -108,8 +111,12 @@ package
 			//BOTTOM Hud
 			var nextButtonSprite:Sprite = new Sprite();
 			nextButtonSprite.addChild(NextButton);
+			var previousButtonSprite:Sprite = new Sprite();
+			previousButtonSprite.addChild(PreviousButton);
+			
 			Container.addChild(BottomArms);
 			Container.addChild(nextButtonSprite);
+			Container.addChild(previousButtonSprite);
 			Container.addChild(BottomImg);
 			Container.addChild(BottomTxtSprite);
 			BottomTxtSprite.addChild(BottomTxt);
@@ -120,6 +127,13 @@ package
 			NextButton.smoothing = true;
 			nextButtonSprite.buttonMode = true;
 			nextButtonSprite.addEventListener(MouseEvent.CLICK, gotoNextLevel);
+			
+			PreviousButton.x = 15;
+			PreviousButton.y = 513; 
+			PreviousButton.rotation = 16;
+			PreviousButton.smoothing = true;
+			previousButtonSprite.buttonMode = true;
+			previousButtonSprite.addEventListener(MouseEvent.CLICK, gotoPreviousLevel);
 			
 			BottomArms.y = Main.HAUTEUR - BottomArms.height;
 			centerX(BottomArms);
@@ -319,6 +333,12 @@ package
 		}
 		
 		private static function gotoNextLevel(e:Event):void
+		{
+			hideMessage();
+			(Container.parent as Main).game.nextLevel();
+		}
+		
+		private static function gotoPreviousLevel(e:Event):void
 		{
 			hideMessage();
 			(Container.parent as Main).game.nextLevel();

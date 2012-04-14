@@ -34,7 +34,7 @@ package Views
 			
 			var couleur:int;
 			if (S.Bout.Special || S.AutreBout.Special)
-				couleur = 0xFF0000;
+				couleur = 0xAA0000;
 			else
 				couleur = 0;
 				
