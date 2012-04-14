@@ -1,10 +1,15 @@
 package Views 
 {
+	import com.greensock.plugins.TintPlugin;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.BitmapDataChannel;
+	import flash.display.BlendMode;
 	import flash.display.Shape;
 	import flash.events.MouseEvent;
+	import flash.filters.DisplacementMapFilter;
 	import flash.filters.GlowFilter;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import Models.Levels.Level;
@@ -148,35 +153,52 @@ package Views
 			
 			if (Main.MODE == Main.MODE_INFLUENCE)
 			{
-				const Resolution:int = 2;
-				var Carre:Rectangle = new Rectangle(0, 0, Resolution, Resolution);
+				var Influence:BitmapData = new BitmapData(Main.LARGEUR, Main.HAUTEUR, false, 0x0000FF);
+
+				var Degrade:Matrix = new Matrix();
+				Degrade.rotate(Math.PI / 2);
+				var CercleInfluence:Shape = new Shape();
+				CercleInfluence.graphics.beginGradientFill("linear", [0xFF0000, 0x00FF00], [1, 1], [0, 255], Degrade);
+				CercleInfluence.graphics.drawCircle(0, 0, 200);
 				
+				var Translation:Matrix = new Matrix();
+				
+				Translation.translate(Main.LARGEUR2, Main.HAUTEUR2);
+				Influence.draw(CercleInfluence, Translation);
+				for each(var N:Node in L.Noeuds)
+				{
+					break;
+					Translation.tx = N.x + Main.LARGEUR2;
+					Translation.ty = N.y + Main.HAUTEUR2;
+					this.Debug.draw(CercleInfluence, Translation, null, BlendMode.ADD);
+				}
+				
+				this.Debug.fillRect(this.Debug.rect, 0xFFFFFFFF);
+				const Resolution:int = 10;
 				for (var i:int = 0; i < Main.LARGEUR; i += Resolution)
-				{	
-					for (var j:int = 0; j < Main.HAUTEUR; j += Resolution)
+				{
+					for (var j:int = 0; j < Main.LARGEUR; j++)
 					{
-						//Calculer le champ résiduel à l'emplacement désigné
-						//Seule la valeur numérique est intéressante, la direction importe peu.
-						var absRepulsion:Number = 0;
-						var Distance:int;
-						var x:int = i + Resolution / 2 - Main.LARGEUR2;
-						var y:int = j + Resolution / 2 - Main.HAUTEUR2;
-						for each(var N:Node in L.Noeuds)
-						{
-							Distance = Math.max(5, Math.sqrt(Math.pow(N.x - x, 2) + Math.pow(N.y - y, 2)));
-							absRepulsion += 1 / Math.pow(Distance, 2);
-						}
-						Carre.x = i;
-						Carre.y = j;
-						var Pixels:Vector.<uint> = Debug.getVector(Carre);
-						for (var k:int = 0; k < Pixels.length; k++)
-						{
-							Pixels[k] = 0xFF000000 + absRepulsion*0xFFFFFF;
-						}
-						
-						Debug.setVector(Carre, Pixels);
+						Debug.setPixel32(i, j, 0xFF000000);
+						Debug.setPixel32(j, i, 0xFF000000);
 					}
 				}
+				
+				Debug.draw(Influence);
+				/*Debug.applyFilter(
+					Debug,
+					Debug.rect,
+					new Point(),
+					new DisplacementMapFilter(
+						Influence,
+						new Point(),
+						BitmapDataChannel.RED,
+						BitmapDataChannel.GREEN,
+						35,
+						35
+					)
+				);*/
+				
 			}
 		}
 		

@@ -164,10 +164,8 @@ package Models.Levels
 		 * @param	e
 		 */
 		protected function completed(e:Event = null):void
-		{
-			trace('you win');
-			
-			if (Main.MODE == Main.MODE_CREATOR)
+		{			
+			if (Main.MODE != Main.MODE_CREATOR)
 			{
 				dispatchEvent(new Event(Level.WIN));
 			}

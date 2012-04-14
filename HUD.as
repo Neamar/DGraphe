@@ -36,7 +36,7 @@ package
 				Text_Format.font = "Imagine";
 				Text_Format.size = 14;
 				//Text_Format.bold = true;
-				Text_Format.color = 0xFFFFFF;
+				Text_Format.color = 0xFF0000;
 		}
 		
 		private static var Container:Sprite;

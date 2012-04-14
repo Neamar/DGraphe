@@ -32,7 +32,7 @@
 		public static const MODE_CREATOR:String = "creator"; //Pour la création de niveaux
 		public static const MODE_INFLUENCE:String = "influence"; //Pour comprendre les répartitions des contraintes
 
-		public static const MODE:String = MODE_INFLUENCE;
+		public static const MODE:String = MODE_GAME;
 		
 		/**
 		 * Largeur totale de l'animation

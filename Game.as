@@ -93,7 +93,7 @@ package
 					Parts[0][0].Fixe = true;
 					return new KillOneLevel(Parts[0], Parts[1], 25, Parts[0][10], (new Niveau6()).bitmapData);
 				},
-								function():Level
+				function():Level
 				{
 					/**
 					 * @state FONCTIONNEL
@@ -258,7 +258,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = 10;
+		private var LevelNumber:int = -1;
 		/**
 		 * L'objet niveau chargé
 		 */
@@ -383,6 +383,10 @@ package
 			else if(LevelObject is KillNoneLevel)
 			{
 				HUD.showText('Ne tuez personne !');
+			}
+			else if (LevelObject is CutAllLevel)
+			{
+				HUD.showText('Coupez tous les liens !');
 			}
 			/**
 			 * ...et afficher
