@@ -177,7 +177,7 @@ package Models.Levels
 		 */
 		protected function nearlyCompleted(e:Event = null):void
 		{
-			HUD.showText('Tenez deux secondes !');
+			HUD.showText('Hold for two seconds');
 			TweenLite.delayedCall(2, completed);
 		}
 		

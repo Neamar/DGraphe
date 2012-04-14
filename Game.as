@@ -370,24 +370,25 @@ package
 			
 			if(LevelObject is KillAllLevel)
 			{
-				HUD.showText('Tuez-les tous !');
+				HUD.showText('Kill them all.');
 			}
 			else if(LevelObject is KillButOneLevel)
 			{
-				HUD.showText('Sauvez-le ! Tuez les autres.');
+				HUD.showText('Save him, kill the others.');
 			}
 			else if(LevelObject is KillOneLevel)
 			{
-				HUD.showText('Tuez-le.');
+				HUD.showText('Kill him.');
 			}
 			else if(LevelObject is KillNoneLevel)
 			{
-				HUD.showText('Ne tuez personne !');
+				HUD.showText('Do not kill anyone.');
 			}
 			else if (LevelObject is CutAllLevel)
 			{
-				HUD.showText('Coupez tous les liens !');
+				HUD.showText('Remove all links.');
 			}
+			
 			/**
 			 * ...et afficher
 			 */
