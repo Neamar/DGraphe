@@ -22,17 +22,17 @@ package
 		 * Liste des images pour les niveaux.
 		 * Chargées en Embed.
 		 */
-		[Embed(source = "assets/Niveaux/1.png")] private static var Niveau1:Class;
-		[Embed(source = "assets/Niveaux/3.png")] private static var Niveau3:Class;
-		[Embed(source = "assets/Niveaux/4.png")] private static var Niveau4:Class;
-		[Embed(source = "assets/Niveaux/5.png")] private static var Niveau5:Class;
-		[Embed(source = "assets/Niveaux/6.png")] private static var Niveau6:Class;
-		[Embed(source = "assets/Niveaux/7.png")] private static var Niveau7:Class;		
-		[Embed(source = "assets/Niveaux/8.png")] private static var Niveau8:Class;	
-		[Embed(source = "assets/Niveaux/9.png")] private static var Niveau9:Class;
-		[Embed(source = "assets/Niveaux/10.png")] private static var Niveau10:Class;	
-		[Embed(source = "assets/Niveaux/11.png")] private static var Niveau11:Class;
-		[Embed(source = "assets/Niveaux/12.png")] private static var Niveau12:Class;
+		[Embed(source = "assets/niveaux/niveaux/1.png")] private static var Niveau1:Class;
+		[Embed(source = "assets/niveaux/niveaux/3.png")] private static var Niveau3:Class;
+		[Embed(source = "assets/niveaux/niveaux/4.png")] private static var Niveau4:Class;
+		[Embed(source = "assets/niveaux/niveaux/5.png")] private static var Niveau5:Class;
+		[Embed(source = "assets/niveaux/niveaux/6.png")] private static var Niveau6:Class;
+		[Embed(source = "assets/niveaux/niveaux/7.png")] private static var Niveau7:Class;		
+		[Embed(source = "assets/niveaux/niveaux/8.png")] private static var Niveau8:Class;	
+		[Embed(source = "assets/niveaux/niveaux/9.png")] private static var Niveau9:Class;
+		[Embed(source = "assets/niveaux/niveaux/10.png")] private static var Niveau10:Class;	
+		[Embed(source = "assets/niveaux/niveaux/11.png")] private static var Niveau11:Class;
+		[Embed(source = "assets/niveaux/niveaux/12.png")] private static var Niveau12:Class;
 		
 		/**
 		 * Niveaux

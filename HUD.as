@@ -20,15 +20,15 @@ package
 	public class HUD extends Sprite
 	{
 		//Images constituant le HUD
-		[Embed(source = "assets/HUD/bas.png")]
+		[Embed(source = "assets/hud/chrome/bas.png")]
 		private static var HUDBottomImg:Class;
-		[Embed(source = "assets/HUD/haut.png")]
+		[Embed(source = "assets/hud/chrome/haut.png")]
 		private static var HUDTopImg:Class;
 		
-		[Embed(source = "assets/HUD/bras.png")]
+		[Embed(source = "assets/hud/chrome/bras.png")]
 		private static var HUDArmsImg:Class;
 		
-		[Embed(source="assets/Imagine.ttf",
+		[Embed(source="assets/hud/chrome/Imagine.ttf",
 			fontName = "Imagine",
 			mimeType = "application/x-font",
 			fontWeight="normal",
