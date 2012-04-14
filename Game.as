@@ -33,6 +33,7 @@ package
 		[Embed(source = "assets/niveaux/niveaux/10.png")] private static var Niveau10:Class;	
 		[Embed(source = "assets/niveaux/niveaux/11.png")] private static var Niveau11:Class;
 		[Embed(source = "assets/niveaux/niveaux/12.png")] private static var Niveau12:Class;
+		[Embed(source = "assets/niveaux/niveaux/13.png")] private static var Niveau13:Class;
 		
 		/**
 		 * Niveaux
@@ -202,6 +203,22 @@ package
 				{
 					/**
 					 * @state FONCTIONNEL
+					 * @brief Niveau "roquette" : pousser le rouge vers la droite de plus en plus loin
+					 * @difficulty 8
+					 * @solution
+					 * - Couper la section de droite de façon à conserver un triangle dont la pointe est le rouge
+					 * - Découper à gauche en évitant les ailerons
+					 * - Découper à gauche du X
+					 * - Découper le triangle du rouge
+					 */
+					
+					var Parts:Array = Game.buildNodes('515,290|375,290|280,240|280,330|375,180|375,400|450,230|450,350|310,393|310,186:0,1|3,1|1,2|2,3|2,4|5,3|7,5|4,6|6,7|7,0|6,0|8,1|1,9|4,1|1,5');
+					return new KillOneLevel(Parts[0], Parts[1], 14, Parts[0][0], (new Niveau13()).bitmapData);
+				}
+				function():Level
+				{
+					/**
+					 * @state FONCTIONNEL
 					 * @brief Niveau "en croix à petit battant horizontal", deux rectangles arrondis placés perpendiculairement l'un à l'autre
 					 * @difficulty 9
 					 * @solution
@@ -213,18 +230,6 @@ package
 					var Parts:Array = Game.buildNodes('400,222|400,260|400,307|400,350|400,386|400,422|319,300|481,300|400,183|286,191|514,191:0,6|6,1|2,6|6,3|6,4|6,5|5,7|7,4|3,7|2,7|1,7|0,7|6,8|8,7|10,7|9,6|9,8|8,10');
 					return new KillButOneLevel(Parts[0], Parts[1], 14, Parts[0][8], (new Niveau3()).bitmapData);
 				},
-				function():Level
-				{
-					/**
-					 * @state NONFONCTIONNEL
-					 * @brief 
-					 * @difficulty 
-					 * @solution
-					 */
-					
-					var Parts:Array = Game.buildNodes('515,290|375,290|280,240|280,330|375,180|375,400|450,230|450,350|310,393|310,186:0,1|3,1|1,2|2,3|2,4|5,3|7,5|4,6|6,7|7,0|6,0|8,1|1,9|4,1|1,5');
-					return new Level(Parts[0], Parts[1], 14, (new Niveau3()).bitmapData);
-				}
 			);
 		}
 		
@@ -272,7 +277,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var CurrentLevelNumber:int = 11;
+		private var CurrentLevelNumber:int = -1;
 		private var UnlockedLevelNumber:int = CurrentLevelNumber;
 		
 		/**
