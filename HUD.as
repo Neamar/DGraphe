@@ -30,6 +30,8 @@ package
 		
 		[Embed(source = "assets/HUD/messages/main.png")]
 		private static var HUDMessageTop:Class;
+		[Embed(source = "assets/HUD/messages/bottom.png")]
+		private static var HUDMessageBottom:Class;
 		
 		[Embed(source = "assets/hud/chrome/bras.png")]
 		private static var HUDArmsImg:Class;
@@ -71,6 +73,7 @@ package
 		
 		public static function init(Stage:Main):void
 		{
+			
 			/**
 			 * Initialise un champ de texte pour son affichage dans le HUD
 			 * @param	TF
@@ -83,6 +86,7 @@ package
 			}
 			
 			Container = new Sprite();
+			Container.mouseEnabled = false;
 			Stage.addChild(Container);
 			
 			//BOTTOM Hud
@@ -124,27 +128,26 @@ package
 			
 			TopTxtSprite.filters = BottomTxtSprite.filters;		
 			
+			//MESSAGES
 			var message:Sprite;
 			for (var i:int = 0; i < 5; i++)
 			{
 				message = new Sprite();
-				message.graphics.clear();
-				message.graphics.beginFill(0xDDDDDD);
-				message.graphics.lineStyle(1, 0xFFFFFF);
-				message.graphics.drawRoundRect(-600, -100, 400, 200, 25, 25);
-				message.graphics.endFill();
-				message.alpha = .3;
-				message.rotationY = 180;
+				message.addChild(new HUDMessageBottom());
+				message.getChildAt(0).x = -600;
+				message.getChildAt(0).y = -100;
+				message.rotationY = 90;
 				message.y = Main.HAUTEUR2;
-				message.x = 800;
+				message.x = 1200;
 				Container.addChild(message);
 				
 				messagesSprites.push(message);
 			}
 			message = messagesSprites[0];
+			message.removeChildAt(0);
 			initTextField(messageText);
 			messageText.x = -580;
-			messageText.y = -90;
+			messageText.y = -85;
 			messageText.filters = [ new GlowFilter(0, 1, 4, 4, 2) ];
 			messageText.width = 360;
 			messageText.height = 160;
@@ -193,10 +196,10 @@ package
 		public static function showMessage(title:String, message:String):void
 		{
 			messageText.alpha = 1;
-			messageText.htmlText = "  <font size=\"+8\">" + title + "</font><br><br><font size=\"-4\">" + message;
+			messageText.htmlText = "   <font size=\"+10\">" + title + "</font><br><br><font size=\"-2\">" + message;
 			for (var i:int = 0; i < messagesSprites.length; i++)
 			{		
-				TweenLite.to(messagesSprites[i], 2, { rotationY : 30 * i, rotationZ: 10 * i } );
+				TweenLite.to(messagesSprites[i], 2, { rotationY : 30 * i, rotationZ: 10 * i, x:800 } );
 			}
 		}
 		
@@ -205,7 +208,7 @@ package
 			TweenLite.to(messageText, 1, { alpha:0 } );
 			for (var i:int = 0; i < messagesSprites.length; i++)
 			{
-				TweenLite.to(messagesSprites[i], 2, { rotationY : 180, rotationZ: 0 } );
+				TweenLite.to(messagesSprites[i], 2, { rotationY : 90, rotationZ: 0, x:1200 } );
 			}
 		}
 		

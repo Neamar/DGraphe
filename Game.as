@@ -56,6 +56,8 @@ package
 				},
 				function():Level
 				{
+					HUD.showMessage("Well done!", "New mission : kill the red one by pushing him over the edge.<br><br>You may use up to three strokes.");
+
 					/**
 					 * @state FONCTIONNEL
 					 * @type didacticiel
@@ -259,7 +261,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = 0;
+		private var LevelNumber:int = -1;
 		/**
 		 * L'objet niveau chargé
 		 */
