@@ -42,7 +42,7 @@ package
 			LevelsList.push(
 				function():Level
 				{
-					HUD.showMessage("Welcome", "Click and drag to cut red ropes.<br>Make sure no one falls over the edge.");
+					HUD.showMessage("Welcome", "Click and drag to cut <font color=\"#AACCAA\">nine (9)</font> red ropes.<br>Make sure no one falls over the edge.<br><br>Once free, a prisoner will try to get as far as possible from the others.");
 					/**
 					 * @state FONCTIONNEL
 					 * @type didacticiel
@@ -56,7 +56,7 @@ package
 				},
 				function():Level
 				{
-					HUD.showMessage("Well done!", "New mission : kill the red one by pushing him over the edge.<br><br>You may use up to three strokes.");
+					HUD.showMessage("Well done!", "New mission: kill the <font color=\"#FF5555\">red one</font> by pushing him over the edge.<br>You may use up to <font color=\"#AACCAA\">three (3)</font> cuts.<br><br>When stuck, double click to start over.");
 
 					/**
 					 * @state FONCTIONNEL

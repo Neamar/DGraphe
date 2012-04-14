@@ -140,6 +140,7 @@ package
 				message.y = Main.HAUTEUR2;
 				message.x = 1200;
 				Container.addChild(message);
+				Container.setChildIndex(message, 0);
 				
 				messagesSprites.push(message);
 			}
@@ -150,7 +151,7 @@ package
 			messageText.y = -85;
 			messageText.filters = [ new GlowFilter(0, 1, 4, 4, 2) ];
 			messageText.width = 360;
-			messageText.height = 160;
+			messageText.height = 180;
 			messageText.multiline = true;
 			messageText.wordWrap = true;
 			
