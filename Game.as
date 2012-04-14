@@ -42,7 +42,7 @@ package
 			LevelsList.push(
 				function():Level
 				{
-					HUD.showMessage("Welcome", "Click and drag to cut <font color=\"#AACCAA\">nine (9)</font> red ropes.<br>Make sure no one falls over the edge.<br><br>Once free, a prisoner will try to get away from the others.");
+					HUD.showMessage("Welcome", "Click and drag to cut <font color=\"#AACCAA\">nine (9)</font> red ropes.<br>Make sure no one falls over the edge.<br><br>Once free, a prisoner will try to get away from others.");
 					/**
 					 * @state FONCTIONNEL
 					 * @type didacticiel
@@ -293,7 +293,7 @@ package
 		 * Passe au niveau suivant
 		 * @param	e évènement Level.WIN
 		 */
-		protected function nextLevel(e:Event = null):void
+		public function nextLevel(e:Event = null):void
 		{
 			if (LevelObject != null)
 			{

@@ -54,6 +54,8 @@
 		 * Moitié de la hauteur (HAUTEUR / 2)
 		 */
 		public static const HAUTEUR2:int = 300;
+		
+		public var game:Game;
 
 		public function Main():void 
 		{
@@ -65,7 +67,8 @@
 			HUD.init(this);
 			HUD.showText('github.com/Neamar/Dgraphe');
 			
-			addChild(new Game(BG));
+			game = new Game(BG);
+			addChild(game);
 			
 			HUD.onTop();
 		}

@@ -47,6 +47,8 @@ package
 		
 		[Embed(source = "assets/hud/chrome/bras.png")]
 		private static var HUDArmsImg:Class;
+		[Embed(source = "assets/HUD/fleches/next.png")]
+		private static var HUDArmsNext:Class;
 		
 		[Embed(source="assets/hud/chrome/Imagine.ttf",
 			fontName = "Imagine",
@@ -68,6 +70,7 @@ package
 		
 		//Bottom
 		private static var BottomArms:Bitmap = new HUDArmsImg();
+		private static var NextButton:Bitmap = new HUDArmsNext();
 		private static var BottomTxt:TextField = new TextField();
 		private static var BottomTxtSprite:Sprite = new Sprite();
 		private static var BottomImg:Bitmap = new HUDBottomImg();
@@ -103,10 +106,19 @@ package
 			Stage.addChild(Container);
 			
 			//BOTTOM Hud
+			var nextButtonSprite:Sprite = new Sprite();
+			nextButtonSprite.addChild(NextButton);
 			Container.addChild(BottomArms);
+			Container.addChild(nextButtonSprite);
 			Container.addChild(BottomImg);
 			Container.addChild(BottomTxtSprite);
 			BottomTxtSprite.addChild(BottomTxt);
+			
+			NextButton.x = 675;
+			NextButton.y = 565 
+			NextButton.rotation = -19.5;
+			nextButtonSprite.buttonMode = true;
+			nextButtonSprite.addEventListener(MouseEvent.CLICK, gotoNextLevel);
 			
 			BottomArms.y = Main.HAUTEUR - BottomArms.height;
 			centerX(BottomArms);
@@ -138,6 +150,8 @@ package
 			TopTxtLink.y = TopTxtLevel.y = 5;
 			TopTxtLevel.x = 460;
 			TopTxtLink.x = 355;
+			TopTxtLevel.height = TopTxtLink.height = 21;
+			TopTxtLevel.width = TopTxtLink.width = 40;
 			centerX(BottomTxt);
 			Text_Format.size = 22;
 			initTextField(TopTxtLevel);
@@ -145,13 +159,13 @@ package
 			
 			TopTxtSprite.filters = BottomTxtSprite.filters;		
 			
+			topHud.mouseChildren = false;
 			topHud.addEventListener(MouseEvent.MOUSE_MOVE, displayTip);
 			topHud.addEventListener(MouseEvent.MOUSE_OUT, hideTip);
 			Container.addChild(tipLevel);
+			Container.addChild(tipLinks);
 			tipLinks.y = 22;
 			tipLevel.y = tipLinks.y - 5;
-			
-			Container.addChild(tipLinks);
 			hideTip();
 			
 			//MESSAGES
@@ -271,23 +285,36 @@ package
 		
 		private static function displayTip(e:MouseEvent):void
 		{
-			if (TopImg.parent.mouseX - TopImg.x < TopImg.width/2 && TopImg.parent.mouseX - TopImg.x > 45)
+			//if (TopImg.parent.mouseY > 30)
+			//{
+				//trace(tipLevel.x, tipLinks.x);
+				//hideTip();
+				//return;
+			//}
+			
+			if (TopImg.parent.mouseX - TopImg.x < TopImg.width/2 && TopImg.parent.mouseX - TopImg.x > 45 && TopImg.parent.mouseY <= 30)
 			{
-				tipLinks.visible = true;
-				tipLevel.visible = false;
+				tipLevel.x = -500;
 				tipLinks.x = Container.mouseX - 150;
 			}
-			else if (TopImg.parent.mouseX - TopImg.x > TopImg.width/2 && TopImg.parent.mouseX - TopImg.x < 275)
+			else if (TopImg.parent.mouseX - TopImg.x > TopImg.width/2 && TopImg.parent.mouseX - TopImg.x < 275 && TopImg.parent.mouseY <= 30)
 			{
-				tipLevel.visible = true;
-				tipLinks.visible = false;
+				tipLinks.x = -500;
 				tipLevel.x = Container.mouseX - 52;
 			}
+			
+
 		}
+
 		
 		private static function hideTip(e:Event = null):void
 		{
-			tipLevel.visible = tipLinks.visible = false;
+			tipLevel.x = tipLinks.x = -500;
+		}
+		
+		private static function gotoNextLevel(e:Event):void
+		{
+			(Container.parent as Main).game.nextLevel();
 		}
 	}
 	
