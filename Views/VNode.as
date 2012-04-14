@@ -1,6 +1,8 @@
 package Views 
 {
 	import com.greensock.TweenLite;
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.events.Event;
 	import flash.filters.BlurFilter;
 	import flash.geom.Matrix;
@@ -11,6 +13,13 @@ package Views
 	 */
 	public class VNode extends View
 	{
+		[Embed(source = "../assets/niveaux/humains/normal.png")]
+		private static var NormalHumanClass:Class;
+		private static var NormalHuman:BitmapData = (new NormalHumanClass()).bitmapData;
+		[Embed(source = "../assets/niveaux/humains/special.png")]
+		private static var SpecialHumanClass:Class;
+		private static var SpecialHuman:BitmapData = (new SpecialHumanClass()).bitmapData;
+		
 		/**
 		 * Rayon d'un noeud
 		 */
@@ -32,18 +41,21 @@ package Views
 			this.N = N;
 			this.VL = VL;
 			
-			this.graphics.lineStyle(1);
-			this.graphics.beginFill(0xFFFFFF);
-			this.graphics.drawCircle(0, 0, NODE_RADIUS);
-			this.graphics.endFill();
-			this.graphics.lineStyle(2);
-			this.graphics.moveTo(0, 0);
-			this.graphics.lineTo(0, -NODE_RADIUS);
-			
-			if (N.Special)
+			var img:Bitmap;
+			if (!N.Special)
 			{
-				this.filters = [new BlurFilter(8, 8)];
+				img = new Bitmap(NormalHuman)
 			}
+			else
+			{
+				img = new Bitmap(SpecialHuman)
+			}
+			img.smoothing = true;
+			img.x = -img.width / 2;
+			img.y = -img.height / 2;
+			
+			addChild(img);
+			
 			
 			if (N.Fixe)
 			{
