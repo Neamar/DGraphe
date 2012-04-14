@@ -61,7 +61,7 @@ package Views
 			if (Main.MODE == Main.MODE_GAME)
 			{
 				this.Fond = new Bitmap(L.getFond());
-				this.Fond.filters = [new GlowFilter(0xFFFFFF, 1, 4, 4, 2, 1, true), new GlowFilter(0, 1, 100, 100)];
+				this.Fond.filters = [new GlowFilter(0xFFFFFF, 1, 2, 2, 1, 1, true), new GlowFilter(0xFFFFFF, 1, 4, 4, 1, 1),new GlowFilter(0, 1, 100, 100)];
 			}
 			else
 			{

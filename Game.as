@@ -260,7 +260,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var LevelNumber:int = 2;
+		private var LevelNumber:int = 7;
 		/**
 		 * L'objet niveau chargé
 		 */
