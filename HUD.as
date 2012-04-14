@@ -115,8 +115,9 @@ package
 			BottomTxtSprite.addChild(BottomTxt);
 			
 			NextButton.x = 675;
-			NextButton.y = 565 
-			NextButton.rotation = -19.5;
+			NextButton.y = 560; 
+			NextButton.rotation = -20;
+			NextButton.smoothing = true;
 			nextButtonSprite.buttonMode = true;
 			nextButtonSprite.addEventListener(MouseEvent.CLICK, gotoNextLevel);
 			

@@ -32,7 +32,13 @@ package Views
 			this.S = S;
 			this.VL = VL;
 			
-			Eclair = new Lightning(0xFF0000, 2);
+			var couleur:int;
+			if (S.Bout.Special || S.AutreBout.Special)
+				couleur = 0xFF0000;
+			else
+				couleur = 0;
+				
+			Eclair = new Lightning(couleur, 2);
 			Eclair.childrenDetachedEnd=false;
 			Eclair.childrenLifeSpanMin=.1;
 			Eclair.childrenLifeSpanMax=2;
