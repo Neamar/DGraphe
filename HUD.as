@@ -28,15 +28,21 @@ package
 		[Embed(source = "assets/HUD/bras.png")]
 		private static var HUDArmsImg:Class;
 		
-		[Embed(source = "assets/Imagine.ttf", fontFamily = "Imagine", mimeType="application/x-font-truetype")]
-		private static var EmbedFont:String;
+		[Embed(source="assets/Imagine.ttf",
+			fontName = "Imagine",
+			mimeType = "application/x-font",
+			fontWeight="normal",
+			fontStyle="normal",
+			advancedAntiAliasing="true",
+			embedAsCFF="false")]
+		private static var EmbedFont:Class;
 	   
 		private static var Text_Format:TextFormat = new TextFormat();
 		{
 				Text_Format.font = "Imagine";
 				Text_Format.size = 14;
 				//Text_Format.bold = true;
-				Text_Format.color = 0xFF0000;
+				Text_Format.color = 0xFFFFFF;
 		}
 		
 		private static var Container:Sprite;
