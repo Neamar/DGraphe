@@ -392,7 +392,7 @@ package
 			 * ...et afficher
 			 */
 			VLevelObject.x = Main.LARGEUR + Main.LARGEUR2;
-			addChild(VLevelObject);
+			//addChild(VLevelObject);
 			UpdateLevel = false;
 			TweenLite.to(
 				VLevelObject,

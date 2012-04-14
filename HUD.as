@@ -1,9 +1,12 @@
 package 
 {
+	import com.greensock.TweenLite;
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.filters.GlowFilter;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -41,7 +44,6 @@ package
 		{
 				Text_Format.font = "Imagine";
 				Text_Format.size = 14;
-				//Text_Format.bold = true;
 				Text_Format.color = 0xFFFFFF;
 		}
 		
@@ -59,11 +61,9 @@ package
 		private static var TopTxtLevel:TextField = new TextField();
 		private static var TopTxtSprite:Sprite = new Sprite();
 		
-		//Message
-		private static var MsgBack1:Shape = new Shape();
-		private static var MsgBack2:Shape = new Shape();
-		private static var MsgSprite:Shape = new Shape();
-		
+		//Messages
+		private static var messagesSprites:Vector.<Sprite> = new Vector.<Sprite>();
+		private static var messageText:TextField = new TextField();
 		
 		
 		public static function init(Stage:Main):void
@@ -119,35 +119,39 @@ package
 			initTextField(TopTxtLevel);
 			initTextField(TopTxtLink);
 			
-			TopTxtSprite.filters = BottomTxtSprite.filters;
+			TopTxtSprite.filters = BottomTxtSprite.filters;		
 			
-			
-			//Messages
-			function drawMsgBottom(MsgBack:Shape):void
+			var message:Sprite;
+			for (var i:int = 0; i < 5; i++)
 			{
-				MsgBack.graphics.clear();
-				MsgBack.graphics.beginFill(0xDDDDDD);
-				MsgBack.graphics.lineStyle(1, 0xFFFFFF);
-				MsgBack.graphics.drawRoundRect(-600, -100, 400, 200, 25, 25);
-				MsgBack.graphics.endFill();
-				MsgBack.alpha = .3;
-				MsgBack.y = Main.HAUTEUR2;
+				message = new Sprite();
+				message.graphics.clear();
+				message.graphics.beginFill(0xDDDDDD);
+				message.graphics.lineStyle(1, 0xFFFFFF);
+				message.graphics.drawRoundRect(-600, -100, 400, 200, 25, 25);
+				message.graphics.endFill();
+				message.alpha = .3;
+				message.rotationY = 180;
+				message.y = Main.HAUTEUR2;
+				message.x = 800;
+				Container.addChild(message);
+				
+				messagesSprites.push(message);
 			}
-			//Container.addChild(MsgBack1);
-			//Container.addChild(MsgBack2);
+			message = messagesSprites[0];
+			initTextField(messageText);
+			messageText.x = -580;
+			messageText.y = -80;
+			messageText.filters = [ new GlowFilter(0, 1, 4, 4, 2) ];
+			messageText.width = 560;
+			messageText.height = 160;
+			messageText.multiline = true;
 			
-			drawMsgBottom(MsgBack1);
-			MsgBack1.x = 800;
-			MsgBack1.rotationY = 20;
-			//MsgBack1.rotationZ = 20;
-			MsgBack1.z = 20;
-			
-			drawMsgBottom(MsgBack2);
-			MsgBack2.x = 800;
-			MsgBack2.rotationY = 40;
-			//MsgBack2.rotationZ = 40;
-			MsgBack2.z = 40;
-			
+			message.addChild(messageText);
+			message.alpha = .6;
+			message.addEventListener(MouseEvent.CLICK, hideMessage);
+			Container.setChildIndex(message, Container.numChildren - 1);
+			showMessage("<font size=\"+8\">Bienvenue !</font><br>Ce jeu est cool.");
 		}
 		
 		/**
@@ -176,6 +180,25 @@ package
 		public static function showLevel(Niveau:int):void
 		{
 			TopTxtLevel.text = Niveau.toString();
+		}
+		
+		public static function showMessage(message:String):void
+		{
+			messageText.alpha = 1;
+			messageText.htmlText = message;
+			for (var i:int = 0; i < messagesSprites.length; i++)
+			{		
+				TweenLite.to(messagesSprites[i], 2, { rotationY : 30 * i, rotationZ: 10 * i } );
+			}
+		}
+		
+		public static function hideMessage(e:Event):void
+		{
+			TweenLite.to(messageText, 1, { alpha:0 } );
+			for (var i:int = 0; i < messagesSprites.length; i++)
+			{
+				TweenLite.to(messagesSprites[i], 2, { rotationY : 180, rotationZ: 0 } );
+			}
 		}
 		
 		/**
