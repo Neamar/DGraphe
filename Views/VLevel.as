@@ -1,21 +1,16 @@
 package Views 
 {
-	import com.greensock.plugins.TintPlugin;
-	import com.greensock.TweenLite;
 	import com.oaxoa.fx.Lightning;
 	import com.oaxoa.fx.LightningFadeType;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.display.BitmapDataChannel;
 	import flash.display.BlendMode;
 	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.filters.DisplacementMapFilter;
 	import flash.filters.GlowFilter;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import Models.Levels.Level;
 	import Models.Nodes.Node;
 	import Models.Nodes.Spring;
@@ -172,6 +167,7 @@ package Views
 			{
 				V.update();
 			}
+				
 			
 			if (Main.MODE == Main.MODE_INFLUENCE)
 			{

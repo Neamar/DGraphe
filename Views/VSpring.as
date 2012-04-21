@@ -45,7 +45,7 @@ package Views
 			Eclair.childrenMaxCount=2;
 			Eclair.childrenMaxCountDecay = .5;
 			Eclair.amplitude = .3;
-			Eclair.steps = 50;
+			Eclair.steps = 20;
 			Eclair.speed = .09;
 			Eclair.childrenProbability=.3;
 			Eclair.smoothPercentage = 50;

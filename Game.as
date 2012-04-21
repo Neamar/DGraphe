@@ -1,15 +1,12 @@
 package 
 {
 	import com.greensock.TweenLite;
-	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import Models.Levels.*;
 	import Models.Nodes.Node;
 	import Models.Nodes.Spring;
-	import Views.View;
 	import Views.VLevel;
-	import Views.VSpring;
 	
 	/**
 	 * Objet représentant le jeu dans son intégralité;
@@ -277,7 +274,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var CurrentLevelNumber:int = -1;
+		private var CurrentLevelNumber:int = 10;
 		private var UnlockedLevelNumber:int = 15;// CurrentLevelNumber;
 		
 		/**

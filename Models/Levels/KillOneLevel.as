@@ -1,9 +1,6 @@
 package Models.Levels 
 {
 	import flash.display.BitmapData;
-	import flash.events.Event;
-	import flash.filters.BlurFilter;
-	import flash.filters.GlowFilter;
 	import Models.Nodes.Node;
 	import Models.Nodes.Spring;
 	/**

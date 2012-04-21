@@ -2,17 +2,8 @@
 {
 	import com.greensock.plugins.GlowFilterPlugin;
 	import com.greensock.plugins.TweenPlugin;
-	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.events.MouseEvent;
-	import flash.filters.GlowFilter;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.net.URLLoader;
-	import flash.net.URLRequest;
-	import flash.text.TextField;
-	import flash.text.TextFieldAutoSize;
 
 	/**
 	* DGraphe !
@@ -59,6 +50,7 @@
 
 		public function Main():void 
 		{
+			//stage.scaleMode = StageScaleMode.NO_SCALE;
 			addChild(new Monitor());
 			TweenPlugin.activate([GlowFilterPlugin]);
 			
@@ -72,6 +64,8 @@
 			addChild(game);
 			
 			HUD.onTop();
+			
+			scrollRect = new Rectangle(0, 0, Main.LARGEUR, Main.HAUTEUR);
 		}
 	}
 }

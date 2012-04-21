@@ -279,7 +279,7 @@ package com.oaxoa.fx {
 	
 				soffs[0].x+=(steps/100)*speed;
 				soffs[0].y+=(steps/100)*speed;
-				sbd.perlinNoise(steps/20, steps/20, 1, seed1, false, true, 7, true, soffs);
+				sbd.perlinNoise(steps / 20, steps / 20, 1, seed1, false, true, 7, true, soffs);
 
 				calculatedWavelength=steps*wavelength;
 				calculatedSpeed=(calculatedWavelength*.1)*speed;
