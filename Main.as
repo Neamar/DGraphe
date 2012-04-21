@@ -50,8 +50,9 @@
 
 		public function Main():void 
 		{
-			//stage.scaleMode = StageScaleMode.NO_SCALE;
 			addChild(new Monitor());
+		
+			
 			TweenPlugin.activate([GlowFilterPlugin]);
 			
 			var BG:Background = new Background();

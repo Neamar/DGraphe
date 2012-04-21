@@ -77,7 +77,7 @@ package com.oaxoa.fx {
 		
 		public var smooth:Sprite;
 		public var childrenSmooth:Sprite;
-		public var childrenArray:Array=[];
+		public var childrenArray:Vector.<Object>=new Vector.<Object>();
 		
 		public var _smoothPercentage:uint=50;
 		public var _childrenSmoothPercentage:uint;
@@ -219,6 +219,15 @@ package com.oaxoa.fx {
 				}
 			}
 			this.parent.removeChild(this);
+			this.graphics.clear();
+			sbd.dispose();
+			bbd.dispose();
+			soffs = boffs = null;
+			sbd = bbd = null;
+			childrenArray = null;
+			holder = smooth = childrenSmooth = null;
+			parentInstance = null;
+			glow = null;
 			delete this;
 		}
 		public function killAllChildren():void {

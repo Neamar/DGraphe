@@ -41,14 +41,9 @@
 					<directMemory>-</directMemory>
 					<sectionLabel>Max direct: </sectionLabel>
 					<directMemoryMax>-</directMemoryMax>
-					<sectionLabel>Total: </sectionLabel>
-					<veryTotalMemory>-</veryTotalMemory>
-					<sectionLabel>Garbage: </sectionLabel>
-					<garbageMemory>-</garbageMemory>
 					<sectionTitle>STAGE MONITOR</sectionTitle>
 					<sectionLabel>Children: </sectionLabel>
 					<nChildren>-</nChildren>
-					<sectionTitle>GAME MONITOR</sectionTitle>
 				</xml>;
 			
 			var style:StyleSheet = new StyleSheet();
