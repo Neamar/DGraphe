@@ -41,7 +41,20 @@ package
 			LevelsList.push(
 				function():Level
 				{
-					HUD.showMessage("Welcome", "Click and drag to cut <font color=\"#AACCAA\">nine (9)</font> red ropes.<br>Make sure no one falls over the edge.<br><br>Once free, a prisoner will try to get away from others.");
+					HUD.showMessage("Welcome", "This is <font color=\"#AACCAA\">DGRAPHE</font>.<br><br>Game by Neamar<br>Design by Licoti.<br><br><br>Click to start.");
+					/**
+					 * @state FONCTIONNEL
+					 * @type didacticiel
+					 * @brief Présentation du jeu et du comportement des noeuds
+					 * @difficulty 1
+					 * @solution
+					 * - Tout... les coups perdants sont vraiment durs à trouver !
+					 */
+					return new EmptyLevel();
+				},
+				function():Level
+				{
+					HUD.showMessage("First level.", "Click and drag to cut <font color=\"#AACCAA\">nine (9)</font> red ropes.<br>Make sure no one falls over the edge.<br><br>Once free, a prisoner will try to get away from others.");
 					/**
 					 * @state FONCTIONNEL
 					 * @type didacticiel
@@ -194,10 +207,10 @@ package
 					 * - Avant que les noeuds se coupent seuls, les trancher manuellement pour faire du score
 					 * - Accorder une attention particulière au haut du E et du P, et à la partie gauche du H.
 					 * 
-					 * @note Les très bons peuvent couper 17 liens... 14 semble raisonnable cependant pour cibler les gens modérément doués à la souris.
+					 * @note Les très bons peuvent couper 17 liens... 13 semble raisonnable cependant pour cibler les gens modérément doués à la souris.
 					 */
 					var Parts:Array = Game.buildNodes('110,180|110,280|110,380|210,280|210,180|210,380|290,180|390,180|390,280|290,280|290,380|390,380|470,180|470,280|470,430|550,380|630,380|630,280|630,180|730,180|730,280:5,3|3,4|3,1|1,0|1,2|11,10|10,9|9,6|6,7|9,8|15,14|14,13|13,12|20,17|17,18|18,19|19,20|17,16');
-					return new CutAllLevel(Parts[0], Parts[1], 14, (new Niveau12()).bitmapData);
+					return new CutAllLevel(Parts[0], Parts[1], 13, (new Niveau12()).bitmapData);
 				},
 				function():Level
 				{
@@ -292,7 +305,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var CurrentLevelNumber:int = 2;
+		private var CurrentLevelNumber:int = -1;
 		private var UnlockedLevelNumber:int = 15;// CurrentLevelNumber;
 		
 		/**
@@ -457,7 +470,7 @@ package
 			}
 			else if(LevelObject is KillNoneLevel)
 			{
-				HUD.showText('Do not kill anyone.');
+				HUD.showText('Save everyone.');
 			}
 			else if (LevelObject is CutAllLevel)
 			{

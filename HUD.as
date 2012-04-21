@@ -66,7 +66,7 @@ package
 				Text_Format.color = 0xFFFFFF;
 		}
 		
-		private static var Container:Sprite;
+		public static var Container:Sprite;
 		
 		//Bottom
 		private static var BottomArms:Bitmap = new HUDArmsImg();

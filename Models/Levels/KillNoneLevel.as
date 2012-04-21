@@ -31,11 +31,12 @@ package Models.Levels
 		{
 			var R:Vector.<Spring> = super.cut(Start, End);
 			
+			HUD.showText("Save everyone. Cut <font color=\"#AACCAA\">" + ChainesACouper + "</font> links");
+			
 			if (ChainesACouper == 0)
 			{
 				nearlyCompleted();
 			}
-			
 			return R;
 		}
 	}
