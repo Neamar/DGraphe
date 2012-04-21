@@ -31,6 +31,7 @@ package
 		[Embed(source = "assets/niveaux/niveaux/11.png")] private static var Niveau11:Class;
 		[Embed(source = "assets/niveaux/niveaux/12.png")] private static var Niveau12:Class;
 		[Embed(source = "assets/niveaux/niveaux/13.png")] private static var Niveau13:Class;
+		[Embed(source = "assets/niveaux/niveaux/14.png")] private static var Niveau14:Class;
 		
 		/**
 		 * Niveaux
@@ -79,6 +80,23 @@ package
 					 */
 					var Parts:Array = Game.buildNodes('351,251|400,230|449,251|330,300|351,349|449,349|400,370|470,300:3,7|0,5|6,1|2,4');
 					return new KillAllLevel(Parts[0], Parts[1], 4, (new Niveau9()).bitmapData);
+				},
+				function():Level
+				{
+					HUD.showMessage("Nearly there...", "In this level, you have to kill everyone but the <font color=\"#FF5555\">red one</font>.<br><br>The bottom screen will always display your goal.<br><br>Good luck!");
+					/**
+					 * @state FONCTIONNEL
+					 * @brief 
+					 * @difficulty 
+					 * @solution
+					 * - 
+					 */
+					var Parts:Array = Game.buildNodes('500,400|560,340|560,280|440,400|400,360|520,240|500,340|460,300:0,1|4,7|7,5');
+					for (var i:int = 0; i < 6; i++)
+					{
+						Parts[0][i].Fixe = true;
+					}
+					return new KillButOneLevel(Parts[0], Parts[1], 2, Parts[0][6], (new Niveau14()).bitmapData);
 				},
 				function():Level
 				{
@@ -274,7 +292,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var CurrentLevelNumber:int = 10;
+		private var CurrentLevelNumber:int = 2;
 		private var UnlockedLevelNumber:int = 15;// CurrentLevelNumber;
 		
 		/**

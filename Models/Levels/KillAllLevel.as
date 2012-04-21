@@ -25,7 +25,10 @@ package Models.Levels
 			
 			for each(var Noeud:Node in Noeuds)
 			{
-				Noeud.addEventListener(Node.DEAD, decompte);
+				if (Noeud.Fixe)
+					NbDead++
+				else
+					Noeud.addEventListener(Node.DEAD, decompte);
 			}
 			
 		}
