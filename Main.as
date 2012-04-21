@@ -59,6 +59,7 @@
 
 		public function Main():void 
 		{
+			addChild(new Monitor());
 			TweenPlugin.activate([GlowFilterPlugin]);
 			
 			var BG:Background = new Background();
