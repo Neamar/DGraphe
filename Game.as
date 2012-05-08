@@ -186,15 +186,16 @@ package
 				{
 					/**
 					 * @state FONCTIONNEL
-					 * @brief Niveau sur faible superficie sur rectangle union petit rectangle en bas
+					 * @brief Niveau en grand cercle
 					 * @difficulty 6
 					 * @solution
-					 * - Couper le lien central sur le noeud en haut à droite, attendre la résolution ;)
-					 * - Couper ce qui reste (un ou deux noeuds)
-					 * @note Faisable en deux coups si on joue bien (même mouvement, vitesse modulée)
+					 * - Couper la croix centrale.
+					 * - Couper le lien horizontal-haut et attendre que les deux noeuds ainsi libérés se retrouvent à la verticale avec les les noeuds juste en dessous
+					 * - Couper alors d'un coup les deux liens au dessus de la partie basse horizontale, on se retrouve avec trois composantes "à deux noeuds".
+					 * - Couper une par une chacune de ces composantes, dans l'ordre le plus logique en fonction de leurs positions.
 					 */
-					var Parts:Array = Game.buildNodes('561,246|476,340|561,434|520,340|470,271|379,340|470,409|588,340:3,0|0,1|1,2|2,3|4,0|5,1|6,2|7,3|5,4|4,7|7,6|6,5');
-					return new KillButOneLevel(Parts[0], Parts[1], 10, Parts[0][3], (new Niveau7()).bitmapData);
+					var Parts:Array = Game.buildNodes('280,300|380,260|420,260|520,300|420,340|380,340:0,1|1,2|2,3|3,4|4,5|5,0|1,4|0,3');
+					return new KillNoneLevel(Parts[0], Parts[1], 8, (new Niveau1()).bitmapData);
 				},
 				function():Level
 				{
@@ -216,16 +217,15 @@ package
 				{
 					/**
 					 * @state FONCTIONNEL
-					 * @brief Niveau en grand cercle
+					 * @brief Niveau sur faible superficie sur rectangle union petit rectangle en bas
 					 * @difficulty 8
 					 * @solution
-					 * - Couper la croix centrale.
-					 * - Couper le lien horizontal-haut et attendre que les deux noeuds ainsi libérés se retrouvent à la verticale avec les les noeuds juste en dessous
-					 * - Couper alors d'un coup les deux liens au dessus de la partie basse horizontale, on se retrouve avec trois composantes "à deux noeuds".
-					 * - Couper une par une chacune de ces composantes, dans l'ordre le plus logique en fonction de leurs positions.
+					 * - Couper le lien central sur le noeud en haut à droite, attendre la résolution ;)
+					 * - Couper ce qui reste (un ou deux noeuds)
+					 * @note Faisable en deux coups si on joue bien (même mouvement, vitesse modulée)
 					 */
-					var Parts:Array = Game.buildNodes('280,300|380,260|420,260|520,300|420,340|380,340:0,1|1,2|2,3|3,4|4,5|5,0|1,4|0,3');
-					return new KillNoneLevel(Parts[0], Parts[1], 8, (new Niveau1()).bitmapData);
+					var Parts:Array = Game.buildNodes('561,246|476,340|561,434|520,340|470,271|379,340|470,409|588,340:3,0|0,1|1,2|2,3|4,0|5,1|6,2|7,3|5,4|4,7|7,6|6,5');
+					return new KillButOneLevel(Parts[0], Parts[1], 10, Parts[0][3], (new Niveau7()).bitmapData);
 				},
 				function():Level
 				{
@@ -462,11 +462,11 @@ package
 			}
 			else if(LevelObject is KillButOneLevel)
 			{
-				HUD.showText('Save him, kill the others.');
+				HUD.showText('Save <font color=\"#ea9999\">red</font>, kill the others.');
 			}
 			else if(LevelObject is KillOneLevel)
 			{
-				HUD.showText('Kill him.');
+				HUD.showText('Kill <font color=\"#ea9999\">red</font>.');
 			}
 			else if(LevelObject is KillNoneLevel)
 			{

@@ -33,7 +33,7 @@ package Models.Levels
 		{
 			var Retour:Vector.<Spring> = super.cut(Start, End);
 			
-			HUD.showText("Remove <font color=\"#AACCAA\">" + ChainesACouper + "</font> links");
+			HUD.showText("Remove <font color=\"#AACCAA\">" + ChainesACouper + "</font> link" + (ChainesACouper > 1?'s':''));
 			if (ChainesACouper == 0)
 			{
 				completed();
