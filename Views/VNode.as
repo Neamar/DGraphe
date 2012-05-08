@@ -18,6 +18,9 @@ package Views
 		[Embed(source = "../assets/niveaux/humains/special.png")]
 		private static var SpecialHumanClass:Class;
 		private static var SpecialHuman:BitmapData = (new SpecialHumanClass()).bitmapData;
+		[Embed(source = "../assets/niveaux/humains/pylone.png")]
+		private static var FixedHumanClass:Class;
+		private static var FixedHuman:BitmapData = (new FixedHumanClass()).bitmapData;
 		
 		/**
 		 * Rayon d'un noeud
@@ -40,26 +43,12 @@ package Views
 			this.N = N;
 			this.VL = VL;
 			
-			var img:Bitmap;
-			if (!N.Special)
-			{
-				img = new Bitmap(NormalHuman)
-			}
+			if (N.Special)
+				setImage(SpecialHuman);
+			else if(!N.Fixe)
+				setImage(NormalHuman);
 			else
-			{
-				img = new Bitmap(SpecialHuman)
-			}
-			img.smoothing = true;
-			img.x = -img.width / 2;
-			img.y = -img.height / 2;
-			
-			addChild(img);
-			
-			
-			if (N.Fixe)
-			{
-				this.graphics.clear();
-			}
+				setImage(FixedHuman);
 			
 			N.addEventListener(Node.DEAD, onDeath);
 			
@@ -71,6 +60,19 @@ package Views
 			this.graphics.clear();
 			VL.removeView(this);
 			super.destroy();
+		}
+		
+		public function setImage(bd:BitmapData):void
+		{
+			if (numChildren > 0)
+				removeChildAt(0);
+
+			var img:Bitmap = new Bitmap(bd);
+			img.smoothing = true;
+			img.x = -img.width / 2;
+			img.y = -img.height / 2;
+			
+			addChild(img);
 		}
 		
 		/**

@@ -305,7 +305,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var CurrentLevelNumber:int = -1;
+		private var CurrentLevelNumber:int = 3;
 		private var UnlockedLevelNumber:int = 15;// CurrentLevelNumber;
 		
 		/**
