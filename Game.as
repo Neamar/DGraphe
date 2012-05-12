@@ -41,7 +41,7 @@ package
 			LevelsList.push(
 				function():Level
 				{
-					HUD.showMessage("Welcome", "This is <font color=\"#AACCAA\">DGRAPHE</font>.<br><br>Game by Neamar<br>Design by Licoti.<br><br><br>Click to start.");
+					HUD.showMessage("Welcome", "This is <font color=\"#AACCAA\">Lightning Magnet</font>.<br><br>Game by Neamar<br>Design by Licoti.<br><br><br>Click to start.");
 					/**
 					 * @state FONCTIONNEL
 					 * @type didacticiel
@@ -305,7 +305,7 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var CurrentLevelNumber:int = 3;
+		private var CurrentLevelNumber:int = -1;
 		private var UnlockedLevelNumber:int = 15;// CurrentLevelNumber;
 		
 		/**

@@ -31,7 +31,7 @@ package Models.Levels
 		{
 			var R:Vector.<Spring> = super.cut(Start, End);
 			
-			HUD.showText("Save everyone. Cut <font color=\"#AACCAA\">" + ChainesACouper + "</font> link" + (ChainesACouper > 1?'s':''));
+			HUD.showText("Save everyone. Cut <font color=\"#AACCAA\">" + ChainesACouper + "</font> link" + (ChainesACouper > 1?'s':''), false);
 			
 			if (ChainesACouper == 0)
 			{

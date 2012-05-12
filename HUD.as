@@ -226,10 +226,16 @@ package
 		 * Afficher du texte HTML sur le HUD.
 		 * @param	Texte
 		 */
-		public static function showText(Text:String):void
+		public static function showText(Text:String, important:Boolean = true):void
 		{
 			BottomTxt.htmlText = Text;
-			BottomTxt.x = (Main.LARGEUR - BottomTxt.textWidth) / 2
+			BottomTxt.x = (Main.LARGEUR - BottomTxt.textWidth) / 2;
+			
+			if (important)
+			{
+				TweenLite.to(BottomTxt, 1, { glowFilter: { color:0x00FF00, blurX:40, blurY:40, strength:10, alpha:.7 }} );
+				TweenLite.to(BottomTxt, 1, { delay:1.5, glowFilter: { color:0x000000, blurX:0, blurY:0, strength:0, alpha:0, remove:true }} );
+			}
 		}
 		
 		/**
@@ -239,6 +245,12 @@ package
 		public static function showLink(Liens:int):void
 		{
 			TopTxtLink.text = Liens.toString();
+		}
+		
+		public static function glowLink():void
+		{
+			TweenLite.to(TopTxtLink, .5, { glowFilter: { color:0xFF0000, blurX:40, blurY:40, strength:30, alpha:.9 }} );
+			TweenLite.to(TopTxtLink, 1, { delay:1.5, glowFilter: { color:0x000000, blurX:0, blurY:0, strength:0, alpha:0, remove:true }} );
 		}
 		
 		/**

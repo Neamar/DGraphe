@@ -1,5 +1,6 @@
 ﻿package 
 {
+	import com.greensock.OverwriteManager;
 	import com.greensock.plugins.GlowFilterPlugin;
 	import com.greensock.plugins.TweenPlugin;
 	import flash.display.Sprite;
@@ -54,12 +55,13 @@
 		
 			
 			TweenPlugin.activate([GlowFilterPlugin]);
+			OverwriteManager.init()
 			
 			var BG:Background = new Background();
 			addChild(BG);
 
 			HUD.init(this);
-			HUD.showText('github.com/Neamar/Dgraphe');
+			HUD.showText('github.com/Neamar/Dgraphe', false);
 			
 			game = new Game(BG);
 			addChild(game);

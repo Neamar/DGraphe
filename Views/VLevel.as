@@ -212,6 +212,13 @@ package Views
 		 */
 		protected final function lancerCoupure(e:MouseEvent):void
 		{
+			if (L.getChainesACouper() <= 0)
+			{
+				//On ne peut plus couper.
+				HUD.glowLink();
+				return;
+			}
+			
 			CutterStart.x = e.localX;
 			CutterStart.y = e.localY;
 			Eclair.visible = true;
@@ -297,8 +304,8 @@ package Views
 			removeEventListener(MouseEvent.MOUSE_MOVE, continuerCoupure);
 			removeEventListener(MouseEvent.MOUSE_UP, terminerCoupure);
 
-			if (L.getChainesACouper() > 0)
-				addEventListener(MouseEvent.MOUSE_DOWN, lancerCoupure);
+			
+			addEventListener(MouseEvent.MOUSE_DOWN, lancerCoupure);
 		}
 	}
 
