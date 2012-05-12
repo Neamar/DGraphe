@@ -55,7 +55,7 @@
 		
 			
 			TweenPlugin.activate([GlowFilterPlugin]);
-			OverwriteManager.init()
+			OverwriteManager.init(OverwriteManager.ALL_IMMEDIATE)
 			
 			var BG:Background = new Background();
 			addChild(BG);

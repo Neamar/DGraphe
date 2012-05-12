@@ -1,5 +1,6 @@
 package 
 {
+	import com.greensock.OverwriteManager;
 	import com.greensock.TweenLite;
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
@@ -234,7 +235,7 @@ package
 			if (important)
 			{
 				TweenLite.to(BottomTxt, 1, { glowFilter: { color:0x00FF00, blurX:40, blurY:40, strength:10, alpha:.7 }} );
-				TweenLite.to(BottomTxt, 1, { delay:1.5, glowFilter: { color:0x000000, blurX:0, blurY:0, strength:0, alpha:0, remove:true }} );
+				TweenLite.to(BottomTxt, 1, { delay:1.5, glowFilter: { color:0x000000, blurX:0, blurY:0, strength:0, alpha:0, remove:true }, overwrite:OverwriteManager.AUTO} );
 			}
 		}
 		
@@ -250,7 +251,7 @@ package
 		public static function glowLink():void
 		{
 			TweenLite.to(TopTxtLink, .5, { glowFilter: { color:0xFF0000, blurX:40, blurY:40, strength:30, alpha:.9 }} );
-			TweenLite.to(TopTxtLink, 1, { delay:1.5, glowFilter: { color:0x000000, blurX:0, blurY:0, strength:0, alpha:0, remove:true }} );
+			TweenLite.to(TopTxtLink, 1, { delay:1.5, glowFilter: { color:0x000000, blurX:0, blurY:0, strength:0, alpha:0, remove:true }, overwrite:OverwriteManager.AUTO} );
 		}
 		
 		/**
@@ -315,13 +316,6 @@ package
 		
 		private static function displayTip(e:MouseEvent):void
 		{
-			//if (TopImg.parent.mouseY > 30)
-			//{
-				//trace(tipLevel.x, tipLinks.x);
-				//hideTip();
-				//return;
-			//}
-			
 			if (TopImg.parent.mouseX - TopImg.x < TopImg.width/2 && TopImg.parent.mouseX - TopImg.x > 45 && TopImg.parent.mouseY <= 30)
 			{
 				tipLevel.x = -500;
