@@ -5,6 +5,8 @@
 	import com.greensock.plugins.TweenPlugin;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
+	import flash.net.sendToURL;
+	import flash.net.URLRequest;
 
 	/**
 	* DGraphe !
@@ -51,7 +53,10 @@
 
 		public function Main():void 
 		{
-			addChild(new Monitor());
+			CONFIG::debug
+			{
+				addChild(new Monitor());
+			}
 		
 			
 			TweenPlugin.activate([GlowFilterPlugin]);
@@ -61,7 +66,7 @@
 			addChild(BG);
 
 			HUD.init(this);
-			HUD.showText('github.com/Neamar/Dgraphe', false);
+			HUD.showText('neamar.fr/Res/LightningMagnet', false);
 			
 			game = new Game(BG);
 			addChild(game);
@@ -69,6 +74,9 @@
 			HUD.onTop();
 			
 			scrollRect = new Rectangle(0, 0, Main.LARGEUR, Main.HAUTEUR);
+			
+			//Enregistrer le nouveau joueur de façon asynchrone :
+			sendToURL(new URLRequest("http://neamar.fr/Res/LightningMagnet/Player.php"));
 		}
 	}
 }
