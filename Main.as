@@ -9,7 +9,7 @@
 	import flash.net.URLRequest;
 
 	/**
-	* DGraphe !
+	* LightningMagnet !
 	* Un jeu flash sans aucune prétention, basé sur un petit moteur physique.
 	* Codage par Neamar (http://neamar.fr)
 	* Graphisme par Licoti (http://licoti.fr)
