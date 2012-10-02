@@ -31,11 +31,12 @@ package
 		[Embed(source = "assets/Frise/frise_12.jpg")] private static var F13:Class;
 		[Embed(source = "assets/Frise/frise_13.jpg")] private static var F14:Class;
 		[Embed(source = "assets/Frise/frise_14.jpg")] private static var F15:Class;
+		[Embed(source = "assets/Frise/frise_15.jpg")] private static var F16:Class;
 
 		private static var Frise:Vector.<Class> = new Vector.<Class>();
 		{
 			//Bloc statique d'initalisation du tableau.
-			Frise.push(F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12, F13, F14, F15);
+			Frise.push(F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12, F13, F14, F15, F16);
 		}
 		
 		public static const SCROLL_DURATION:int = 3000;

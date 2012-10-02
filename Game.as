@@ -3,6 +3,7 @@ package
 	import com.greensock.TweenLite;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.net.SharedObject;
 	import Models.Levels.*;
 	import Models.Nodes.Node;
 	import Models.Nodes.Spring;
@@ -257,6 +258,10 @@ package
 					 */
 					var Parts:Array = Game.buildNodes('400,222|400,260|400,307|400,350|400,386|400,422|319,300|481,300|400,183|286,191|514,191:0,6|6,1|2,6|6,3|6,4|6,5|5,7|7,4|3,7|2,7|1,7|0,7|6,8|8,7|10,7|9,6|9,8|8,10');
 					return new KillButOneLevel(Parts[0], Parts[1], 14, Parts[0][8], (new Niveau3()).bitmapData);
+				},
+				function():Level
+				{
+					return new EmptyLevel();
 				}
 			);
 		}
@@ -305,9 +310,9 @@ package
 		/**
 		 * Le numéro du niveau actuel
 		 */
-		private var CurrentLevelNumber:int = -1;
-		private var UnlockedLevelNumber:int = 15;// CurrentLevelNumber;
-		
+		//Créer l'objet de sauvegarde locale :
+		private var onDisk:SharedObject = SharedObject.getLocal("LightningMagnet");
+
 		/**
 		 * L'objet niveau chargé
 		 */
@@ -331,6 +336,12 @@ package
 		 */
 		public function Game(BG:Background)
 		{
+			if (!onDisk.data.CurrentLevelNumber)
+				onDisk.data.UnlockedLevelNumber = -1; //First game session
+			else
+				onDisk.data.UnlockedLevelNumber--; // Restore old session
+			onDisk.data.CurrentLevelNumber = onDisk.data.UnlockedLevelNumber;
+			
 			this.BG = BG;
 			nextLevel();
 			addEventListener(Event.ENTER_FRAME, update);
@@ -366,8 +377,9 @@ package
 			}
 			
 			//Afficher le nouveau niveau
-			CurrentLevelNumber++;
-			UnlockedLevelNumber = Math.max(CurrentLevelNumber, UnlockedLevelNumber);
+			onDisk.data.CurrentLevelNumber++;
+			onDisk.data.UnlockedLevelNumber = Math.max(onDisk.data.CurrentLevelNumber, onDisk.data.UnlockedLevelNumber);
+			onDisk.flush();
 			this.loadLevel();
 		}
 		
@@ -434,7 +446,7 @@ package
 			}
 			
 			//Afficher le nouveau niveau
-			CurrentLevelNumber--;
+			onDisk.data.CurrentLevelNumber--;
 			this.loadLevel();
 		}
 		
@@ -445,13 +457,13 @@ package
 		 */
 		protected function loadLevel():void
 		{
-			HUD.PreviousButton.visible = (CurrentLevelNumber >= 1);
-			HUD.NextButton.visible = (CurrentLevelNumber < UnlockedLevelNumber);
+			HUD.PreviousButton.visible = (onDisk.data.CurrentLevelNumber >= 1);
+			HUD.NextButton.visible = (onDisk.data.CurrentLevelNumber < onDisk.data.UnlockedLevelNumber);
 			
 			/**
 			 * Charger...
 			 */
-			LevelObject = new Game.LevelsList[CurrentLevelNumber];
+			LevelObject = new Game.LevelsList[onDisk.data.CurrentLevelNumber];
 			VLevelObject = new VLevel(LevelObject);
 			LevelObject.addEventListener(Level.LOST, retryLevel);
 			LevelObject.addEventListener(Level.WIN, nextLevel);
@@ -494,10 +506,10 @@ package
 				}
 			);
 			
-			BG.moveTo(CurrentLevelNumber);
+			BG.moveTo(onDisk.data.CurrentLevelNumber);
 			
 			//Mettre à jour le tableau de bord
-			HUD.showLevel(CurrentLevelNumber);
+			HUD.showLevel(onDisk.data.CurrentLevelNumber);
 			HUD.showLink(LevelObject.getChainesACouper());
 			HUD.onTop();
 		}
