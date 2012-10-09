@@ -7,6 +7,8 @@
 	import flash.geom.Rectangle;
 	import flash.net.sendToURL;
 	import flash.net.URLRequest;
+	import mochi.as3.MochiEvents;
+	import mochi.as3.MochiServices;
 
 	/**
 	* LightningMagnet !
@@ -18,7 +20,7 @@
 	* 
 	* @author Neamar
 	*/
-	public class Main extends Sprite 
+	public final dynamic class Main extends Sprite 
 	{
 		/**
 		 * Les différents mode.
@@ -77,6 +79,10 @@
 			
 			//Enregistrer le nouveau joueur de façon asynchrone :
 			sendToURL(new URLRequest("http://neamar.fr/Res/LightningMagnet/Player.php"));
+			
+			//Connexion à Mochi :
+			MochiServices.connect("f4d0cb239bef731e", this);
+			MochiEvents.startPlay();
 		}
 	}
 }

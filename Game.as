@@ -4,6 +4,8 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.net.SharedObject;
+	import mochi.as3.MochiEvents;
+	import mochi.as3.MochiServices;
 	import Models.Levels.*;
 	import Models.Nodes.Node;
 	import Models.Nodes.Spring;
@@ -512,6 +514,9 @@ package
 			HUD.showLevel(onDisk.data.CurrentLevelNumber);
 			HUD.showLink(LevelObject.getChainesACouper());
 			HUD.onTop();
+			
+			//Tracker l'évènement
+			MochiEvents.trackEvent("level-" + onDisk.data.CurrentLevelNumber, true);
 		}
 		
 		protected final function update(e:Event = null):void
